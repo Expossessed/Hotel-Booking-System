@@ -18,8 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/home', function () {
-    return view('admin.front');
-});
+Route::get('/admin/home', [RoomsController::class, 'listrooms'])->name('admin.front');
+
+Route::get('user/home', [RoomsController::class, 'showRooms'])->name('rooms.list');
 
 require __DIR__.'/auth.php';

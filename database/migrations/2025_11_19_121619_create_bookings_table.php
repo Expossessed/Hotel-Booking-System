@@ -24,7 +24,6 @@ return new class extends Migration
 
             $table->foreign('booker_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->foreign('room_id')->references('room_id')->on('rooms')->onDelete('cascade');
-            $table->foreign('room_price')->references('room_price')->on('rooms')->onDelete('cascade');
         });
     }
 

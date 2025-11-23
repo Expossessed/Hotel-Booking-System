@@ -31,7 +31,8 @@
                         </ul>
                     </details>
                 </li>
-                <li><a class="hover:text-primary">History</a></li>
+                
+                <li><a class="hover:text-primary" href="{{ route('rooms.list') }}">History</a></li>
                 
             </ul>
         </div>
@@ -78,7 +79,32 @@
             </div>
         </section>
 
-        <h1>No rooms available on listing</h1>
+        <section class="max-w-6xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    @foreach($rooms as $room)
+        <div class="bg-white shadow-md rounded-lg overflow-hidden h-full flex flex-col">
+            <img src="https://tse1.mm.bing.net/th/id/OIP.ViUAuItOO54F6HlshFw-fQHaFI?rs=1&pid=ImgDetMain&o=7&rm=3/400x250" 
+                 alt="{{ $room->room_type }}" 
+                 class="w-full h-48 object-cover" />
+
+            <div class="p-4 flex flex-col justify-between h-full">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">{{ $room->room_type }}</h3>
+                    <p class="text-gray-600 mb-4">{{ $room->room_desc }}</p>
+                </div>
+
+                <div class="flex justify-between items-center mt-auto">
+                    <span class="text-lg font-semibold text-primary">
+                        ${{ $room->room_price }}/night
+                    </span>
+
+                    <button class="btn btn-primary btn-sm">Book Now</button>
+                </div>
+            </div>
+        </div>
+    @endforeach
+</section>
+
+    </main>
 
 </body>
 
