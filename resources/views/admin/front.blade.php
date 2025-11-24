@@ -51,8 +51,8 @@
                     alt="Suite" class="rounded-t-xl" />
             </figure>
             <div class="card-body">
-                <h2 class="card-title text-primary">Suite (TOP SELLER)</h2>
-                <p>Comfortable suite with premium facilities for your luxurious stay.</p>
+                <h2 class="card-title text-primary">{{ $room->room_type }}</h2>
+                <p>{{$rooms->room_desc}}</p>
                 <div class="card-actions justify-end gap-2">
                     <button class="btn btn-outline btn-primary btn-sm">Edit</button>
                     <button class="btn btn-outline btn-primary btn-sm">View</button>
