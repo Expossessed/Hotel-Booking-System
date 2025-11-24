@@ -9,5 +9,5 @@ class Rooms extends Model
 {
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
-    protected $fillable = ['room_type','room_desc', 'price_per_night', 'available_rooms', 'is_available'];
+    protected $fillable = ['room_type','room_desc', 'room_price', 'available_rooms', 'is_available'];
 }

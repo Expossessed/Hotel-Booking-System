@@ -15,12 +15,15 @@ return new class extends Migration
             $table->id('transaction_id');            // primary key
             $table->unsignedBigInteger('booker_id'); // references users.user_id
             $table->unsignedInteger('room_id');      // references rooms.room_id
+            $table->integer('price_paid');
             $table->date('book_date');
             $table->date('end_date');
             $table->timestamps();
 
+            
             $table->foreign('booker_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->foreign('room_id')->references('room_id')->on('rooms')->onDelete('cascade');
+            $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
+            
         });
     }
 

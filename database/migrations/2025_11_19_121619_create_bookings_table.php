@@ -16,11 +16,14 @@ return new class extends Migration
             $table->unsignedBigInteger('booker_id'); // must match users.user_id
             $table->unsignedInteger('room_id');      // must match rooms.room_id
             $table->date('book_date');
+            $table->integer('room_price');
             $table->date('end_date');
+            $table->integer('num_days');
             $table->timestamps();
 
+
             $table->foreign('booker_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->foreign('room_id')->references('room_id')->on('rooms')->onDelete('cascade');
+            $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
         });
     }
 
