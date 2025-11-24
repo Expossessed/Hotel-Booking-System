@@ -4,22 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Hotel Booking</title>
+=======
+    <title>Hotel Booking - Admin</title>
+
+    <!-- Tailwind + DaisyUI -->
+>>>>>>> d5dbf6cc4df3145de06fbeb215f4d8eee331a9cd
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
 </head>
 
+<<<<<<< HEAD
 <body class="bg-gray-100 h-fit">
 
     
     <div class="navbar shadow-md bg-gray-100 px-6 py-3 sticky top-0 z-50 flex lg:">
+=======
+<body class="bg-gray-100">
+    <nav class="navbar bg-white shadow-md px-6 py-3 sticky top-0 z-50 flex lg:">
+>>>>>>> d5dbf6cc4df3145de06fbeb215f4d8eee331a9cd
         <div class="flex-1">
-            <a class="text-3xl font-bold text-primary">HOTEL BOOKIE</a>
+            @auth
+                <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}"
+                   class="text-3xl font-bold text-primary">
+                    HOTEL BOOKIE
+                </a>
+            @else
+                <a href="{{ route('home') }}" class="text-3xl font-bold text-primary">
+                    HOTEL BOOKIE
+                </a>
+            @endauth
         </div>
 
         <div class="content-center">
             <ul class="menu menu-horizontal gap-8 text-lg font-medium">
-                <li><li><a class="text-primary font-bold">Home</a></li></li>
+                <li><a class="text-primary font-bold">Home</a></li>
                 <li>
                     <details class="group">
                         <summary class="cursor-pointer hover:text-primary">Book</summary>
@@ -37,9 +57,16 @@
         </div>
 
         <div>
-            <a class="btn btn-primary btn-sm">Login</a>
+            @auth
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-primary btn-sm">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Login</a>
+            @endauth
         </div>
-    </div>
+    </nav>
 
     <div class="flex flex-wrap justify-center items-start gap-8 py-12 px-6 bg-gray-100 min-h-screen">
         @foreach($rooms as $rooms)
@@ -68,15 +95,8 @@
                     </form>
                 </div>
             </div>
-        </div>
         @endforeach
     </div>
-
-</div>
-
-
-</div>
-
 </body>
 
 </html>

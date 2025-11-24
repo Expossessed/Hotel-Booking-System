@@ -8,7 +8,6 @@ use App\Models\Rooms;
 
 class RoomsController extends Controller
 {
-
     public function createRoomForm()
     {
         return view('admin.createRoom');
@@ -85,8 +84,14 @@ class RoomsController extends Controller
     }
 
     public function showRooms()
-{
-    $rooms = Rooms::all();
-    return view('user.home', compact('rooms'));
-}
+    {
+        $rooms = Rooms::all();
+        return view('user.home', compact('rooms'));
+    }
+
+    public function view($id)
+    {
+        $room = Rooms::where('room_id', $id)->firstOrFail();
+        return view('user.viewRoom', compact('room'));
+    }
 }
