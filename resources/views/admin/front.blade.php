@@ -4,26 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
     <title>Hotel Booking</title>
-=======
-    <title>Hotel Booking - Admin</title>
-
-    <!-- Tailwind + DaisyUI -->
->>>>>>> d5dbf6cc4df3145de06fbeb215f4d8eee331a9cd
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
 </head>
 
-<<<<<<< HEAD
 <body class="bg-gray-100 h-fit">
 
     
     <div class="navbar shadow-md bg-gray-100 px-6 py-3 sticky top-0 z-50 flex lg:">
-=======
-<body class="bg-gray-100">
-    <nav class="navbar bg-white shadow-md px-6 py-3 sticky top-0 z-50 flex lg:">
->>>>>>> d5dbf6cc4df3145de06fbeb215f4d8eee331a9cd
         <div class="flex-1">
             @auth
                 <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}"
