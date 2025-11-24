@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoomsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,8 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/home', function () {
-    return view('admin.front');
-});
+Route::get('/admin/home', [RoomsController::class, 'listrooms'])->name('admin.front');
+Route::get('user/home', [RoomsController::class, 'showRooms'])->name('rooms.list');
+Route::get('/user/rooms/{id}', [RoomsController::class, 'view'])->name('rooms.view');
 
 require __DIR__.'/auth.php';

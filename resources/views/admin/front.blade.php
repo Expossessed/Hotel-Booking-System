@@ -44,21 +44,24 @@
     </div>
 
     <div class="flex flex-wrap justify-center items-start gap-8 py-12 px-6 bg-gray-100 min-h-screen">
-
-    <div class="card w-80 bg-white shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 rounded-xl">
-        <figure>
-            <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                alt="Suite" class="rounded-t-xl" />
-        </figure>
-        <div class="card-body">
-            <h2 class="card-title text-primary">Suite (TOP SELLER)</h2>
-            <p>Comfortable suite with premium facilities for your luxurious stay.</p>
-            <div class="card-actions justify-end gap-2">
-                <button class="btn btn-outline btn-primary btn-sm">Edit</button>
-                <button class="btn btn-outline btn-error  btn-sm">Delete</button>
-                <button class="btn btn-outline  btn-primary btn-sm">Book Now</button>
+        @foreach($rooms as $room)
+        <div class="card w-80 bg-white shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 rounded-xl">
+            <figure>
+                <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                    alt="Suite" class="rounded-t-xl" />
+            </figure>
+            <div class="card-body">
+                <h2 class="card-title text-primary">Suite (TOP SELLER)</h2>
+                <p>Comfortable suite with premium facilities for your luxurious stay.</p>
+                <div class="card-actions justify-end gap-2">
+                    <button class="btn btn-outline btn-primary btn-sm">Edit</button>
+                    <button class="btn btn-outline btn-primary btn-sm">View</button>
+                    <button class="btn btn-outline btn-error  btn-sm">Delete</button>
+                    <button class="btn btn-outline  btn-primary btn-sm">Book Now</button>
+                </div>
             </div>
         </div>
+        @endforeach
     </div>
 
 </div>
