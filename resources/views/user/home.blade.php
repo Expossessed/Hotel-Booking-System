@@ -8,6 +8,29 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
+    <style>
+        /* Make non-editable form controls non-interactive on this page */
+        input[readonly],
+        textarea[readonly],
+        input:disabled,
+        textarea:disabled {
+            pointer-events: none;
+            cursor: default;
+            caret-color: transparent;
+        }
+        /* Disable caret / text selection for non-input text on this page */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+        input,
+        textarea {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            user-select: text;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100">
@@ -28,18 +51,7 @@
         <div class="hidden lg:block">
             <ul class="menu menu-horizontal gap-6 text-lg font-medium">
                 <li><a class="text-primary font-bold">Home</a></li>
-                <li>
-                    <details class="group">
-                        <summary class="cursor-pointer hover:text-primary">Book</summary>
-                        <ul class="p-2 bg-white shadow-lg rounded-md mt-2 w-40">
-                            <li><a href="{{ route('bookings.form', ['room_type' => 'Suite']) }}" class="hover:bg-primary/10 rounded-md">Suite</a></li>
-                            <li><a href="{{ route('bookings.form', ['room_type' => 'Solo']) }}" class="hover:bg-primary/10 rounded-md">Solo</a></li>
-                            <li><a href="{{ route('bookings.form', ['room_type' => 'Duo']) }}" class="hover:bg-primary/10 rounded-md">Duo</a></li>
-                            <li><a href="{{ route('bookings.form', ['room_type' => 'Family']) }}" class="hover:bg-primary/10 rounded-md">Family</a></li>
-                        </ul>
-                    </details>
-                </li>
-                <li><a class="hover:text-primary" href="{{ route('rooms.list') }}">History</a></li>
+                <li><a class="hover:text-primary" href="{{ route('bookings.history') }}">History</a></li>
             </ul>
         </div>
 
@@ -84,10 +96,22 @@
             <div class="mt-4 flex items-center gap-3">
                 <span class="text-sm text-gray-600">Filters:</span>
                 <div class="btn-group">
-                    <button class="btn btn-sm btn-outline">All</button>
-                    <button class="btn btn-sm">Available</button>
-                    <button class="btn btn-sm">Price Low</button>
-                    <button class="btn btn-sm">Price High</button>
+                    <a href="{{ route('rooms.list') }}"
+                       class="btn btn-sm {{ empty($currentFilter) && empty($currentSort) ? '' : 'btn-outline' }}">
+                        All
+                    </a>
+                    <a href="{{ route('rooms.list', ['filter' => 'available']) }}"
+                       class="btn btn-sm {{ ($currentFilter ?? null) === 'available' ? '' : 'btn-outline' }}">
+                        Available
+                    </a>
+                    <a href="{{ route('rooms.list', ['sort' => 'price_low']) }}"
+                       class="btn btn-sm {{ ($currentSort ?? null) === 'price_low' ? '' : 'btn-outline' }}">
+                        Price Low
+                    </a>
+                    <a href="{{ route('rooms.list', ['sort' => 'price_high']) }}"
+                       class="btn btn-sm {{ ($currentSort ?? null) === 'price_high' ? '' : 'btn-outline' }}">
+                        Price High
+                    </a>
                 </div>
             </div>
         </section>
@@ -95,14 +119,14 @@
         <section class="max-w-6xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             @foreach ($rooms as $room)
                 <div class="bg-white shadow-md rounded-lg overflow-hidden h-full flex flex-col">
-                    <img src="https://tse1.mm.bing.net/th/id/OIP.ViUAuItOO54F6HlshFw-fQHaFI?rs=1&pid=ImgDetMain&o=7&rm=3/400x250"
+                    <img src="{{ $room->image_link }}"
                          alt="{{ $room->room_type }}"
                          class="w-full h-48 object-cover" />
 
                     <div class="p-4 flex flex-col justify-between h-full">
                         <div>
-                            <h3 class="text-xl font-bold mb-2">{{ $room->room_type }}</h3>
-                            <p class="text-gray-600 mb-4">{{ $room->room_desc }}</p>
+                            <h3 class="text-xl font-bold mb-2 {{ !$room->is_available ? 'line-through' : '' }}">{{ $room->room_type }}</h3>
+                            <p class="text-blue-600 mb-4">{{ $room->room_desc }}</p>
                         </div>
 
                         <div class="flex justify-between items-center mt-auto">
@@ -111,7 +135,7 @@
                             </span>
                             <div class="flex gap-2">
                                 <a href="{{ route('rooms.view', ['id' => $room->room_id]) }}" class="btn btn-outline btn-sm">View Details</a>
-                                <a href="{{ route('bookings.form', ['room_type' => $room->room_type]) }}" class="btn btn-primary btn-sm">Book Now</a>
+                                <a href="{{ route('bookings.form', ['room_id' => $room->room_id]) }}" class="btn btn-primary btn-sm">Book Now</a>
                             </div>
                         </div>
                     </div>

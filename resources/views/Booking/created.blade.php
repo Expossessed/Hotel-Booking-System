@@ -7,6 +7,29 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
+    <style>
+        /* Make non-editable form controls non-interactive on this page */
+        input[readonly],
+        textarea[readonly],
+        input:disabled,
+        textarea:disabled {
+            pointer-events: none;
+            cursor: default;
+            caret-color: transparent;
+        }
+        /* Disable caret / text selection for non-input text on this page */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+        input,
+        textarea {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            user-select: text;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
 

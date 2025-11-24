@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Make non-editable form controls non-interactive (no text cursor or click) */
+input[readonly],
+textarea[readonly],
+input:disabled,
+textarea:disabled {
+    pointer-events: none;
+    cursor: default;
+    caret-color: transparent;
+}
+
+/* Disable caret / text selection for non-input text globally */
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+/* But keep normal selection behavior for editable controls */
+input,
+textarea {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    user-select: text;
+}

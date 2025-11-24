@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking History</title>
+    <title>All Bookings - Admin History</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
     <style>
@@ -30,11 +30,12 @@
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <nav class="navbar bg-white shadow-md px-6 py-3 sticky top-0 z-50 flex lg:">
+<body class="bg-gray-100 min-h-screen">
+
+    <div class="navbar shadow-md bg-gray-100 px-6 py-3 sticky top-0 z-50 flex flex lg:">
         <div class="flex-1">
             @auth
-                <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}"
+                <a href="{{ route('admin.front') }}"
                    class="text-3xl font-bold text-primary">
                     HOTEL BOOKIE
                 </a>
@@ -45,10 +46,11 @@
             @endauth
         </div>
 
-        <div class="hidden lg:block">
-            <ul class="menu menu-horizontal gap-6 text-lg font-medium">
-                <li><a href="{{ route('rooms.list') }}" class="hover:text-primary">Home</a></li>
+        <div class="content-center">
+            <ul class="menu menu-horizontal gap-8 text-lg font-medium">
+                <li><a href="{{ route('admin.front') }}" class="hover:text-primary">Home</a></li>
                 <li><a class="text-primary font-bold">History</a></li>
+                <li><a href="/admin/create" class="hover:text-primary">Add</a></li>
             </ul>
         </div>
 
@@ -62,21 +64,22 @@
                 <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Login</a>
             @endauth
         </div>
-    </nav>
+    </div>
 
-    <main class="px-6 py-8 max-w-5xl mx-auto">
-        <h1 class="text-3xl font-bold mb-6">Your Booking History</h1>
+    <div class="max-w-6xl mx-auto py-10 px-4">
+        <h1 class="text-4xl font-bold mb-6">All Bookings</h1>
 
         @if ($bookings->isEmpty())
             <div class="bg-white shadow-md rounded-lg p-6 text-center">
-                <p class="text-gray-600">You have no bookings yet.</p>
-                <a href="{{ route('rooms.list') }}" class="btn btn-primary mt-4">Browse Rooms</a>
+                <p class="text-gray-600">No bookings have been made yet.</p>
             </div>
         @else
-            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <div class="bg-white shadow-md rounded-lg overflow-auto">
                 <table class="table w-full">
                     <thead class="bg-gray-100">
                         <tr>
+                            <th class="px-4 py-2">Customer</th>
+                            <th class="px-4 py-2">Email</th>
                             <th class="px-4 py-2">Room</th>
                             <th class="px-4 py-2">Start Date</th>
                             <th class="px-4 py-2">End Date</th>
@@ -88,6 +91,12 @@
                     <tbody>
                         @foreach ($bookings as $booking)
                             <tr class="border-t">
+                                <td class="px-4 py-2">
+                                    {{ optional($booking->user)->name ?? 'Unknown user' }}
+                                </td>
+                                <td class="px-4 py-2">
+                                    {{ optional($booking->user)->email ?? '-' }}
+                                </td>
                                 <td class="px-4 py-2">
                                     {{ optional($booking->room)->room_type ?? 'Room deleted' }}
                                 </td>
@@ -104,6 +113,6 @@
                 </table>
             </div>
         @endif
-    </main>
+    </div>
 </body>
 </html>

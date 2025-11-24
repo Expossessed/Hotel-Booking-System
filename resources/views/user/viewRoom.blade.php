@@ -4,17 +4,40 @@
     <meta charset="UTF-8">
     <title>{{ $room->room_type }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Make non-editable form controls non-interactive on this page */
+        input[readonly],
+        textarea[readonly],
+        input:disabled,
+        textarea:disabled {
+            pointer-events: none;
+            cursor: default;
+            caret-color: transparent;
+        }
+        /* Disable caret / text selection for non-input text on this page */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+        input,
+        textarea {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            user-select: text;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 p-6 flex items-center justify-center min-h-screen">
 
     <!-- Main Container -->
 <div class="max-w-3xl w-full bg-white shadow-lg rounded-lg overflow-hidden">
 
-    <!-- Image Placeholder with Link -->
+    <!-- Room Image from DB -->
     <div class="w-full h-64 bg-gray-300 flex items-center justify-center">
         <img 
-            src="https://tse2.mm.bing.net/th/id/OIP._NZ0Uz16uS_9wXnHy89QpQHaE5?rs=1&pid=ImgDetMain&o=7&rm=3" 
-            alt="Room Image" 
+            src="{{ $room->image_link }}" 
+            alt="{{ $room->room_type }}" 
             class="w-full h-full object-cover"
         />
     </div>

@@ -20,5 +20,15 @@ class Booking extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function room()
+    {
+        return $this->belongsTo(Rooms::class, 'room_id', 'room_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'booker_id');
+    }
 }
 

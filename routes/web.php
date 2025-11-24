@@ -20,10 +20,13 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('admin')->group(function () {
         Route::get('/admin/home', [RoomsController::class, 'listRooms'])->name('admin.front');
+        Route::get('/admin/history', [BookingController::class, 'adminHistory'])->name('admin.history');
     });
 
     Route::get('user/home', [RoomsController::class, 'showRooms'])->name('rooms.list');
     Route::get('/user/rooms/{id}', [RoomsController::class, 'view'])->name('rooms.view');
+
+    Route::get('/user/history', [BookingController::class, 'userHistory'])->name('bookings.history');
 
     // Booking routes
     Route::get('/book', [BookingController::class, 'showForm'])->name('bookings.form');
@@ -36,6 +39,7 @@ Route::get('/admin/home', [RoomsController::class, 'listrooms'])->name('admin.fr
 Route::get('/admin/view/{id}', [RoomsController::class, 'viewRoom'])->name('admin.viewRoom');
 Route::get('/admin/edit/{id}',  [RoomsController::class, 'updateRoomForm'])->name('admin.updateRoom');
 Route::post('/admin/edit/{id}',  [RoomsController::class, 'updateRoom']);
+Route::post('/admin/delete/{id}', [RoomsController::class, 'deleteRoom'])->name('admin.deleteRoom');
 
 Route::get('user/home', [RoomsController::class, 'showRooms'])->name('rooms.list');
 

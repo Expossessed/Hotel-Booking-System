@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rooms', function (Blueprint $table) {
-            $table->increments('id');
+            // Use room_id so it matches the foreign key in bookings
+            $table->increments('room_id');
+            $table->string('image_link')->nullable()->default('default.jpg');
             $table->string('room_type');
             $table->string('room_desc');
             $table->integer('room_price');

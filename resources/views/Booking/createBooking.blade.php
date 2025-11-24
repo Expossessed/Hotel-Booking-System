@@ -7,6 +7,29 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
+    <style>
+        /* Make non-editable form controls non-interactive on this page */
+        input[readonly],
+        textarea[readonly],
+        input:disabled,
+        textarea:disabled {
+            pointer-events: none;
+            cursor: default;
+            caret-color: transparent;
+        }
+        /* Disable caret / text selection for non-input text on this page */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+        input,
+        textarea {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            user-select: text;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
 
@@ -63,17 +86,11 @@
             <form action="{{ route('bookings.create') }}" method="POST">
                 @csrf
 
+                <input type="hidden" name="room_id" value="{{ $room_id }}">
+
                 <div class="mb-3">
-                    <label for="room_type" class="form-label">Room Type</label>
-                    <select name="room_type" id="room_type" class="form-select" required>
-                        @php
-                            $currentType = old('room_type', $room_type ?? 'Suite');
-                        @endphp
-                        <option value="Suite" {{ $currentType === 'Suite' ? 'selected' : '' }}>Suite</option>
-                        <option value="Solo" {{ $currentType === 'Solo' ? 'selected' : '' }}>Solo</option>
-                        <option value="Duo" {{ $currentType === 'Duo' ? 'selected' : '' }}>Duo</option>
-                        <option value="Family" {{ $currentType === 'Family' ? 'selected' : '' }}>Family</option>
-                    </select>
+                    <label class="form-label">Room Type</label>
+                    <input type="text" class="form-control" value="{{ $room_type }}" readonly tabindex="-1">
                 </div>
 
                 <div class="mb-3">
@@ -83,12 +100,12 @@
 
                 <div class="mb-3">
                     <label for="end_date" class="form-label">Booking End Date</label>
-                    <input type="date" name="end_date" id="end_date" class="form-control" value="" readonly>
+                    <input type="date" name="end_date" id="end_date" class="form-control" value="" readonly tabindex="-1">
                 </div>
 
                 <div class="mb-3">
                     <label for="room_price" class="form-label">Price per Night</label>
-                    <input type="number" id="room_price" class="form-control" value="{{ old('room_price', $room_price ?? '') }}" readonly>
+                    <input type="number" id="room_price" class="form-control" value="{{ old('room_price', $room_price ?? '') }}" readonly tabindex="-1">
                 </div>
 
                 <div class="mb-3">
@@ -102,7 +119,7 @@
 
                 <div class="mb-3">
                     <label for="total_price" class="form-label">Total Price</label>
-                    <input type="text" id="total_price" class="form-control" readonly>
+                    <input type="text" id="total_price" class="form-control" readonly tabindex="-1">
                 </div>
 
                 <button type="submit" class="btn btn-success">Create Booking</button>
@@ -129,7 +146,7 @@
             <div class="d-flex gap-2 justify-content-end">
                 <form method="POST" action="{{ route('bookings.create') }}">
                     @csrf
-                    <input type="hidden" name="room_type" value="{{ $preview_room_type }}">
+                    <input type="hidden" name="room_id" value="{{ $room_id }}">
                     <input type="hidden" name="book_date" value="{{ $preview_book_date }}">
                     <input type="hidden" name="num_days" value="{{ $preview_num_days }}">
                     <input type="hidden" name="confirm" value="yes">
@@ -143,7 +160,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const roomTypeSelect  = document.getElementById('room_type');
         const bookDateInput   = document.getElementById('book_date');
         const endDateInput    = document.getElementById('end_date');
         const numDaysInput    = document.getElementById('num_days');
@@ -151,13 +167,6 @@
         const totalPriceInput = document.getElementById('total_price');
         const minusBtn        = document.getElementById('minus_days');
         const plusBtn         = document.getElementById('plus_days');
-
-        const PRICES = {
-            'Suite': 999,
-            'Solo': 1999,
-            'Duo': 2999,
-            'Family': 3999,
-        };
 
         function setTodayAsMin() {
             const today = new Date();
@@ -170,12 +179,6 @@
             if (!bookDateInput.value || bookDateInput.value < todayStr) {
                 bookDateInput.value = todayStr;
             }
-        }
-
-        function recalcPrice() {
-            const type = roomTypeSelect.value;
-            const price = PRICES[type] || 0;
-            roomPriceInput.value = price;
         }
 
         function recalcDatesAndTotal() {
@@ -209,16 +212,11 @@
         }
 
         function recalcAll() {
-            recalcPrice();
             recalcDatesAndTotal();
         }
 
         setTodayAsMin();
         recalcAll();
-
-        if (roomTypeSelect) {
-            roomTypeSelect.addEventListener('change', recalcAll);
-        }
 
         if (bookDateInput) {
             bookDateInput.addEventListener('change', recalcAll);

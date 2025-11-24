@@ -11,63 +11,48 @@ class BookingController extends Controller
 {
     public function showForm(Request $request)
     {
-        // room_type can be passed in the query string
+        // Prefer an explicit room_id (from clicking a specific room card)
+        $roomId   = $request->query('room_id');
         $roomType = $request->query('room_type');
 
         $room = null;
-        if ($roomType) {
+        if ($roomId) {
+            $room = Rooms::where('room_id', $roomId)->first();
+        } elseif ($roomType) {
+            // Fallback: first room matching this type (e.g. from navbar dropdown)
             $room = Rooms::where('room_type', $roomType)->first();
         }
 
-        // Map constants by room type
-        $roomPrice = $roomType ? $this->priceForRoomType($roomType) : null;
-
         return view('Booking.createBooking', [
-            'room_type'  => $roomType ?? ($room->room_type ?? null),
-            'room_price' => $roomPrice,
+            'room_id'    => $room?->room_id,
+            'room_type'  => $room?->room_type,
+            'room_price' => $room?->room_price,
         ]);
-    }
-
-    protected function priceForRoomType(string $roomType): int
-    {
-        return match (strtolower($roomType)) {
-            'suite'  => 999,
-            'solo'   => 1999,
-            'duo'    => 2999,
-            'family' => 3999,
-            default  => 0,
-        };
     }
 
     public function createBooking(Request $request)
     {
         $validated = $request->validate([
-            'room_type' => 'required|string',
+            'room_id'   => 'required|integer|exists:rooms,room_id',
             'book_date' => 'required|date',
             'num_days'  => 'required|integer|min:1',
         ]);
 
-        $roomType = $validated['room_type'];
+        $room   = Rooms::where('room_id', $validated['room_id'])->firstOrFail();
+        $roomId = $room->room_id;
+        $roomType = $room->room_type;
+        $roomPrice = $room->room_price;
+
         $start    = Carbon::parse($validated['book_date']);
         $numDays  = (int) $validated['num_days'];
         $end      = (clone $start)->addDays($numDays);
-
-        $roomPrice = $this->priceForRoomType($roomType);
-
-        // Choose a room for this type (gracefully handle missing rooms)
-        $room = Rooms::where('room_type', $roomType)->first();
-        if (!$room) {
-            return back()->withErrors([
-                'room_type' => 'No room is available for the selected room type. Please choose a different type.',
-            ])->withInput();
-        }
-        $roomId = $room->room_id;
 
         $total = $roomPrice * $numDays;
 
         // First step: show confirmation overlay on the same booking page
         if (!$request->input('confirm')) {
             return view('Booking.createBooking', [
+                'room_id'           => $roomId,
                 'room_type'         => $roomType,
                 'room_price'        => $roomPrice,
                 'preview'           => true,
@@ -95,6 +80,29 @@ class BookingController extends Controller
         return view('Booking.created', [
             'booking' => $booking,
             'user'    => $request->user(),
+        ]);
+    }
+
+    public function userHistory(Request $request)
+    {
+        $bookings = Booking::with('room')
+            ->where('booker_id', $request->user()->id)
+            ->orderByDesc('book_date')
+            ->get();
+
+        return view('user.checkHistory', [
+            'bookings' => $bookings,
+        ]);
+    }
+
+    public function adminHistory()
+    {
+        $bookings = Booking::with(['room', 'user'])
+            ->orderByDesc('book_date')
+            ->get();
+
+        return view('admin.history', [
+            'bookings' => $bookings,
         ]);
     }
 }

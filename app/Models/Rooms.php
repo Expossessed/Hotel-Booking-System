@@ -10,9 +10,10 @@ class Rooms extends Model
     /** @use HasFactory<\\Database\\Factories\\ProductFactory> */
     use HasFactory;
 
-    protected $primaryKey = 'id';
+    // The actual primary key used around the app is room_id
+    protected $primaryKey = 'room_id';
     public $incrementing = true;
     protected $keyType = 'int';
 
-    protected $fillable = ['room_type', 'room_desc', 'room_price', 'available_rooms', 'is_available'];
+    protected $fillable = ['room_type', 'room_desc', 'room_price', 'image_link', 'available_rooms', 'is_available'];
 }
