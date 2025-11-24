@@ -14,5 +14,5 @@ class Rooms extends Model
     public $incrementing = true;
     protected $keyType = 'int';
 
-    protected $fillable = ['room_type','room_desc', 'room_price', 'available_rooms', 'is_available'];
+    protected $fillable = ['room_type', 'room_desc', 'room_price', 'available_rooms', 'is_available'];
 }

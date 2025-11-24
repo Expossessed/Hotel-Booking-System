@@ -8,7 +8,6 @@ use App\Models\Rooms;
 
 class RoomsController extends Controller
 {
-
     public function createRoomForm()
     {
         return view('rooms.create');
@@ -16,21 +15,15 @@ class RoomsController extends Controller
 
     public function createRoom(Request $request)
     {
-        $request->validate([
-            'room_type' => 'required|string|max:255',
-            'room_desc' => 'required|string|max:255',
-            'price_per_night' => 'required|numeric',
-            'avavailable_rooms' => 'required|integer',
-            'is_available' => 'required|boolean',
+        $validated = $request->validate([
+            'room_type'       => 'required|string|max:255',
+            'room_desc'       => 'required|string|max:255',
+            'room_price'      => 'required|integer',
+            'available_rooms' => 'required|integer',
+            'is_available'    => 'required|boolean',
         ]);
 
-        Rooms::create([
-            'room_type' => $request->room_type,
-            'room_desc' => $request->room_desc,
-            'price_per_night' => $request->price_per_night,
-            'available_rooms' => $request->available_rooms,
-            'is_available' => $request->is_available,
-        ]);
+        Rooms::create($validated);
 
         return redirect()->route('admin.front')->with('success', 'Room created successfully.');
     }
@@ -55,22 +48,16 @@ class RoomsController extends Controller
 
     public function updateRoom(Request $request, $id)
     {
-        $request->validate([
-            'room_type' => 'required|string|max:255',
-            'room_desc' => 'required|string|max:255',
-            'price_per_night' => 'required|numeric',
+        $validated = $request->validate([
+            'room_type'       => 'required|string|max:255',
+            'room_desc'       => 'required|string|max:255',
+            'room_price'      => 'required|integer',
             'available_rooms' => 'required|integer',
-            'is_available' => 'required|boolean',
+            'is_available'    => 'required|boolean',
         ]);
 
         $room = Rooms::findOrFail($id);
-        $room->update([
-            'room_type' => $request->room_type,
-            'room_desc' => $request->room_desc,
-            'price_per_night' => $request->price_per_night,
-            'available_rooms' => $request->available_rooms,
-            'is_available' => $request->is_available,
-        ]);
+        $room->update($validated);
 
         return redirect()->route('admin.front')->with('success', 'Room updated successfully.');
     }
@@ -84,8 +71,14 @@ class RoomsController extends Controller
     }
 
     public function showRooms()
-{
-    $rooms = Rooms::all();
-    return view('user.home', compact('rooms'));
-}
+    {
+        $rooms = Rooms::all();
+        return view('user.home', compact('rooms'));
+    }
+
+    public function view($id)
+    {
+        $room = Rooms::where('room_id', $id)->firstOrFail();
+        return view('user.viewRoom', compact('room'));
+    }
 }

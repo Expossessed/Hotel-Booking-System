@@ -13,7 +13,7 @@
 <nav class="navbar bg-white dark:bg-gray-800 shadow-md px-6 py-3 sticky top-0 z-50 flex lg:">
     <div class="flex-1">
         @auth
-            <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}" 
+            <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}"
                class="text-3xl font-bold text-primary">
                HOTEL BOOKIE
             </a>
@@ -49,7 +49,6 @@
         </div>
 
         <div class="card-body">
-           
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <strong>There were some problems with your input:</strong>
@@ -61,7 +60,6 @@
                 </div>
             @endif
 
-         
             <form action="{{ route('bookings.create') }}" method="POST">
                 @csrf
 

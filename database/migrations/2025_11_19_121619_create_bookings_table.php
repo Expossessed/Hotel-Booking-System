@@ -12,21 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id('booking_id');                // BIGINT UNSIGNED primary key
-
-            // Must match users.id (BIGINT UNSIGNED)
+            $table->id('booking_id');
             $table->unsignedBigInteger('booker_id');
-
-            // Must match rooms.room_id (INT UNSIGNED via increments)
             $table->unsignedInteger('room_id');
-
             $table->date('book_date');
             $table->integer('room_price');
             $table->date('end_date');
             $table->integer('num_days');
             $table->timestamps();
 
-            // Proper foreign key definitions for SQLite & MySQL
             $table->foreign('booker_id')
                 ->references('id')
                 ->on('users')

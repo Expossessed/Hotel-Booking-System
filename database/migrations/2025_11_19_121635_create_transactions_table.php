@@ -12,18 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id('transaction_id');            // primary key
-
-            // Must match users.id (BIGINT UNSIGNED)
+            $table->id('transaction_id');
             $table->unsignedBigInteger('booker_id');
-
-            // Must match rooms.room_id (INT UNSIGNED via increments)
             $table->unsignedInteger('room_id');
             $table->integer('price_paid');
             $table->date('book_date');
             $table->date('end_date');
             $table->timestamps();
-
 
             $table->foreign('booker_id')
                 ->references('id')

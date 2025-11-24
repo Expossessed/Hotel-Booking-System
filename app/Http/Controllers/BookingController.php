@@ -68,16 +68,16 @@ class BookingController extends Controller
         // First step: show confirmation overlay on the same booking page
         if (!$request->input('confirm')) {
             return view('Booking.createBooking', [
-                'room_type'        => $roomType,
-                'room_price'       => $roomPrice,
-                'preview'          => true,
-                'preview_room_type'=> $roomType,
-                'preview_book_date'=> $start->toDateString(),
-                'preview_end_date' => $end->toDateString(),
-                'preview_num_days' => $numDays,
+                'room_type'         => $roomType,
+                'room_price'        => $roomPrice,
+                'preview'           => true,
+                'preview_room_type' => $roomType,
+                'preview_book_date' => $start->toDateString(),
+                'preview_end_date'  => $end->toDateString(),
+                'preview_num_days'  => $numDays,
                 'preview_room_price'=> $roomPrice,
-                'preview_total'    => $total,
-                'preview_user_name'=> $request->user()->name,
+                'preview_total'     => $total,
+                'preview_user_name' => $request->user()->name,
                 'preview_user_email'=> $request->user()->email,
             ]);
         }
@@ -98,5 +98,3 @@ class BookingController extends Controller
         ]);
     }
 }
-
-
