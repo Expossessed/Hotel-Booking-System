@@ -70,41 +70,52 @@
     </div>
 
     <div class="flex flex-wrap justify-center items-start gap-8 py-12 px-6 bg-gray-100 min-h-screen">
-    @foreach($rooms as $room)
-    <div class="card w-80 bg-white shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 rounded-xl">
-        <figure>
-            <!-- Dynamically get image from DB -->
-            <img src="{{ $room->image_link }}" 
-                 alt="{{ $room->room_type }}" 
-                 class="rounded-t-xl" />
-        </figure>
-        <div class="card-body h-60 justify-start">
-            <div>
-                <h2 class="card-title text-primary {{ !$room->is_available ? 'line-through' : '' }}">
-                    {{ $room->room_type }}
-                </h2>
-                <p>${{ $room->room_price }}</p>
-                <p class="w-64 break-words whitespace-normal h-20 overflow-hidden line-clamp-3">
-                    {{ $room->room_desc }}
-                </p>
-            </div>
+    @if($rooms->isEmpty())
+        <div class="w-full max-w-xl mx-auto bg-white shadow-md rounded-xl p-8 text-center">
+            <h2 class="text-2xl font-semibold mb-2">No rooms added yet</h2>
+            <p class="text-gray-600 mb-4">Start by creating a new room so it appears here.</p>
+            <a href="/admin/create" class="btn btn-primary">Add first room</a>
+        </div>
+    @else
+        @foreach($rooms as $room)
+        <div class="card w-80 bg-white shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 rounded-xl">
+            <figure>
+                <!-- Dynamically get image from DB -->
+                <img src="{{ $room->image_link }}" 
+                     alt="{{ $room->room_type }}" 
+                     class="rounded-t-xl" />
+            </figure>
+            <div class="card-body h-60 justify-start">
+                <div>
+                                    <h2 class="text-xl font-bold mb-2 flex items-center gap-2">
+                        <span>{{ $room->room_type }}</span>
+                        @if (!$room->is_available)
+                            <span class="badge badge-error text-xs">Unavailable</span>
+                        @endif
+                    </h2>
+                    <p>${{ $room->room_price }}</p>
+                    <p class="w-64 break-words whitespace-normal h-20 overflow-hidden line-clamp-3">
+                        {{ $room->room_desc }}
+                    </p>
+                </div>
 
-            <div class="card-actions justify-end mt-5">
-                <form action="/admin/edit/{{ $room->room_id }}" method="GET">
-                    <button class="btn btn-outline btn-primary btn-sm">Edit</button>
-                </form>
-                <form action="/admin/view/{{ $room->room_id }}" method="GET">
-                    <button class="btn btn-outline btn-primary btn-sm">View</button>
-                </form>
-                <form action="/admin/delete/{{ $room->room_id }}" method="POST" 
-                      onsubmit="return confirm('Are you sure you want to delete this room?');">
-                    @csrf
-                    <button class="btn btn-outline btn-error btn-sm">Delete</button>
-                </form>
+                <div class="card-actions justify-end mt-5">
+                    <form action="/admin/edit/{{ $room->room_id }}" method="GET">
+                        <button class="btn btn-outline btn-primary btn-sm">Edit</button>
+                    </form>
+                    <form action="/admin/view/{{ $room->room_id }}" method="GET">
+                        <button class="btn btn-outline btn-primary btn-sm">View</button>
+                    </form>
+                    <form action="/admin/delete/{{ $room->room_id }}" method="POST" 
+                          onsubmit="return confirm('Are you sure you want to delete this room?');">
+                        @csrf
+                        <button class="btn btn-outline btn-error btn-sm">Delete</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    @endforeach
+        @endforeach
+    @endif
 </div>
 
 </body>
