@@ -10,7 +10,7 @@ class Rooms extends Model
     /** @use HasFactory<\\Database\\Factories\\ProductFactory> */
     use HasFactory;
 
-    protected $primaryKey = 'room_id';
+    protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'int';
 

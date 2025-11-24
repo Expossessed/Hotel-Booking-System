@@ -19,7 +19,7 @@
 
         <div class="content-center">
             <ul class="menu menu-horizontal gap-8 text-lg font-medium">
-                <li><li><a class="text-primary font-bold">Home</a></li></li>
+                <li><a href="/admin/home" class="text-primary font-bold">Home</a></li>
                 <li>
                     <details class="group">
                         <summary class="cursor-pointer hover:text-primary">Book</summary>
@@ -32,7 +32,7 @@
                     </details>
                 </li>
                 <li><a class="hover:text-primary">History</a></li>
-                <li><a class="hover:text-primary">Add</a></li>
+                <li><a href="/admin/create" class="hover:text-primary">Add</a></li>
             </ul>
         </div>
 
@@ -40,7 +40,8 @@
             <a class="btn btn-primary btn-sm">Login</a>
         </div>
     </div>
-    <div class="bg-gray-100 min-h-screen flex flex-col items-center">
+    <div class="card w-full  bg-white shadow-xl rounded-xl p-8">
+        <div class="bg-gray-100 min-h-screen flex flex-col items-center">
        <h1 class="text-6xl font-bold text-black mt-10 ml-10">Room Details </h1>
         <div class="flex flex-row justify-center hero bg-gray-100 flex mt-10  items-center">
             <div class="hero-content ">
@@ -66,10 +67,10 @@
                 </div>
                 <div class="flex flex-row justify-end items-end h-80 "> 
                     <div class="card-actions justify-end gap-2">
-                        <form action="/admin/home/{{ $rooms->room_id }}" method="GET">
+                        <form action="/admin/home/{{ $rooms->id }}" method="GET">
                             <button class="btn btn-outline flex-col items-center btn-primary btn-md text-3xl">Edit</button>
                         </form>
-                        <form action="/admin/home/{{ $rooms->room_id }}" method="GET">
+                        <form action="/admin/home/{{ $rooms->id }}" method="GET">
                             <button class="btn btn-outline flex-col items-center btn-error  btn-md text-3xl">Delete</button>
                         </form>
                         
@@ -80,6 +81,8 @@
         
         </div> 
     </div>
+    </div>
+    
     
 </div>
 

@@ -41,7 +41,7 @@
                     </details>
                 </li>
                 <li><a class="hover:text-primary">History</a></li>
-                <li><a class="hover:text-primary">Add</a></li>
+                <li><a href="/admin/create" class="hover:text-primary">Add</a></li>
             </ul>
         </div>
 
