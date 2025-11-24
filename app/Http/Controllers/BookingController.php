@@ -24,6 +24,8 @@ class BookingController extends Controller
 
         return view('bookings.created', ['booking' => $booking]);
     }
+
+    
 }
 
 

@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/admin/home', [RoomsController::class, 'listrooms'])->name('admin.front');
-
 Route::get('user/home', [RoomsController::class, 'showRooms'])->name('rooms.list');
+Route::get('/user/rooms/{id}', [RoomsController::class, 'view'])->name('rooms.view');
 
 require __DIR__.'/auth.php';

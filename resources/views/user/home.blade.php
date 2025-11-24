@@ -94,9 +94,9 @@
 
                 <div class="flex justify-between items-center mt-auto">
                     <span class="text-lg font-semibold text-primary">
-                        ${{ $room->room_price }}/night
+                        ${{ $room->room_price }}
                     </span>
-
+                    <a href="{{ route('rooms.view', ['id' => $room->room_id]) }}">View Details</a>
                     <button class="btn btn-primary btn-sm">Book Now</button>
                 </div>
             </div>

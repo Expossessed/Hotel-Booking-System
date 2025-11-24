@@ -82,10 +82,15 @@ class RoomsController extends Controller
 
         return redirect()->route('admin.front')->with('success', 'Room deleted successfully.');
     }
-
     public function showRooms()
-{
-    $rooms = Rooms::all();
-    return view('user.home', compact('rooms'));
-}
+    {
+        $rooms = Rooms::all();
+        return view('user.home', compact('rooms'));
+    }
+
+    public function view($id)
+    {
+        $room = Rooms::where('room_id', $id)->firstOrFail();
+        return view('user.viewRoom', compact('room'));
+    }
 }
