@@ -11,10 +11,18 @@
 </head>
 
 <body class="bg-gray-100">
-
-    <nav class="navbar shadow-md px-6 py-3 sticky top-0 z-50 bg-white">
+    <nav class="navbar bg-white shadow-md px-6 py-3 sticky top-0 z-50 flex lg:">
         <div class="flex-1">
-            <a class="text-3xl font-bold text-primary">HOTEL BOOKIE</a>
+            @auth
+                <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}"
+                   class="text-3xl font-bold text-primary">
+                    HOTEL BOOKIE
+                </a>
+            @else
+                <a href="{{ route('home') }}" class="text-3xl font-bold text-primary">
+                    HOTEL BOOKIE
+                </a>
+            @endauth
         </div>
 
         <div class="hidden lg:block">
@@ -24,21 +32,26 @@
                     <details class="group">
                         <summary class="cursor-pointer hover:text-primary">Book</summary>
                         <ul class="p-2 bg-white shadow-lg rounded-md mt-2 w-40">
-                            <li><a class="hover:bg-primary/10 rounded-md">Suite</a></li>
-                            <li><a class="hover:bg-primary/10 rounded-md">Solo</a></li>
-                            <li><a class="hover:bg-primary/10 rounded-md">Duo</a></li>
-                            <li><a class="hover:bg-primary/10 rounded-md">Family</a></li>
+                            <li><a href="{{ route('bookings.form', ['room_type' => 'Suite']) }}" class="hover:bg-primary/10 rounded-md">Suite</a></li>
+                            <li><a href="{{ route('bookings.form', ['room_type' => 'Solo']) }}" class="hover:bg-primary/10 rounded-md">Solo</a></li>
+                            <li><a href="{{ route('bookings.form', ['room_type' => 'Duo']) }}" class="hover:bg-primary/10 rounded-md">Duo</a></li>
+                            <li><a href="{{ route('bookings.form', ['room_type' => 'Family']) }}" class="hover:bg-primary/10 rounded-md">Family</a></li>
                         </ul>
                     </details>
                 </li>
-                
                 <li><a class="hover:text-primary" href="{{ route('rooms.list') }}">History</a></li>
-                
             </ul>
         </div>
 
         <div>
-            <a class="btn btn-primary btn-sm">Login</a>
+            @auth
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-primary btn-sm">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Login</a>
+            @endauth
         </div>
     </nav>
 
@@ -80,32 +93,32 @@
         </section>
 
         <section class="max-w-6xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-    @foreach($rooms as $room)
-        <div class="bg-white shadow-md rounded-lg overflow-hidden h-full flex flex-col">
-            <img src="https://tse1.mm.bing.net/th/id/OIP.ViUAuItOO54F6HlshFw-fQHaFI?rs=1&pid=ImgDetMain&o=7&rm=3/400x250" 
-                 alt="{{ $room->room_type }}" 
-                 class="w-full h-48 object-cover" />
+            @foreach ($rooms as $room)
+                <div class="bg-white shadow-md rounded-lg overflow-hidden h-full flex flex-col">
+                    <img src="https://tse1.mm.bing.net/th/id/OIP.ViUAuItOO54F6HlshFw-fQHaFI?rs=1&pid=ImgDetMain&o=7&rm=3/400x250"
+                         alt="{{ $room->room_type }}"
+                         class="w-full h-48 object-cover" />
 
-            <div class="p-4 flex flex-col justify-between h-full">
-                <div>
-                    <h3 class="text-xl font-bold mb-2">{{ $room->room_type }}</h3>
-                    <p class="text-gray-600 mb-4">{{ $room->room_desc }}</p>
+                    <div class="p-4 flex flex-col justify-between h-full">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">{{ $room->room_type }}</h3>
+                            <p class="text-gray-600 mb-4">{{ $room->room_desc }}</p>
+                        </div>
+
+                        <div class="flex justify-between items-center mt-auto">
+                            <span class="text-lg font-semibold text-primary">
+                                ${{ $room->room_price }}/night
+                            </span>
+                            <div class="flex gap-2">
+                                <a href="{{ route('rooms.view', ['id' => $room->room_id]) }}" class="btn btn-outline btn-sm">View Details</a>
+                                <a href="{{ route('bookings.form', ['room_type' => $room->room_type]) }}" class="btn btn-primary btn-sm">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="flex justify-between items-center mt-auto">
-                    <span class="text-lg font-semibold text-primary">
-                        ${{ $room->room_price }}
-                    </span>
-                    <a href="{{ route('rooms.view', ['id' => $room->room_id]) }}">View Details</a>
-                    <button class="btn btn-primary btn-sm">Book Now</button>
-                </div>
-            </div>
-        </div>
-    @endforeach
-</section>
-
+            @endforeach
+        </section>
     </main>
-
 </body>
 
 </html>

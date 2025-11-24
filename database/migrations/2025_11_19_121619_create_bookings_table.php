@@ -12,18 +12,24 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id('booking_id');                // BIGINT UNSIGNED
-            $table->unsignedBigInteger('booker_id'); // must match users.user_id
-            $table->unsignedInteger('room_id');      // must match rooms.room_id
+            $table->id('booking_id');
+            $table->unsignedBigInteger('booker_id');
+            $table->unsignedInteger('room_id');
             $table->date('book_date');
             $table->integer('room_price');
             $table->date('end_date');
             $table->integer('num_days');
             $table->timestamps();
 
+            $table->foreign('booker_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
 
-            $table->foreign('booker_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->foreign('room_id')->references('room_id')->on('rooms')->onDelete('cascade');
+            $table->foreign('room_id')
+                ->references('room_id')
+                ->on('rooms')
+                ->onDelete('cascade');
         });
     }
 
