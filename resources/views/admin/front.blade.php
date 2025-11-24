@@ -12,7 +12,7 @@
 <body class="bg-gray-100 h-fit">
 
     
-    <div class="navbar shadow-md bg-gray-100 px-6 py-3 sticky top-0 z-50 flex lg:">
+    <div class="navbar shadow-md bg-gray-100 px-6 py-3 sticky top-0 z-50 flex flex lg:">
         <div class="flex-1">
             @auth
                 <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}"
@@ -55,7 +55,7 @@
                 <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Login</a>
             @endauth
         </div>
-    </nav>
+    </div>
 
     <div class="flex flex-wrap justify-center items-start gap-8 py-12 px-6 bg-gray-100 min-h-screen">
         @foreach($rooms as $rooms)
@@ -68,11 +68,11 @@
                 <div>
                     <h2 class="card-title text-primary">{{ $rooms->room_type }}</h2>
                     <p>${{$rooms->room_price}}/Night</p>
-                    <p>{{$rooms->room_desc}}</p>
+                    <p class="w-64 break-words whitespace-normal h-20 overflow-hidden line-clamp-3">{{$rooms->room_desc}}</p>
                 </div>
                 
                 
-                <div class="card-actions justify-end gap-2">
+                <div class="card-actions justify-end mt-5">
                     <form action="/admin/home/{{ $rooms->room_id }}" method="GET">
                         <button class="btn btn-outline btn-primary btn-sm">Edit</button>
                     </form>
@@ -84,6 +84,7 @@
                     </form>
                 </div>
             </div>
+        </div>
         @endforeach
     </div>
 </body>
