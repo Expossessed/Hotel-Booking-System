@@ -51,9 +51,14 @@
         <p class="text-lg"><strong>Room Price:</strong> ${{ $room->room_price }} per night</p>
         <p class="text-lg mb-4"><strong>Description:</strong> {{ $room->room_desc }}</p>
 
-        <a href="{{ route('rooms.list') }}" class="btn btn-primary mt-4">
-            ← Back to Home
-        </a>
+        <div class="mt-4 flex gap-3">
+            <a href="{{ route('rooms.list') }}" class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">
+                ← Back to Rooms
+            </a>
+            <a href="{{ route('bookings.form', ['room_id' => $room->room_id]) }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                Book Now
+            </a>
+        </div>
     </div>
 </div>
 

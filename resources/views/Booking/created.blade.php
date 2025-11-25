@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Booking Confirmed</title>
+@extends('layouts.grandoria')
+
+@section('body_class', 'booking-created-page bg-gray-100')
+
+@push('head')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
@@ -30,41 +29,9 @@
             user-select: text;
         }
     </style>
-</head>
-<body class="bg-gray-100">
+@endpush
 
-<nav class="navbar bg-white dark:bg-gray-800 shadow-md px-6 py-3 sticky top-0 z-50 flex lg:">
-    <div class="flex-1">
-        @auth
-            <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}" 
-               class="text-3xl font-bold text-primary">
-               HOTEL BOOKIE
-            </a>
-        @else
-            <a href="{{ route('home') }}" class="text-3xl font-bold text-primary">
-               HOTEL BOOKIE
-            </a>
-        @endauth
-    </div>
-
-    <div class="hidden lg:block">
-        <ul class="menu menu-horizontal gap-6 text-lg font-medium">
-            <li><a href="{{ route('rooms.list') }}" class="text-primary font-bold">Home</a></li>
-        </ul>
-    </div>
-
-    <div>
-        @auth
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="btn btn-primary btn-sm">Logout</button>
-            </form>
-        @else
-            <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Login</a>
-        @endauth
-    </div>
-</nav>
-
+@section('content')
 <div class="container mt-5">
     <div class="card shadow-sm">
         <div class="card-header bg-success text-white">
@@ -90,5 +57,5 @@
     </div>
 </div>
 
-</body>
-</html>
+</div>
+@endsection

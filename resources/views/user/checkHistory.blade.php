@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking History</title>
+@extends('layouts.grandoria')
+
+@section('body_class', 'history-page bg-gray-100')
+
+@push('head')
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
     <style>
@@ -29,42 +28,10 @@
             user-select: text;
         }
     </style>
-</head>
-<body class="bg-gray-100">
-    <nav class="navbar bg-white shadow-md px-6 py-3 sticky top-0 z-50 flex lg:">
-        <div class="flex-1">
-            @auth
-                <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}"
-                   class="text-3xl font-bold text-primary">
-                    HOTEL BOOKIE
-                </a>
-            @else
-                <a href="{{ route('home') }}" class="text-3xl font-bold text-primary">
-                    HOTEL BOOKIE
-                </a>
-            @endauth
-        </div>
+@endpush
 
-        <div class="hidden lg:block">
-            <ul class="menu menu-horizontal gap-6 text-lg font-medium">
-                <li><a href="{{ route('rooms.list') }}" class="hover:text-primary">Home</a></li>
-                <li><a class="text-primary font-bold">History</a></li>
-            </ul>
-        </div>
-
-        <div>
-            @auth
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-primary btn-sm">Logout</button>
-                </form>
-            @else
-                <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Login</a>
-            @endauth
-        </div>
-    </nav>
-
-    <main class="px-6 py-8 max-w-5xl mx-auto">
+@section('content')
+    <main class="px-6 py-8 max-w-5xl mx-auto bg-gray-100">
         <h1 class="text-3xl font-bold mb-6">Your Booking History</h1>
 
         @if ($bookings->isEmpty())
@@ -105,5 +72,4 @@
             </div>
         @endif
     </main>
-</body>
-</html>
+@endsection

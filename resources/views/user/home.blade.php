@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.grandoria')
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hotel Booking - Rooms</title>
+@section('body_class', 'rooms-page bg-gray-100')
 
+@push('head')
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
     <style>
@@ -31,43 +28,10 @@
             user-select: text;
         }
     </style>
-</head>
+@endpush
 
-<body class="bg-gray-100">
-    <nav class="navbar bg-white shadow-md px-6 py-3 sticky top-0 z-50 flex lg:">
-        <div class="flex-1">
-            @auth
-                <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}"
-                   class="text-3xl font-bold text-primary">
-                    HOTEL BOOKIE
-                </a>
-            @else
-                <a href="{{ route('home') }}" class="text-3xl font-bold text-primary">
-                    HOTEL BOOKIE
-                </a>
-            @endauth
-        </div>
-
-        <div class="hidden lg:block">
-            <ul class="menu menu-horizontal gap-6 text-lg font-medium">
-                <li><a class="text-primary font-bold">Home</a></li>
-                <li><a class="hover:text-primary" href="{{ route('bookings.history') }}">History</a></li>
-            </ul>
-        </div>
-
-        <div>
-            @auth
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-primary btn-sm">Logout</button>
-                </form>
-            @else
-                <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Login</a>
-            @endauth
-        </div>
-    </nav>
-
-    <main class="px-6 py-8">
+@section('content')
+    <main class="px-6 py-8 bg-gray-100">
         <!-- Search / Filter -->
         <section class="max-w-6xl mx-auto mb-8">
             <div class="bg-white shadow-md rounded-lg p-4 grid gap-4 md:grid-cols-3 items-end">
@@ -143,7 +107,7 @@
 
                                 <div class="flex justify-between items-center mt-auto">
                                     <span class="text-lg font-semibold text-primary">
-                                        ${{ $room->room_price }}/night
+                                        ${{ $room->room_price }}
                                     </span>
                                     <div class="flex gap-2">
                                         <a href="{{ route('rooms.view', ['id' => $room->room_id]) }}" class="btn btn-outline btn-sm">View Details</a>
@@ -157,6 +121,4 @@
             @endif
         </section>
     </main>
-</body>
-
-</html>
+@endsection

@@ -52,7 +52,6 @@
         <div class="content-center">
             <ul class="menu menu-horizontal gap-8 text-lg font-medium">
                 <li><a class="text-primary font-bold">Home</a></li>
-                <li><a href="{{ route('admin.history') }}" class="hover:text-primary">History</a></li>
                 <li><a href="/admin/create" class="hover:text-primary">Add</a></li>
             </ul>
         </div>

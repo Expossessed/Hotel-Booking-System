@@ -3,11 +3,26 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomsController;
 use App\Http\Controllers\BookingController;
+use App\Models\Rooms;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $rooms = Rooms::where('is_available', 1)
+        ->orderBy('room_price', 'asc')
+        ->take(3)
+        ->get();
+
+    return view('welcome', ['rooms' => $rooms]);
 })->name('home');
+
+// Public hotel pages
+Route::view('/about', 'pages.about')->name('about');
+Route::view('/gallery', 'pages.gallery')->name('gallery');
+Route::view('/offers', 'pages.offers')->name('offers');
+Route::view('/events', 'pages.events')->name('events');
+Route::view('/restaurant', 'pages.restaurant')->name('restaurant');
+Route::view('/terms', 'pages.terms')->name('terms');
+Route::view('/privacy', 'pages.privacy')->name('privacy');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
