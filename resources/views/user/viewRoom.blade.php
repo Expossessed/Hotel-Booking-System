@@ -3,15 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ $room->room_type }}</title>
-
-    <!-- Tailwind & DaisyUI to match the rest of the app theme -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
-
-    <!-- Figtree font to match app and auth layouts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
     <style>
         /* Make non-editable form controls non-interactive on this page */
         input[readonly],
@@ -24,7 +16,6 @@
         }
         /* Disable caret / text selection for non-input text on this page */
         body {
-            font-family: "Figtree", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
@@ -56,8 +47,7 @@
         <h1 class="text-3xl font-bold mb-4">Room Details</h1>
 
         <p class="text-lg"><strong>Room ID:</strong> {{ $room->room_id }}</p>
-        <p class="text-lg"><strong>Room Name:</strong> {{ $room->room_name }}</p>
-        <p class="text-lg"><strong>Room Type:</strong> {{ ucfirst(str_replace('_', ' / ', $room->room_type)) }}</p>
+        <p class="text-lg"><strong>Room Type:</strong> {{ $room->room_type }}</p>
         <p class="text-lg"><strong>Room Price:</strong> ${{ $room->room_price }} per night</p>
         <p class="text-lg mb-4"><strong>Description:</strong> {{ $room->room_desc }}</p>
 

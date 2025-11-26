@@ -38,38 +38,13 @@
         <form action="/admin/create" method="POST" class="space-y-6">
             @csrf
 
-            <!-- Room Name (unique) -->
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text font-semibold text-black">Room Name</span>
-                </label>
-                <input
-                    type="text"
-                    name="room_name"
-                    id="room_name"
-                    placeholder="e.g. 1st Floor - Room 1"
-                    class="input bg-gray-200 text-black placeholder-gray-500 input-bordered w-full"
-                    value="{{ old('room_name') }}"
-                >
-                @error('room_name')
-                    <span class="text-error mt-1 text-sm">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- Room Type (fixed options) -->
+            <!-- Room Type -->
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text font-semibold text-black">Room Type</span>
                 </label>
-                <select
-                    name="room_type"
-                    id="room_type"
-                    class="select bg-gray-200 text-black select-bordered w-full"
-                >
-                    <option value="solo" {{ old('room_type') === 'solo' ? 'selected' : '' }}>Solo</option>
-                    <option value="family" {{ old('room_type') === 'family' ? 'selected' : '' }}>Family</option>
-                    <option value="deluxe_vip" {{ old('room_type') === 'deluxe_vip' ? 'selected' : '' }}>Deluxe / VIP</option>
-                </select>
+                <textarea name="room_type" id="room_type" placeholder="Enter room type"
+                    class="textarea bg-gray-200 text-black placeholder-gray-500 textarea-bordered w-full h-15">{{ old('room_type') }}</textarea>
                 @error('room_type')
                     <span class="text-error mt-1 text-sm">{{ $message }}</span>
                 @enderror
@@ -100,19 +75,17 @@
                 @enderror
             </div>
 
-            <!-- Available Rooms (preset per room type, read-only info) -->
+            <!-- Available Rooms -->
             <div class="form-control w-full">
                 <label class="label">
-                    <span class="label-text font-semibold text-black">Capacity (rooms of this type)</span>
+                    <span class="label-text font-semibold text-black">Available Rooms</span>
                 </label>
-                <input
-                    type="text"
-                    id="available_rooms_display"
-                    class="input bg-gray-200 text-black input-bordered w-full"
-                    value="Solo: 20 • Family: 10 • Deluxe / VIP: 5"
-                    readonly
-                >
-                <span class="text-xs text-gray-500 mt-1">Capacity is automatically set from the room type you choose.</span>
+                <input type="number" id="available_rooms" name="available_rooms" placeholder="Number of available rooms"
+                    class="input bg-gray-200 text-black placeholder-gray-500 input-bordered w-full"
+                    min="0" value="{{ old('available_rooms') }}">
+                @error('available_rooms')
+                    <span class="text-error mt-1 text-sm">{{ $message }}</span>
+                @enderror
             </div>
 
             <!-- Is Available -->
