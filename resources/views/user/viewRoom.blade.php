@@ -55,7 +55,8 @@
         <h1 class="text-3xl font-bold mb-4">Room Details</h1>
 
         <p class="text-lg"><strong>Room ID:</strong> {{ $room->room_id }}</p>
-        <p class="text-lg"><strong>Room Type:</strong> {{ $room->room_type }}</p>
+        <p class="text-lg"><strong>Room Name:</strong> {{ $room->room_name }}</p>
+        <p class="text-lg"><strong>Room Type:</strong> {{ ucfirst(str_replace('_', ' / ', $room->room_type)) }}</p>
         <p class="text-lg"><strong>Room Price:</strong> ${{ $room->room_price }} per night</p>
         <p class="text-lg mb-4"><strong>Description:</strong> {{ $room->room_desc }}</p>
 

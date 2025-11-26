@@ -16,15 +16,17 @@ class RoomsController extends Controller
     public function createRoom(Request $request)
     {
         $request->validate([
-            'room_type' => 'required|string|max:255',
+            'room_name' => 'required|string|max:255|unique:rooms,room_name',
+            'room_type' => 'required|in:solo,family,deluxe_vip',
             'room_desc' => 'required|string|max:255',
             'room_price' => 'required|numeric',
             'image_link' => 'required|string|max:255',
-            'available_rooms' => 'required|integer',
+            'available_rooms' => 'required|integer|min:0',
             'is_available' => 'sometimes|boolean',
         ]);
 
         Rooms::create([
+            'room_name' => $request->room_name,
             'room_type' => $request->room_type,
             'room_desc' => $request->room_desc,
             'room_price' => $request->room_price,
@@ -57,17 +59,20 @@ class RoomsController extends Controller
 
     public function updateRoom(Request $request, $id)
     {
+        $rooms = Rooms::findOrFail($id);
+
         $request->validate([
-            'room_type' => 'required|string|max:255',
+            'room_name' => 'required|string|max:255|unique:rooms,room_name,' . $rooms->room_id . ',room_id',
+            'room_type' => 'required|in:solo,family,deluxe_vip',
             'room_desc' => 'required|string|max:255',
             'room_price' => 'required|numeric',
             'image_link' => 'required|string|max:255',
-            'available_rooms' => 'required|integer',
+            'available_rooms' => 'required|integer|min:0',
             'is_available' => 'sometimes|boolean',
         ]);
 
-        $rooms = Rooms::findOrFail($id);
         $rooms->update([
+            'room_name' => $request->room_name,
             'room_type' => $request->room_type,
             'room_desc' => $request->room_desc,
             'room_price' => $request->room_price,

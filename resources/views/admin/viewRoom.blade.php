@@ -63,8 +63,11 @@
                 
                 <div>
                     <h2 class="text-4xl md:text-5xl font-bold text-primary mb-2">
-                        {{ $rooms->room_type }}
+                        {{ $rooms->room_name }}
                     </h2>
+                    <p class="text-lg font-semibold text-gray-600 mb-1">
+                        Type: {{ ucfirst(str_replace('_', ' / ', $rooms->room_type)) }}
+                    </p>
                     <h3 class="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
                         ${{ $rooms->room_price }}/Night
                     </h3>

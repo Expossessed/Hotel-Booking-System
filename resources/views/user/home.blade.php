@@ -139,12 +139,18 @@
 
                             <div class="p-4 flex flex-col justify-between h-full">
                                 <div>
-                                    <h3 class="text-xl font-bold mb-2 flex items-center gap-2">
-                                        <span>{{ $room->room_type }}</span>
+                                    <h3 class="text-xl font-bold mb-1 flex items-center gap-2">
+                                        <span>{{ $room->room_name }}</span>
                                         @if (!$room->is_available)
                                             <span class="badge badge-error text-xs">Unavailable</span>
                                         @endif
                                     </h3>
+                                    <p class="text-sm text-gray-600 mb-1">
+                                        Type: {{ ucfirst(str_replace('_', ' / ', $room->room_type)) }}
+                                    </p>
+                                    <p class="text-sm text-gray-600 mb-4">
+                                        Available units: {{ $room->available_rooms }}
+                                    </p>
                                     <p class="text-blue-600 mb-4">{{ $room->room_desc }}</p>
                                 </div>
 
