@@ -6,8 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hotel Booking - Rooms</title>
 
+    <!-- Tailwind & DaisyUI -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
+
+    <!-- Figtree font to match app and auth layouts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
     <style>
         /* Make non-editable form controls non-interactive on this page */
         input[readonly],
@@ -20,6 +26,7 @@
         }
         /* Disable caret / text selection for non-input text on this page */
         body {
+            font-family: "Figtree", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
