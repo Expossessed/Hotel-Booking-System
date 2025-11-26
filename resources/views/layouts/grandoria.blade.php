@@ -37,51 +37,42 @@
 </head>
 
 <body class="@yield('body_class', 'index-page')">
-    <!-- ======= Top Bar (thinner contact strip) ======= -->
-    <section id="topbar" class="topbar d-flex align-items-center dark-background py-1">
-        <div class="container d-flex justify-content-center justify-content-md-between">
-            <div class="contact-info d-flex align-items-center small">
-                <i class="bi bi-envelope d-flex align-items-center"><span>contact@example.com</span></i>
-                <i class="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
-            </div>
-        </div>
-    </section>
+    
 
     <!-- ======= Header / Navigation (Grandoria-style) ======= -->
     <header id="header" class="header sticky-top">
-        <div class="branding d-flex align-items-center">
-            <div class="container position-relative d-flex align-items-center justify-content-between">
-                <a href="{{ route('home') }}" class="logo d-flex align-items-center">
-                    <h1 class="sitename mb-0">Hotel Bookie</h1>
+        <div class="navbar shadow-md bg-gray-100 px-6 py-3 sticky top-0 z-50 flex flex lg:">
+        <div class="flex-1">
+            @auth
+                <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}"
+                   class="text-3xl font-bold text-primary">
+                    HOTEL BOOKIE
                 </a>
-
-                <nav id="navmenu" class="navmenu">
-                    <ul>
-                        <li><a href="{{ route('home') }}" class="@if (request()->routeIs('home')) active @endif">Home</a></li>
-                        <li><a href="{{ route('about') }}" class="@if (request()->routeIs('about')) active @endif">About</a></li>
-                        <li><a href="{{ route('rooms.list') }}" class="@if (request()->routeIs('rooms.list')) active @endif">Rooms</a></li>
-                        @auth
-                            <li><a href="{{ route('bookings.history') }}" class="@if (request()->routeIs('bookings.history')) active @endif">History</a></li>
-                            <li class="d-none d-md-block"><span class="nav-link">Hello, {{ auth()->user()->name }}</span></li>
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="btn-getstarted small">Logout</button>
-                                </form>
-                            </li>
-                        @else
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            @if (Route::has('register'))
-                                <li><a href="{{ route('register') }}">Register</a></li>
-                            @endif
-                        @endauth
-                    </ul>
-                </nav>
-
-                <a class="btn-getstarted" href="{{ route('bookings.form') }}">Book Now</a>
-                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-            </div>
+            @else
+                <a href="{{ route('home') }}" class="text-3xl font-bold text-primary">
+                    HOTEL BOOKIE
+                </a>
+            @endauth
         </div>
+
+        <div class="content-center">
+            <ul class="menu menu-horizontal gap-8 text-lg font-medium">
+                <li><a class="text-primary font-bold">Home</a></li>
+                
+            </ul>
+        </div>
+
+        <div>
+            @auth
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-primary btn-sm">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Login</a>
+            @endauth
+        </div>
+    </div>
     </header>
 
     <main id="main">

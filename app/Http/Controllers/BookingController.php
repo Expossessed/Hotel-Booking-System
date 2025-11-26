@@ -105,4 +105,9 @@ class BookingController extends Controller
             'bookings' => $bookings,
         ]);
     }
+    public function viewBookings()
+    {
+        $bookings = Booking::all();
+        return view('admin.viewBookings', compact('users'));
+    }
 }
