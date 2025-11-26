@@ -55,6 +55,13 @@ class BookingController extends Controller
 
         $remainingRooms = $room->available_rooms - $overlappingBookings;
 
+        // Do not allow bookings against room types that are globally marked unavailable
+        if (!$room->is_available) {
+            return back()
+                ->withErrors(['room_id' => 'This room type is currently not available for booking.'])
+                ->withInput();
+        }
+
         if ($remainingRooms <= 0) {
             return back()
                 ->withErrors(['room_id' => 'No rooms of this type are available for the selected dates.'])
