@@ -8,6 +8,19 @@ use App\Models\Rooms;
 
 class RoomsController extends Controller
 {
+    /**
+     * Return the preset capacity (number of physical rooms) for a given room type.
+     */
+    private function capacityForType(string $roomType): int
+    {
+        return match ($roomType) {
+            'solo' => 20,
+            'family' => 10,
+            'deluxe_vip' => 5,
+            default => 0,
+        };
+    }
+
     public function createRoomForm()
     {
         return view('admin.createRoom');
@@ -21,9 +34,10 @@ class RoomsController extends Controller
             'room_desc' => 'required|string|max:255',
             'room_price' => 'required|numeric',
             'image_link' => 'required|string|max:255',
-            'available_rooms' => 'required|integer|min:0',
             'is_available' => 'sometimes|boolean',
         ]);
+
+        $capacity = $this->capacityForType($request->room_type);
 
         Rooms::create([
             'room_name' => $request->room_name,
@@ -31,7 +45,8 @@ class RoomsController extends Controller
             'room_desc' => $request->room_desc,
             'room_price' => $request->room_price,
             'image_link' => $request->image_link,
-            'available_rooms' => $request->available_rooms,
+            // Capacity is preset from room type, not manually entered
+            'available_rooms' => $capacity,
             'is_available' => $request->has('is_available') ? 1 : 0,
         ]);
 
@@ -67,9 +82,10 @@ class RoomsController extends Controller
             'room_desc' => 'required|string|max:255',
             'room_price' => 'required|numeric',
             'image_link' => 'required|string|max:255',
-            'available_rooms' => 'required|integer|min:0',
             'is_available' => 'sometimes|boolean',
         ]);
+
+        $capacity = $this->capacityForType($request->room_type);
 
         $rooms->update([
             'room_name' => $request->room_name,
@@ -77,7 +93,8 @@ class RoomsController extends Controller
             'room_desc' => $request->room_desc,
             'room_price' => $request->room_price,
             'image_link' => $request->image_link,
-            'available_rooms' => $request->available_rooms,
+            // Keep capacity aligned with the chosen room type
+            'available_rooms' => $capacity,
             'is_available' => $request->has('is_available') ? 1 : 0,
         ]);
 

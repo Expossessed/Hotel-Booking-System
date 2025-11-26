@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>{{ $room->room_type }}</title>
 
-    <!-- Tailwind -->
+    <!-- Tailwind & DaisyUI to match the rest of the app theme -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
 
     <!-- Figtree font to match app and auth layouts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

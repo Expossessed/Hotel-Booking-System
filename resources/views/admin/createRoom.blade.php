@@ -100,17 +100,19 @@
                 @enderror
             </div>
 
-            <!-- Available Rooms -->
+            <!-- Available Rooms (preset per room type, read-only info) -->
             <div class="form-control w-full">
                 <label class="label">
-                    <span class="label-text font-semibold text-black">Available Rooms</span>
+                    <span class="label-text font-semibold text-black">Capacity (rooms of this type)</span>
                 </label>
-                <input type="number" id="available_rooms" name="available_rooms" placeholder="Number of available rooms"
-                    class="input bg-gray-200 text-black placeholder-gray-500 input-bordered w-full"
-                    min="0" value="{{ old('available_rooms') }}">
-                @error('available_rooms')
-                    <span class="text-error mt-1 text-sm">{{ $message }}</span>
-                @enderror
+                <input
+                    type="text"
+                    id="available_rooms_display"
+                    class="input bg-gray-200 text-black input-bordered w-full"
+                    value="Solo: 20 • Family: 10 • Deluxe / VIP: 5"
+                    readonly
+                >
+                <span class="text-xs text-gray-500 mt-1">Capacity is automatically set from the room type you choose.</span>
             </div>
 
             <!-- Is Available -->

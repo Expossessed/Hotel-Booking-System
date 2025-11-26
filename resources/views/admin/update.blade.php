@@ -100,17 +100,23 @@
                 @enderror
             </div>
 
-            <!-- Available Rooms -->
+            <!-- Available Rooms (preset per room type, read-only info) -->
+            @php
+                $capacityByType = ['solo' => 20, 'family' => 10, 'deluxe_vip' => 5];
+                $capacity = $capacityByType[$rooms->room_type] ?? $rooms->available_rooms;
+            @endphp
             <div class="form-control w-full">
                 <label class="label">
-                    <span class="label-text font-semibold text-black">Available Rooms</span>
+                    <span class="label-text font-semibold text-black">Capacity (rooms of this type)</span>
                 </label>
-                <input type="number" id="available_rooms" name="available_rooms" placeholder="Number of available rooms"
-                    class="input bg-gray-200 text-black placeholder-gray-500 input-bordered w-full"
-                    min="0" value="{{ old('available_rooms', $rooms->available_rooms) }}">
-                @error('available_rooms')
-                    <span class="text-error mt-1 text-sm">{{ $message }}</span>
-                @enderror
+                <input
+                    type="text"
+                    id="available_rooms_display"
+                    class="input bg-gray-200 text-black input-bordered w-full"
+                    value="{{ $capacity }}"
+                    readonly
+                >
+                <span class="text-xs text-gray-500 mt-1">Capacity is automatically set from the room type and cannot be edited directly.</span>
             </div>
 
             <!-- Is Available -->
