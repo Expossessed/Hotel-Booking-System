@@ -15,5 +15,16 @@ class Rooms extends Model
     public $incrementing = true;
     protected $keyType = 'int';
 
-    protected $fillable = ['room_type', 'room_desc', 'room_price', 'image_link', 'available_rooms', 'is_available'];
+    /**
+     * Mass assignable attributes.
+     */
+    protected $fillable = [
+        'room_name',
+        'room_type',
+        'room_desc',
+        'room_price',
+        'image_link',
+        'available_rooms',
+        'is_available',
+    ];
 }

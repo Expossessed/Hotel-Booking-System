@@ -47,23 +47,45 @@ class BookingController extends Controller
         $numDays  = (int) $validated['num_days'];
         $end      = (clone $start)->addDays($numDays);
 
+        // How many bookings already overlap this date range for this room type?
+        $overlappingBookings = Booking::where('room_id', $roomId)
+            ->where('book_date', '<', $end->toDateString())
+            ->where('end_date', '>', $start->toDateString())
+            ->count();
+
+        $remainingRooms = $room->available_rooms - $overlappingBookings;
+
+        // Do not allow bookings against room types that are globally marked unavailable
+        if (!$room->is_available) {
+            return back()
+                ->withErrors(['room_id' => 'This room type is currently not available for booking.'])
+                ->withInput();
+        }
+
+        if ($remainingRooms <= 0) {
+            return back()
+                ->withErrors(['room_id' => 'No rooms of this type are available for the selected dates.'])
+                ->withInput();
+        }
+
         $total = $roomPrice * $numDays;
 
         // First step: show confirmation overlay on the same booking page
         if (!$request->input('confirm')) {
             return view('Booking.createBooking', [
-                'room_id'           => $roomId,
-                'room_type'         => $roomType,
-                'room_price'        => $roomPrice,
-                'preview'           => true,
-                'preview_room_type' => $roomType,
-                'preview_book_date' => $start->toDateString(),
-                'preview_end_date'  => $end->toDateString(),
-                'preview_num_days'  => $numDays,
-                'preview_room_price'=> $roomPrice,
-                'preview_total'     => $total,
-                'preview_user_name' => $request->user()->name,
-                'preview_user_email'=> $request->user()->email,
+                'room_id'             => $roomId,
+                'room_type'           => $roomType,
+                'room_price'          => $roomPrice,
+                'preview'             => true,
+                'preview_room_type'   => $roomType,
+                'preview_book_date'   => $start->toDateString(),
+                'preview_end_date'    => $end->toDateString(),
+                'preview_num_days'    => $numDays,
+                'preview_room_price'  => $roomPrice,
+                'preview_total'       => $total,
+                'preview_user_name'   => $request->user()->name,
+                'preview_user_email'  => $request->user()->email,
+                'preview_remaining'   => $remainingRooms,
             ]);
         }
 
