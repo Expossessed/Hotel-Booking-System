@@ -63,6 +63,11 @@ Route::get('/admin/viewUser', [UsersController::class, 'view'])->name('admin.vie
 Route::get('/admin/updateUser/{id}', [UsersController::class, 'updateUserForm'])->name('admin.updateUser');
 Route::post('/admin/updateUser/{id}', [UsersController::class, 'updateUser']);
 
+Route::get('/admin/history', [BookingController::class, 'adminHistory'])->name('admin.history');
+Route::post('/admin/history/{id}/updateStatus', [BookingController::class, 'updateBookingStatus'])->name('admin.updateBookingStatus');
+Route::post('/admin/history/{id}/updateStatus', [BookingController::class, 'updateBookingStatus'])->name('admin.updateBookingStatus');
+
+Route::get('/user/history', [BookingController::class, 'userHistory'])->name('bookings.history');
 
 
 require __DIR__.'/auth.php';

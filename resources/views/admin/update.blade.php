@@ -38,13 +38,30 @@
         <form action="/admin/edit/{{ $rooms->room_id }}" method="POST" class="space-y-6">
             @csrf
 
-            <!-- Room Type -->
+            <!-- Room Name -->
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text font-semibold text-black">Room Name</span>
+                </label>
+                <textarea name="room_name" id="room_name" placeholder="Enter room name"
+                    class="textarea bg-gray-200 text-black placeholder-gray-500 textarea-bordered w-full h-15">{{ old('room_name', $rooms->room_name) }}</textarea>
+                @error('room_name')
+                    <span class="text-error mt-1 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+
+             <!-- Room Type -->
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text font-semibold text-black">Room Type</span>
                 </label>
-                <textarea name="room_type" id="room_type" placeholder="Enter room type"
-                    class="textarea bg-gray-200 text-black placeholder-gray-500 textarea-bordered w-full h-15">{{ old('room_type', $rooms->room_type) }}</textarea>
+                <select name="room_type" id="room_type"
+                    class="select bg-gray-200 text-black placeholder-gray-500 select-bordered w-full">
+                    <option value="" disabled>Choose a room type</option>
+                    <option value="single" {{ old('room_type', $rooms->room_type) == 'single' ? 'selected' : '' }}>Single</option>
+                    <option value="family" {{ old('room_type', $rooms->room_type) == 'family' ? 'selected' : '' }}>Family</option>
+                    <option value="VIP" {{ old('room_type', $rooms->room_type) == 'VIP' ? 'selected' : '' }}>VIP</option>
+                </select>
                 @error('room_type')
                     <span class="text-error mt-1 text-sm">{{ $message }}</span>
                 @enderror
@@ -74,6 +91,9 @@
                     <span class="text-error mt-1 text-sm">{{ $message }}</span>
                 @enderror
             </div>
+            
+           
+
 
             <!-- Available Rooms -->
             <div class="form-control w-full">
@@ -110,6 +130,53 @@
                 @enderror
             </div>
 
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text font-semibold text-black">Room Image 1</span>
+                </label>
+                <input type="string" id="room_image1" name="room_image1" placeholder="Enter image link"
+                    class="input bg-gray-200 text-black placeholder-gray-500 input-bordered w-full" value="{{ old('room_image1', $rooms->room_image1) }}">
+                @error('room_image1')
+                    <span class="text-error mt-1 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text font-semibold text-black">Room Image 2</span>
+                </label>
+                <input type="string" id="room_image2" name="room_image2" placeholder="Enter image link"
+                    class="input bg-gray-200 text-black placeholder-gray-500 input-bordered w-full" value="{{ old('room_image2', $rooms->room_image2) }}">
+                @error('room_image2')
+                    <span class="text-error mt-1 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text font-semibold text-black">Room Image 3</span>
+                </label>
+                <input type="string" id="room_image3" name="room_image3" placeholder="Enter image link"
+                    class="input bg-gray-200 text-black placeholder-gray-500 input-bordered w-full" value="{{ old('room_image3', $rooms->room_image3) }}">
+                @error('room_image3')
+                    <span class="text-error mt-1 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text font-semibold text-black">Free Items (comma separated)</span>
+                </label>
+                <label><input type="checkbox" name="free_items[]" value="Wi-Fi"> Wi-Fi</label>
+                <label><input type="checkbox" name="free_items[]" value="Breakfast"> Breakfast</label>
+                <label><input type="checkbox" name="free_items[]" value="Parking"> Parking</label>
+                <label><input type="checkbox" name="free_items[]" value="Fitness Center"> Fitness Center</label>
+                <label><input type="checkbox" name="free_items[]" value="Room Service"> Room Service</label>
+                <label><input type="checkbox" name="free_items[]" value="Swimming Pool"> Swimming Pool</label>
+                @error('free_items')
+                    <span class="text-error mt-1 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
             <!-- Buttons -->
             <div class="flex justify-end gap-4 mt-4">
                 <a href="/admin/home" class="btn btn-outline">Cancel</a>

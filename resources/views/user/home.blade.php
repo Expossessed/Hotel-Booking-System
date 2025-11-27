@@ -1,12 +1,19 @@
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
 @section('body_class', 'rooms-page bg-gray-100')
-
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
     <style>
-        /* Make non-editable form controls non-interactive on this page */
+        
         input[readonly],
         textarea[readonly],
         input:disabled,
@@ -15,7 +22,7 @@
             cursor: default;
             caret-color: transparent;
         }
-        /* Disable caret / text selection for non-input text on this page */
+        
         body {
             -webkit-user-select: none;
             -moz-user-select: none;

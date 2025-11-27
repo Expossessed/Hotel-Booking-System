@@ -16,21 +16,34 @@ class RoomsController extends Controller
     public function createRoom(Request $request)
     {
         $request->validate([
-            'room_type' => 'required|string|max:255',
+            
             'room_desc' => 'required|string|max:255',
             'room_price' => 'required|numeric',
             'image_link' => 'required|string|max:255',
+            'room_type' => 'required|in:single,family,VIP',
+            'room_name' => 'required|string|max:255',
             'available_rooms' => 'required|integer',
             'is_available' => 'sometimes|boolean',
+            'room_image1' => 'nullable|string|max:255',
+            'room_image2' => 'nullable|string|max:255',
+            'room_image3' => 'nullable|string|max:255',
+            'free_items' => 'nullable|array',
         ]);
 
+        
+
         Rooms::create([
-            'room_type' => $request->room_type,
             'room_desc' => $request->room_desc,
             'room_price' => $request->room_price,
             'image_link' => $request->image_link,
+            'room_type' => $request->room_type,
+            'room_name' => $request->room_name,
             'available_rooms' => $request->available_rooms,
+            'room_image1' => $request->room_image1,
+            'room_image2' => $request->room_image2,
+            'room_image3' => $request->room_image3,
             'is_available' => $request->has('is_available') ? 1 : 0,
+            'free_items' => $request->free_items ?? [],
         ]);
 
         return redirect()->route('admin.front')->with('success', 'Room created successfully.');
@@ -58,12 +71,18 @@ class RoomsController extends Controller
     public function updateRoom(Request $request, $id)
     {
         $request->validate([
-            'room_type' => 'required|string|max:255',
+            'room_type' => 'required|in:single,family,VIP',
             'room_desc' => 'required|string|max:255',
+            'room_name' => 'required|string|max:255',
             'room_price' => 'required|numeric',
             'image_link' => 'required|string|max:255',
+            'room_images_link' => 'nullable|string|max:255',
             'available_rooms' => 'required|integer',
+            'room_image1' => 'nullable|string|max:255',
+            'room_image2' => 'nullable|string|max:255',
+            'room_image3' => 'nullable|string|max:255',
             'is_available' => 'sometimes|boolean',
+            'free_items' => 'nullable|array',
         ]);
 
         $rooms = Rooms::findOrFail($id);
@@ -71,9 +90,15 @@ class RoomsController extends Controller
             'room_type' => $request->room_type,
             'room_desc' => $request->room_desc,
             'room_price' => $request->room_price,
+            'room_name' => $request->room_name,
             'image_link' => $request->image_link,
+            'room_images_link' => $request->room_images_link,
             'available_rooms' => $request->available_rooms,
+            'room_image1' => $request->room_image1,
+            'room_image2' => $request->room_image2,
+            'room_image3' => $request->room_image3,
             'is_available' => $request->has('is_available') ? 1 : 0,
+            'free_items' => $request->free_items ?? [],
         ]);
 
         return redirect()->route('admin.front')->with('success', 'Room updated successfully.');

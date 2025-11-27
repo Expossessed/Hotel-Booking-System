@@ -15,11 +15,16 @@ return new class extends Migration
             // Use room_id so it matches the foreign key in bookings
             $table->increments('room_id');
             $table->string('image_link')->nullable()->default('default.jpg');
-            $table->string('room_type');
+            $table->string('room_name');
+            $table->enum('room_type', ['single', 'family', 'VIP']);
             $table->string('room_desc');
             $table->integer('room_price');
+            $table->string('room_image1')->nullable()->default('default.jpg');
+            $table->string('room_image2')->nullable()->default('default.jpg');
+            $table->string('room_image3')->nullable()->default('default.jpg');
             $table->integer('available_rooms');
             $table->boolean('is_available')->default(true); 
+            $table->json('free_items')->nullable()->default(json_encode([]));
             $table->timestamps();
         });
     }

@@ -1,4 +1,4 @@
-@extends('layouts.grandoria')
+
 
 @section('body_class', 'booking-created-page bg-gray-100')
 

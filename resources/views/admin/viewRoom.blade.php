@@ -46,46 +46,117 @@
     </nav>
 
     <!-- Room Details Card -->
-    <div class="container mx-auto py-12 px-4">
-        <h1 class="text-5xl md:text-6xl font-bold text-center text-black mb-12">Room Details</h1>
+<div class="container mx-auto py-12 px-4">
+    <h1 class="text-5xl md:text-6xl font-bold text-center text-black mb-12">Room Details</h1>
 
-        <div class="flex flex-col lg:flex-row gap-12 items-center bg-white shadow-xl rounded-xl p-8">
+    <div class="flex flex-col lg:flex-row gap-12 items-center bg-white shadow-xl rounded-xl p-8">
+        
+        <!-- Room Image (kept as is) -->
+        <div class="w-full lg:w-1/2">
+            <img src="{{ $rooms->image_link }}" 
+                 alt="{{ $rooms->room_name }}" 
+                 class="rounded-xl shadow-md w-full object-cover h-[400px]">
+        </div>
+
+        <!-- Room Info -->
+        <div class="w-full lg:w-1/2 flex flex-col justify-between gap-8">
             
-            <!-- Room Image -->
-            <div class="w-full lg:w-1/2">
-                <img src="{{ $rooms->image_link }}" 
-                     alt="{{ $rooms->room_type }}" 
-                     class="rounded-xl shadow-md w-full object-cover h-[400px]">
+            <div>
+                <h2 class="text-4xl md:text-5xl font-bold text-primary mb-2">
+                    {{ $rooms->room_name }}
+                </h2>
+                <h3 class="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
+                    ${{ $rooms->room_price }}/Night
+                </h3>
+
+                <!-- Ratings -->
+                <div class="flex items-center mb-4">
+                    @for ($i = 1; $i <= 5; $i++)
+                        @if ($i <= $rooms->rating) 
+                            <span class="text-yellow-500 text-2xl">&#9733;</span> <!-- filled star -->
+                        @else
+                            <span class="text-gray-300 text-2xl">&#9733;</span> <!-- empty star -->
+                        @endif
+                    @endfor
+                    <span class="ml-2 text-gray-600 text-lg">({{ $rooms->rating }}/5)</span>
+                </div>
+                <!-- Room Description -->
+                <p class="text-lg md:text-xl text-black-700 font-bold">
+                    {{ strtoupper($rooms->room_type) }}
+                </p>
+                <p class="text-lg md:text-xl text-gray-500">
+                    {{ $rooms->room_desc }}
+                </p>
+                
             </div>
 
-            <!-- Room Info -->
-            <div class="w-full lg:w-1/2 flex flex-col justify-between gap-8">
-                
-                <div>
-                    <h2 class="text-4xl md:text-5xl font-bold text-primary mb-2">
-                        {{ $rooms->room_type }}
-                    </h2>
-                    <h3 class="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
-                        ${{ $rooms->room_price }}/Night
-                    </h3>
-                    <p class="text-lg md:text-xl text-gray-700">
-                        {{ $rooms->room_desc }}
-                    </p>
-                </div>
+            <div class="flex gap-4 mt-6">
+                <form action="/admin/edit/{{ $rooms->room_id }}" method="GET">
+                    <button class="btn btn-primary btn-outline text-lg md:text-xl w-32">Edit</button>
+                </form>
+                <form action="/admin/delete/{{ $rooms->room_id }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this room?');">
+                    @csrf
+                    <button class="btn btn-error btn-outline text-lg md:text-xl w-32">Delete</button>
+                </form>
+            </div>
 
-                <div class="flex gap-4 mt-6">
-                    <form action="/admin/edit/{{ $rooms->room_id }}" method="GET">
-                        <button class="btn btn-primary btn-outline text-lg md:text-xl w-32">Edit</button>
-                    </form>
-                    <form action="/admin/delete/{{ $rooms->room_id }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this room?');">
-                        @csrf
-                        <button class="btn btn-error btn-outline text-lg md:text-xl w-32">Delete</button>
-                    </form>
-                </div>
+            <!-- Free Items Button + Collapse -->
+<div class="mt-6">
+    <button type="button" 
+            class="btn btn-outline btn-primary w-full text-lg"
+            onclick="document.getElementById('freeItems').classList.toggle('hidden')">
+        Free Items Included
+    </button>
 
+    <!-- Hidden list toggled by button -->
+    <div id="freeItems" class="hidden mt-4 bg-gray-100 rounded-lg p-4">
+        <ul class="list-disc list-inside text-gray-700 text-lg">
+            @foreach($rooms->free_items as $item)
+                <li>{{ $item }}</li>
+            @endforeach
+        </ul>
+
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Room Interior Images Card -->
+<div class="container mx-auto py-12 px-4">
+    <h2 class="text-4xl font-bold text-center text-black mb-8">Inside the Room</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Image 1 -->
+        <div class="bg-white shadow-lg rounded-xl overflow-hidden">
+            <img src="{{ $rooms->room_image1 }}" 
+                 alt="Room Interior 1" 
+                 class="w-full h-64 object-cover">
+            <div class="p-4">
+                <p class="text-gray-700">Cozy bedroom with modern furniture.</p>
+            </div>
+        </div>
+
+        <!-- Image 2 -->
+        <div class="bg-white shadow-lg rounded-xl overflow-hidden">
+            <img src="{{ $rooms->room_image2 }}" 
+                 alt="Room Interior 2" 
+                 class="w-full h-64 object-cover">
+            <div class="p-4">
+                <p class="text-gray-700">Spacious bathroom with elegant design.</p>
+            </div>
+        </div>
+
+        <!-- Image 3 -->
+        <div class="bg-white shadow-lg rounded-xl overflow-hidden">
+            <img src="{{ $rooms->room_image3 }}" 
+                 alt="Room Interior 3" 
+                 class="w-full h-64 object-cover">
+            <div class="p-4">
+                <p class="text-gray-700">Beautiful view from the balcony.</p>
             </div>
         </div>
     </div>
+</div>
 
 </body>
 
