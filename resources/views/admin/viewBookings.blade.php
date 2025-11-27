@@ -33,7 +33,7 @@
 </head>
 
 <body class="bg-gray-100 h-fit">
-
+    
     
     <div class="navbar shadow-md bg-gray-100 px-6 py-3 sticky top-0 z-50 flex flex lg:">
         <div class="flex-1">
@@ -68,39 +68,43 @@
         </div>
     </div>
 
-    <div class="flex flex-wrap justify-center items-start gap-8 py-12 px-6 bg-gray-100 min-h-screen">
-    
-        @foreach($booking as $bookings)
-        <div class="card w-80 bg-white shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 rounded-xl">
-            
-            <div class="card-body h-60 justify-start">
-                <div>
-                        <h2 class="text-xl font-bold mb-2 flex items-center gap-2">
-                        <span>{{ $bookings->name }}</span>
-                        <span>{{ $bookings->email }}</span>
-                        <span>{{ $bookings->password }}</span>
-                        <span>{{ $bookings->role }}</span>
-                        
-                    </h2>
-                    
-                </div>
 
-                <div class="card-actions justify-end mt-5">
-                    <form action="" method="GET">
-                        <button class="btn btn-outline btn-primary btn-sm">Edit</button>
-                    </form>
-                    <form action="" method="GET">
-                        <button class="btn btn-outline btn-primary btn-sm">View</button>
-                    </form>
-                    <form action="/admin/viewUser/{{ $user->id }}" method="POST" 
-                          onsubmit="return confirm('Are you sure you want to delete this room?');">
-                        @csrf
-                        <button class="btn btn-outline btn-error btn-sm">Delete</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        @endforeach
+    
+    <div class=" card bg-white flex flex-wrap justify-start items-center  py-12 px-6 bg-gray-100 min-h-screen w-full">
+        <div class="overflow-x-auto w-full">
+  <table class="table flex-auto w-full">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Room Type</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Price Per Night</th>
+        <th>Days Booked</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    @foreach ($bookings as $bookings)
+        <tbody>
+        <tr class="hover:bg-base-300">
+            <th>{{ $bookings->type }}</th>
+            <td>{{ $bookings->book_date }}</td>
+            <td>{{ $bookings->end_date }}</td>
+            <td>{{ $bookings->room_price }}</td>
+            <td>{{ $bookings->num_days }}</td>
+            <td>{{ $bookings->room_price * $bookings->num_days }}</td>
+            <td>
+                <button class="btn btn-primary btn-outline text-md btn-sm">Edit</button>
+                <button class="btn btn-outline btn-error text-md btn-sm">Delete</button>
+            </td>
+            
+
+      </tr>
+    </tbody>
+    @endforeach
+    
+  </table>
+</div>
     
 </div>
 

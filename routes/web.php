@@ -62,6 +62,7 @@ Route::get('user/home', [RoomsController::class, 'showRooms'])->name('rooms.list
 Route::get('/admin/viewUser', [UsersController::class, 'view'])->name('admin.viewUsers');
 Route::get('/admin/updateUser/{id}', [UsersController::class, 'updateUserForm'])->name('admin.updateUser');
 Route::post('/admin/updateUser/{id}', [UsersController::class, 'updateUser']);
+Route::get('/admin/viewbookings', [BookingController::class, 'viewBookings'])->name('admin.viewBookings');
 
 
 

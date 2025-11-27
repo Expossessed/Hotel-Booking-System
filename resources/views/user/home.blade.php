@@ -29,7 +29,38 @@
         }
     </style>
 
+    <div class="navbar shadow-md bg-gray-100 px-6 py-3 sticky top-0 z-50 flex flex lg:">
+        <div class="flex-1">
+            @auth
+                <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}"
+                   class="text-3xl font-bold text-primary">
+                    HOTEL BOOKIE
+                </a>
+            @else
+                <a href="{{ route('home') }}" class="text-3xl font-bold text-primary">
+                    HOTEL BOOKIE
+                </a>
+            @endauth
+        </div>
 
+        <div class="content-center">
+            <ul class="menu menu-horizontal gap-8 text-lg font-medium">
+                <li><a class="text-primary font-bold">Home</a></li>
+                <li><a href="/admin/create" class="hover:text-primary">Add</a></li>
+            </ul>
+        </div>
+
+        <div>
+            @auth
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-primary btn-sm">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Login</a>
+            @endauth
+        </div>
+    </div>
 
     <main class="px-6 py-8 bg-gray-100">
         <!-- Search / Filter -->

@@ -30,9 +30,11 @@
 </head>
 <body class="bg-gray-100 p-6 flex items-center justify-center min-h-screen">
 
+    
     <!-- Main Container -->
 <div class="max-w-3xl w-full bg-white shadow-lg rounded-lg overflow-hidden">
 
+    
     <!-- Room Image from DB -->
     <div class="w-full h-64 bg-gray-300 flex items-center justify-center">
         <img 

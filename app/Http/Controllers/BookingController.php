@@ -107,7 +107,7 @@ class BookingController extends Controller
     }
     public function viewBookings()
     {
-        $bookings = Booking::all();
-        return view('admin.viewBookings', compact('users'));
+        $bookings = Booking::all()->where('id', '!-', 1);
+        return view('admin.viewBookings', compact('bookings'));
     }
 }
