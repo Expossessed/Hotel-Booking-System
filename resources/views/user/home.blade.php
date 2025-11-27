@@ -1,8 +1,8 @@
-@extends('layouts.grandoria')
+
 
 @section('body_class', 'rooms-page bg-gray-100')
 
-@push('head')
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
     <style>
@@ -28,9 +28,9 @@
             user-select: text;
         }
     </style>
-@endpush
 
-@section('content')
+
+
     <main class="px-6 py-8 bg-gray-100">
         <!-- Search / Filter -->
         <section class="max-w-6xl mx-auto mb-8">
@@ -121,4 +121,4 @@
             @endif
         </section>
     </main>
-@endsection
+

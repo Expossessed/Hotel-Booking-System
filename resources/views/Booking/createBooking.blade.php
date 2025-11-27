@@ -1,8 +1,8 @@
-@extends('layouts.grandoria')
+
 
 @section('body_class', 'booking-page bg-gray-100')
 
-@push('head')
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
@@ -29,9 +29,9 @@
             user-select: text;
         }
     </style>
-@endpush
 
-@section('content')
+
+
 <div class="container mt-5">
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
@@ -212,4 +212,4 @@
         }
     });
 </script>
-@endsection
+    

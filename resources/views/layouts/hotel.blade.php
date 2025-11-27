@@ -8,8 +8,8 @@
 
     <title>{{ config('app.name', 'Hotel Bookie') }}</title>
 
-    {{-- Base href so all relative Grandoria asset paths resolve under /grandoria --}}
-    <base href="{{ asset('grandoria') }}/">
+    
+    
 
     {{-- Laravel Vite assets (Tailwind/JS for the rest of the app) --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])

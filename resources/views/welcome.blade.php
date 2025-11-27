@@ -1,8 +1,8 @@
-﻿@extends('layouts.grandoria')
+﻿
 
 @section('body_class', 'index-page')
 
-@section('content')
+
     <!-- ======= Hero Section (Hotel Bookie hero) ======= -->
     <section id="hotel-hero" class="hotel-hero d-flex align-items-center">
         <div class="container" data-aos="fade-up">
@@ -81,4 +81,4 @@
             </div>
         </div>
     </section>
-@endsection
+
