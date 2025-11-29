@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomsController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\UsersController;
 use App\Models\Rooms;
 use Illuminate\Support\Facades\Route;
@@ -69,6 +70,13 @@ Route::post('/admin/history/{id}/updateStatus', [BookingController::class, 'upda
 Route::post('/admin/history/{id}/updateStatus', [BookingController::class, 'updateBookingStatus'])->name('admin.updateBookingStatus');
 
 Route::get('/user/history', [BookingController::class, 'userHistory'])->name('bookings.history');
+Route::get('/admin/viewtransactions', [TransactionsController::class, 'viewTransactions'])->name('admin.viewTransactions');
+
+Route::post('/admin/add-balance', [UsersController::class, 'addBalance'])
+    ->name('admin.addBalance')
+    ->middleware('auth');
+
+
 
 
 require __DIR__.'/auth.php';

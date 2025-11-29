@@ -39,18 +39,35 @@ class UsersController extends Controller
             'email' => 'required|string|max:255',
             'password' => 'required|string|max:255',
             'role' => 'required|string|max:255',
+            'balance' => 'nullable|integer',
         ]);
 
         $users = User::findOrFail($id);
+        $validated['balance'] = $validated['balance'] ?? 0;
         $users->update([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
             'role' => $request->role,
+            'balance' => $validated['balance'],
         ]);
 
         return back();
     }
+
+    public function addBalance(Request $request)
+{
+    $request->validate([
+        'balance' => 'required|integer|min:0',
+    ]);
+
+    $user = auth()->user();
+    $user->balance += $request->balance;
+    $user->save();
+
+    return back()->with('success', 'Balance added successfully!');
+}
+
 
     
     

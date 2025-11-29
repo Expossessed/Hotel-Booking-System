@@ -53,8 +53,43 @@
         <div class="content-center">
             <ul class="menu menu-horizontal gap-8 text-lg font-medium">
                 <li><a class="text-primary font-bold">Home</a></li>
-                <li><a href="/admin/create" class="hover:text-primary">Add</a></li>
+                <li>
+                    <details>
+                        <summary>Views</summary>
+                        <ul class="bg-white rounded-t-none p-2 w-64 shadow-lg">
+                        <li><a>View Pending Bookings</a></li>
+                        <li><a>View Booking History</a></li>
+                        <li><a>View Pending Transactions</a></li>
+                        <li><a>View Transaction History</a></li>
+                        <li><a>View Users</a></li>
+                        </ul>
+                    </details>
+                </li>
+                <li>
+                    <label for="my-modal" class="btn btn-ghost modal-button">
+                        <a class=" font-bold">Balance: {{ auth()->user()->balance }}</a>
+                    </label>
+                </li>
+                <li><a href="/admin/create" class="hover:text-primary">Add Room</a></li>
             </ul>
+        </div>
+        
+        <input type="checkbox" id="my-modal" class="modal-toggle" />
+        <div class="modal">
+            <div class="modal-box relative">
+                <label for="my-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                <h3 class="text-lg font-bold mb-4">Add Balance</h3>
+
+                <form action="{{ route('admin.addBalance') }}" method="POST">
+                    @csrf
+                    <input type="number" name="balance" class="input w-full" placeholder="Enter amount" required>
+                    <div class="modal-action">
+                        <button type="submit" class="btn btn-primary">Add Balance</button>
+                    </div>
+                </form>
+
+
+            </div>
         </div>
 
         <div>
