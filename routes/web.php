@@ -5,6 +5,7 @@ use App\Http\Controllers\RoomsController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ReviewsController;
 use App\Models\Rooms;
 use Illuminate\Support\Facades\Route;
 
@@ -76,7 +77,11 @@ Route::post('/admin/add-balance', [UsersController::class, 'addBalance'])
     ->name('admin.addBalance')
     ->middleware('auth');
 
-
-
+Route::get('/user/reviews/create', [ReviewsController::class, 'showReviewForm'])
+     ->name('reviews.createReview');
+Route::post('/user/reviews/store', [ReviewsController::class, 'storeReview'])
+     ->name('reviews.store');
+Route::get('user/reviews/view/{room_id}', [ReviewsController::class, 'view'])
+     ->name('reviews.viewReviews');
 
 require __DIR__.'/auth.php';

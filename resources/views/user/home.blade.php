@@ -129,13 +129,13 @@
                     @foreach ($rooms as $room)
                         <div class="bg-white shadow-md rounded-lg overflow-hidden h-full flex flex-col">
                             <img src="{{ $room->image_link }}"
-                                 alt="{{ $room->room_type }}"
+                                 alt="{{ $room->room_name }}"
                                  class="w-full h-48 object-cover" />
 
                             <div class="p-4 flex flex-col justify-between h-full">
                                 <div>
                                     <h3 class="text-xl font-bold mb-2 flex items-center gap-2">
-                                        <span>{{ $room->room_type }}</span>
+                                        <span>{{ $room->room_name }}</span>
                                         @if (!$room->is_available)
                                             <span class="badge badge-error text-xs">Unavailable</span>
                                         @endif
