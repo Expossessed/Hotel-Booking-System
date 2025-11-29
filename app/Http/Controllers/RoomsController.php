@@ -140,7 +140,12 @@ class RoomsController extends Controller
 
     public function view($id)
     {
-        $room = Rooms::where('room_id', $id)->firstOrFail();
-        return view('user.viewRoom', compact('room'));
+        // Eager load reviews (including the user who left each review)
+        $room = Rooms::where('room_id', $id)->with(['reviews.user'])->firstOrFail();
+
+        // compute average rating (0..5) with one decimal place
+        $averageRating = $room->reviews->avg('rating') ? round($room->reviews->avg('rating'), 1) : 0;
+
+        return view('user.viewRoom', compact('room', 'averageRating'));
     }
 }

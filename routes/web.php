@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomsController;
@@ -78,10 +78,13 @@ Route::post('/admin/add-balance', [UsersController::class, 'addBalance'])
     ->middleware('auth');
 
 Route::get('/user/reviews/create', [ReviewsController::class, 'showReviewForm'])
-     ->name('reviews.createReview');
+    ->name('reviews.createReview')
+    ->middleware('auth');
 Route::post('/user/reviews/store', [ReviewsController::class, 'storeReview'])
-     ->name('reviews.store');
-Route::get('user/reviews/view/{room_id}', [ReviewsController::class, 'view'])
-     ->name('reviews.viewReviews');
+    ->name('reviews.store')
+    ->middleware('auth');
+// Show reviews for a room. The identifier may be an id or a room name (optional).
+Route::get('user/reviews/view/{room_identifier?}', [ReviewsController::class, 'view'])
+    ->name('reviews.viewReviews');
 
 require __DIR__.'/auth.php';

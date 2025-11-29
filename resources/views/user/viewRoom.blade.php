@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Booking</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
     <style>
         /* Make non-editable form controls non-interactive on this page */
@@ -45,6 +46,21 @@
         <a class="btn btn-primary btn-sm">Login</a>
     </nav>
 
+    @if(session('success'))
+        <script>
+            // show a SweetAlert modal for success messages
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: "{{ session('success') }}",
+                    timer: 2500,
+                    showConfirmButton: false
+                });
+            });
+        </script>
+    @endif
+
     <!-- Room Details Card -->
 <div class="container mx-auto py-12 px-4">
     <h1 class="text-5xl md:text-6xl font-bold text-center text-black mb-12">Room Details</h1>
@@ -69,16 +85,18 @@
                     ${{ $room->room_price }}/Night
                 </h3>
 
-                <!-- Ratings -->
+                <!-- Average Rating -->
                 <div class="flex items-center mb-4">
-                    @for ($i = 1; $i <= 5; $i++)
-                        @if ($i <= $room->rating) 
-                            <span class="text-yellow-500 text-2xl">&#9733;</span> <!-- filled star -->
-                        @else
-                            <span class="text-gray-300 text-2xl">&#9733;</span> <!-- empty star -->
-                        @endif
-                    @endfor
-                    <span class="ml-2 text-gray-600 text-lg">({{ $room->rating }}/5)</span>
+                    @php $avg = $averageRating ?? 0; $full = floor($avg); @endphp
+                    <div class="text-yellow-500 mr-3">
+                        @for ($i = 0; $i < $full; $i++)
+                            <span class="text-2xl">&#9733;</span>
+                        @endfor
+                        @for ($i = $full; $i < 5; $i++)
+                            <span class="text-gray-300 text-2xl">&#9733;</span>
+                        @endfor
+                    </div>
+                    <span class="ml-2 text-gray-600 text-lg">({{ $averageRating }}/5)</span>
                 </div>
                 <!-- Room Description -->
                 <p class="text-lg md:text-xl text-black-700 font-bold">
@@ -89,12 +107,9 @@
                 </p>
                 
     </div>
-    <a href="{{ route('reviews.view', ['id' => $room->id]) }}" class="btn btn-link text-lg mr-4">
-    View Reviews
-</a>
-<a href="{{ route('reviews.create', ['id' => $room->id]) }}" class="btn btn-primary text-lg w-42">
-    Add a Review
-</a>
+    <a href="{{ route('reviews.createReview', ['room_name' => $room->room_name]) }}" class="btn btn-primary text-lg w-42">
+        Add a Review
+    </a>
 
             <!-- Free Items Button + Collapse -->
 <div class="mt-6">
@@ -152,6 +167,97 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Reviews List -->
+<div class="container mx-auto py-8 px-4">
+    <h2 class="text-3xl font-bold text-center mb-6">Guest Reviews</h2>
+
+    @php
+        $reviews = $room->reviews ?? collect();
+        $totalReviews = $reviews->count();
+        $initialReviews = $reviews->slice(0, 10);
+        $extraReviews = $reviews->slice(10);
+    @endphp
+
+    @if($reviews->isEmpty())
+        <p class="text-gray-600 text-center">No reviews yet — be the first to leave one!</p>
+    @else
+        <div class="space-y-4 max-w-3xl mx-auto" id="reviews-list">
+            @foreach($initialReviews as $review)
+                <div class="bg-white p-4 rounded-lg shadow-md review-item">
+                    <div class="flex items-center justify-between mb-2">
+                        <div>
+                            <strong class="text-gray-800">{{ $review->user?->name ?? 'Guest' }}</strong>
+                            <div class="text-yellow-500 inline-block ml-3">
+                                @for ($i = 0; $i < $review->rating; $i++)
+                                    &#9733;
+                                @endfor
+                                @for ($i = $review->rating; $i < 5; $i++)
+                                    &#9734;
+                                @endfor
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-500">{{ $review->created_at->format('F j, Y') }}</div>
+                    </div>
+                    <p class="text-gray-700">{{ $review->comment }}</p>
+                </div>
+            @endforeach
+
+            @if($extraReviews->isNotEmpty())
+                <div id="extra-reviews" style="display:none;" class="space-y-4 mt-4">
+                    @foreach($extraReviews as $review)
+                        <div class="bg-white p-4 rounded-lg shadow-md review-item">
+                            <div class="flex items-center justify-between mb-2">
+                                <div>
+                                    <strong class="text-gray-800">{{ $review->user?->name ?? 'Guest' }}</strong>
+                                    <div class="text-yellow-500 inline-block ml-3">
+                                        @for ($i = 0; $i < $review->rating; $i++)
+                                            &#9733;
+                                        @endfor
+                                        @for ($i = $review->rating; $i < 5; $i++)
+                                            &#9734;
+                                        @endfor
+                                    </div>
+                                </div>
+                                <div class="text-sm text-gray-500">{{ $review->created_at->format('F j, Y') }}</div>
+                            </div>
+                            <p class="text-gray-700">{{ $review->comment }}</p>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="text-center mt-6">
+                    <button id="toggle-reviews-btn" data-hidden-count="{{ $extraReviews->count() }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                        Show more ({{ $extraReviews->count() }} more)
+                    </button>
+                </div>
+            @endif
+        </div>
+    @endif
+
+    @if($extraReviews->isNotEmpty())
+        <script>
+            (function(){
+                const btn = document.getElementById('toggle-reviews-btn');
+                const extra = document.getElementById('extra-reviews');
+                let shown = false;
+                if(!btn || !extra) return;
+                btn.addEventListener('click', function(){
+                    shown = !shown;
+                    if(shown) {
+                        extra.style.display = '';
+                        btn.textContent = 'Show less';
+                    } else {
+                        extra.style.display = 'none';
+                        btn.textContent = 'Show more (' + btn.dataset.hiddenCount + ' more)';
+                        // scroll back up to the first hidden review
+                        window.scrollTo({ top: extra.getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
+                    }
+                });
+            })();
+        </script>
+    @endif
 </div>
 
 </body>

@@ -19,7 +19,9 @@ class Reviews extends Model
 
     public function room()
     {
-        return $this->belongsTo(Rooms::class);
+        // Rooms model uses a non-standard primary key (room_id)
+        // so we must declare the owner key explicitly.
+        return $this->belongsTo(Rooms::class, 'room_id', 'room_id');
     }
 
     public function user()

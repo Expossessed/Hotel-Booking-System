@@ -18,4 +18,13 @@ class Rooms extends Model
     protected $fillable = ['room_name', 'room_type', 'room_desc', 'room_price', 'image_link', 'available_rooms', 'is_available', 'room_image1', 'room_image2', 'room_image3', 'free_items'];
 
     protected $casts = ['free_items' => 'array'];
+
+    /**
+     * Reviews relationship.
+     * Reviews table stores room_id (integer) which maps to this model's primaryKey room_id.
+     */
+    public function reviews()
+    {
+        return $this->hasMany(\App\Models\Reviews::class, 'room_id', 'room_id');
+    }
 }
