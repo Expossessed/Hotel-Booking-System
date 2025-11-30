@@ -16,9 +16,11 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // if (!auth()->check() || auth()->user()->role !== 'admin') {
-        //     abort(403, 'This action is unauthorized.');
-        // }
+        // Protect admin routes: ensure the request is authenticated and the user is an admin.
+        if (! auth()->check() || ! auth()->user()->isAdmin()) {
+            // Unauthenticated users or non-admins should not be able to access admin pages.
+            abort(403, 'This action is unauthorized.');
+        }
 
         return $next($request);
     }

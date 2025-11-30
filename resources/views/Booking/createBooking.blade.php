@@ -33,6 +33,9 @@
 
 
 <div class="container mt-5">
+    <div class="mb-3">
+        <a href="javascript:history.back()" class="btn btn-outline-secondary">← Back</a>
+    </div>
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
             <h4>Create New Booking</h4>

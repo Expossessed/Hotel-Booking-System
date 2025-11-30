@@ -1,4 +1,4 @@
-@extends('layouts.grandoria')
+@extends('layouts.hotel')
 
 @section('body_class', 'events-page')
 

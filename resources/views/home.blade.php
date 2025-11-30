@@ -1,9 +1,10 @@
-﻿
+﻿@extends('layouts.app')
 
 @section('body_class', 'index-page')
 
+@section('content')
 
-    <!-- ======= Hero Section (Hotel Bookie hero) ======= -->
+    <!-- Hero Section -->
     <section id="hotel-hero" class="hotel-hero d-flex align-items-center">
         <div class="container" data-aos="fade-up">
             <div class="row gy-4 align-items-center">
@@ -16,18 +17,18 @@
                     </div>
                 </div>
                 <div class="col-lg-6 text-center" data-aos="zoom-in" data-aos-delay="150">
-                    <img src="assets/img/hotel/showcase-3.webp" alt="Hotel Bookie" class="img-fluid rounded shadow">
+                    <img src="{{ asset('assets/img/hotel/showcase-3.webp') }}" alt="Hotel Bookie" class="img-fluid rounded shadow">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ======= About Section ======= -->
+    <!-- About Section -->
     <section id="about" class="about-home py-5">
         <div class="container" data-aos="fade-up">
             <div class="row gy-4 align-items-center">
                 <div class="col-lg-6">
-                    <img src="assets/img/hotel/showcase-8.webp" class="img-fluid rounded shadow" alt="Hotel Lobby">
+                    <img src="{{ asset('assets/img/hotel/showcase-8.webp') }}" class="img-fluid rounded shadow" alt="Hotel Lobby">
                 </div>
                 <div class="col-lg-6">
                     <h2 class="mb-3">Welcome to Hotel Bookie</h2>
@@ -39,7 +40,7 @@
         </div>
     </section>
 
-    <!-- ======= Rooms Section (dynamic from database) ======= -->
+    <!-- Rooms Section -->
     <section id="rooms" class="rooms-showcase py-5 bg-light">
         <div class="container" data-aos="fade-up">
             <div class="text-center mb-5">
@@ -67,13 +68,7 @@
                     @endforeach
                 </div>
             @else
-                <div class="row">
-                    <div class="col-12">
-                        <div class="alert alert-secondary text-center" role="alert">
-                            No rooms available yet. Please check back soon.
-                        </div>
-                    </div>
-                </div>
+                <div class="alert alert-secondary text-center">No rooms available yet. Please check back soon.</div>
             @endif
 
             <div class="text-center mt-4">
@@ -82,3 +77,4 @@
         </div>
     </section>
 
+@endsection

@@ -37,13 +37,29 @@
 
     <!-- Navbar -->
     <nav class="navbar shadow-md bg-white px-6 py-3 sticky top-0 z-50 flex justify-between items-center">
-        <a class="text-3xl font-bold text-primary">HOTEL BOOKIE</a>
+        <a href="{{ auth()->check() ? (auth()->user()->isAdmin() ? route('admin.front') : route('rooms.list')) : route('home') }}" class="text-3xl font-bold text-primary">HOTEL BOOKIE</a>
         <ul class="menu menu-horizontal gap-6 text-lg font-medium">
-            <li><a href="/admin/home" class="text-primary font-bold">Home</a></li>
-            <li><a href="{{ route('admin.history') }}" class="hover:text-primary">History</a></li>
-            <li><a href="/admin/create" class="hover:text-primary">Add</a></li>
+            @auth
+                @if(auth()->user()->isAdmin())
+                    <li><a href="{{ route('admin.front') }}" class="text-primary font-bold">Home</a></li>
+                    <li><a href="{{ route('admin.history') }}" class="hover:text-primary">History</a></li>
+                    <li><a href="{{ route('admin.createRoom') }}" class="hover:text-primary">Add</a></li>
+                @else
+                    <li><a href="{{ route('rooms.list') }}" class="text-primary font-bold">Home</a></li>
+                    <li><a href="{{ route('bookings.history') }}" class="hover:text-primary">History</a></li>
+                @endif
+            @else
+                <li><a href="{{ route('home') }}" class="text-primary font-bold">Home</a></li>
+            @endauth
         </ul>
-        <a class="btn btn-primary btn-sm">Login</a>
+        @auth
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="btn btn-primary btn-sm">Logout</button>
+            </form>
+        @else
+            <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Login</a>
+        @endauth
     </nav>
 
     @if(session('success'))
@@ -65,7 +81,8 @@
 <div class="container mx-auto py-12 px-4">
     <h1 class="text-5xl md:text-6xl font-bold text-center text-black mb-12">Room Details</h1>
 
-    <div class="flex flex-col lg:flex-row gap-12 items-center bg-white shadow-xl rounded-xl p-8">
+<div class="flex flex-col lg:flex-row gap-12 items-start bg-white shadow-xl rounded-xl p-8">
+
         
         <!-- Room Image (kept as is) -->
         <div class="w-full lg:w-1/2">

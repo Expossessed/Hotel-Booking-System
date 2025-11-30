@@ -6,26 +6,11 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ReviewsController;
+use App\Http\Controllers\HomeController;
 use App\Models\Rooms;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    $rooms = Rooms::where('is_available', 1)
-        ->orderBy('room_price', 'asc')
-        ->take(3)
-        ->get();
-
-    return view('welcome', ['rooms' => $rooms]);
-})->name('home');
-
-// Public hotel pages
-Route::view('/about', 'pages.about')->name('about');
-Route::view('/gallery', 'pages.gallery')->name('gallery');
-Route::view('/offers', 'pages.offers')->name('offers');
-Route::view('/events', 'pages.events')->name('events');
-Route::view('/restaurant', 'pages.restaurant')->name('restaurant');
-Route::view('/terms', 'pages.terms')->name('terms');
-Route::view('/privacy', 'pages.privacy')->name('privacy');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -36,10 +21,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::middleware('admin')->group(function () {
-        Route::get('/admin/home', [RoomsController::class, 'listRooms'])->name('admin.front');
-        Route::get('/admin/history', [BookingController::class, 'adminHistory'])->name('admin.history');
-    });
+    // Admin routes were previously partially opened inside this group —
+    // admin-owned routes are all re-grouped and protected below with both
+    // the `auth` and `admin` middleware so regular users cannot reach them.
 
     Route::get('user/home', [RoomsController::class, 'showRooms'])->name('rooms.list');
     Route::get('/user/rooms/{id}', [RoomsController::class, 'view'])->name('rooms.view');
@@ -51,31 +35,32 @@ Route::middleware('auth')->group(function () {
     Route::post('/book', [BookingController::class, 'createBooking'])->name('bookings.create');
 });
 
-Route::get('/admin/create', [RoomsController::class, 'createRoomForm'])->name('admin.createRoom');
-Route::post('/admin/create', [RoomsController::class, 'createRoom']);
-Route::get('/admin/home', [RoomsController::class, 'listrooms'])->name('admin.front');
-Route::get('/admin/view/{id}', [RoomsController::class, 'viewRoom'])->name('admin.viewRoom');
-Route::get('/admin/edit/{id}',  [RoomsController::class, 'updateRoomForm'])->name('admin.updateRoom');
-Route::post('/admin/edit/{id}',  [RoomsController::class, 'updateRoom']);
-Route::post('/admin/delete/{id}', [RoomsController::class, 'deleteRoom'])->name('admin.deleteRoom');
-Route::post('/admin/viewUser/{id}', [UsersController::class, 'deleteUser'])->name('admin.deleteRoom');
+// Admin-only routes - protected by both auth and admin middleware.
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/home', [RoomsController::class, 'listRooms'])->name('admin.front');
 
-Route::get('user/home', [RoomsController::class, 'showRooms'])->name('rooms.list');
-Route::get('/admin/viewUser', [UsersController::class, 'view'])->name('admin.viewUsers');
-Route::get('/admin/updateUser/{id}', [UsersController::class, 'updateUserForm'])->name('admin.updateUser');
-Route::post('/admin/updateUser/{id}', [UsersController::class, 'updateUser']);
-Route::get('/admin/viewbookings', [BookingController::class, 'viewBookings'])->name('admin.viewBookings');
+    Route::get('/create', [RoomsController::class, 'createRoomForm'])->name('admin.createRoom');
+    Route::post('/create', [RoomsController::class, 'createRoom']);
 
-Route::get('/admin/history', [BookingController::class, 'adminHistory'])->name('admin.history');
-Route::post('/admin/history/{id}/updateStatus', [BookingController::class, 'updateBookingStatus'])->name('admin.updateBookingStatus');
-Route::post('/admin/history/{id}/updateStatus', [BookingController::class, 'updateBookingStatus'])->name('admin.updateBookingStatus');
+    Route::get('/view/{id}', [RoomsController::class, 'viewRoom'])->name('admin.viewRoom');
+    Route::get('/edit/{id}', [RoomsController::class, 'updateRoomForm'])->name('admin.updateRoom');
+    Route::post('/edit/{id}', [RoomsController::class, 'updateRoom']);
+    Route::post('/delete/{id}', [RoomsController::class, 'deleteRoom'])->name('admin.deleteRoom');
+    Route::post('/viewUser/{id}', [UsersController::class, 'deleteUser'])->name('admin.deleteRoom');
 
-Route::get('/user/history', [BookingController::class, 'userHistory'])->name('bookings.history');
-Route::get('/admin/viewtransactions', [TransactionsController::class, 'viewTransactions'])->name('admin.viewTransactions');
+    Route::get('/viewUser', [UsersController::class, 'view'])->name('admin.viewUsers');
+    Route::get('/updateUser/{id}', [UsersController::class, 'updateUserForm'])->name('admin.updateUser');
+    Route::post('/updateUser/{id}', [UsersController::class, 'updateUser']);
 
-Route::post('/admin/add-balance', [UsersController::class, 'addBalance'])
-    ->name('admin.addBalance')
-    ->middleware('auth');
+    Route::get('/viewbookings', [BookingController::class, 'viewBookings'])->name('admin.viewBookings');
+
+    Route::get('/history', [BookingController::class, 'adminHistory'])->name('admin.history');
+    Route::post('/history/{id}/updateStatus', [BookingController::class, 'updateBookingStatus'])->name('admin.updateBookingStatus');
+
+    Route::get('/viewtransactions', [TransactionsController::class, 'viewTransactions'])->name('admin.viewTransactions');
+
+    Route::post('/add-balance', [UsersController::class, 'addBalance'])->name('admin.addBalance');
+});
 
 Route::get('/user/reviews/create', [ReviewsController::class, 'showReviewForm'])
     ->name('reviews.createReview')
@@ -87,4 +72,14 @@ Route::post('/user/reviews/store', [ReviewsController::class, 'storeReview'])
 Route::get('user/reviews/view/{room_identifier?}', [ReviewsController::class, 'view'])
     ->name('reviews.viewReviews');
 
+
 require __DIR__.'/auth.php';
+
+// Public pages used by layout footer / info pages
+Route::view('/about', 'pages.about')->name('about');
+Route::view('/gallery', 'pages.gallery')->name('gallery');
+Route::view('/offers', 'pages.offers')->name('offers');
+Route::view('/events', 'pages.events')->name('events');
+Route::view('/restaurant', 'pages.restaurant')->name('restaurant');
+Route::view('/terms', 'pages.terms')->name('terms');
+Route::view('/privacy', 'pages.privacy')->name('privacy');

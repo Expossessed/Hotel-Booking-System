@@ -47,4 +47,26 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Helper accessor: is the user an admin?
+     */
+    public function isAdmin(): bool
+    {
+        $role = $this->role;
+        if (is_null($role)) {
+            return false;
+        }
+
+        // Accept 'admin' (case-insensitive), string '1' or integer 1 as admin
+        if (is_string($role) && strtolower($role) === 'admin') {
+            return true;
+        }
+
+        if ($role === 1 || $role === '1') {
+            return true;
+        }
+
+        return false;
+    }
 }

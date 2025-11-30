@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<!-- user home (renamed from userHome) -->
-@include('user.userHome')
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -55,7 +52,6 @@
 
         <div class="content-center">
             <ul class="menu menu-horizontal gap-8 text-lg font-medium">
-                <li><a class="text-primary font-bold">Home</a></li>
                 @auth
                     @if(auth()->user()->isAdmin())
                         <li><a href="{{ route('admin.createRoom') }}" class="hover:text-primary">Add</a></li>

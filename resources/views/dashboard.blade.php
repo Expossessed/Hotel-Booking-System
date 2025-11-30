@@ -41,7 +41,7 @@
             Welcome to HOTEL BOOKIE – Stay here, With bookie ;)
         </p>
 
-        <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}"
+        <a href="{{ auth()->user()->isAdmin() ? route('admin.front') : route('rooms.list') }}"
            class="btn btn-primary btn-lg">
             Go to Rooms
         </a>

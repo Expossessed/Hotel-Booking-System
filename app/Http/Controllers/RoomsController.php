@@ -114,6 +114,10 @@ class RoomsController extends Controller
 
     public function showRooms(Request $request)
     {
+        // Admin users should not view the user-facing listing. Send them to admin dashboard.
+        if (auth()->check() && auth()->user()->isAdmin()) {
+            return redirect()->route('admin.front');
+        }
         $query = Rooms::query();
 
         // Filter: only available rooms
@@ -131,7 +135,7 @@ class RoomsController extends Controller
 
         $rooms = $query->get();
 
-        return view('user.home', [
+        return view('user.userhome', [
             'rooms' => $rooms,
             'currentFilter' => $request->query('filter'),
             'currentSort' => $sort,

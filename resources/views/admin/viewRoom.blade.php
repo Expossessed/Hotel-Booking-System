@@ -72,7 +72,7 @@
         <div class="navbar max-w-7xl mx-auto px-6 py-3">
             <div class="flex-1">
                 @auth
-                    <a href="{{ auth()->user()->role === 'admin' ? route('admin.front') : route('rooms.list') }}"
+                    <a href="{{ auth()->user()->isAdmin() ? route('admin.front') : route('rooms.list') }}"
                        class="text-4xl font-extrabold text-primary-blue hover:text-primary-dark transition duration-300">
                         HOTEL BOOKIE
                     </a>
@@ -103,7 +103,9 @@
                             <span class="font-bold hover:text-primary-blue transition duration-200 px-3">Balance: ${{ auth()->user()->balance }}</span>
                         </label>
                     </li>
-                    <li><a href="/admin/create" class="hover:text-primary-blue px-3">Add Room</a></li>
+                    @if(auth()->user()->isAdmin())
+                        <li><a href="/admin/create" class="hover:text-primary-blue px-3">Add Room</a></li>
+                    @endif
                 </ul>
             </div>
             
