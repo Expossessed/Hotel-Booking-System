@@ -51,6 +51,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/viewUser', [UsersController::class, 'view'])->name('admin.viewUsers');
     Route::get('/updateUser/{id}', [UsersController::class, 'updateUserForm'])->name('admin.updateUser');
     Route::post('/updateUser/{id}', [UsersController::class, 'updateUser']);
+    Route::post('/deleteUser/{id}', [UsersController::class, 'deleteUser'])->name('admin.deleteUser');
 
     Route::get('/viewbookings', [BookingController::class, 'viewBookings'])->name('admin.viewBookings');
 
@@ -58,6 +59,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/history/{id}/updateStatus', [BookingController::class, 'updateBookingStatus'])->name('admin.updateBookingStatus');
 
     Route::get('/viewtransactions', [TransactionsController::class, 'viewTransactions'])->name('admin.viewTransactions');
+    Route::get('/transactionHistory', [TransactionsController::class, 'transactionHistory'])->name('admin.transactionHistory');
+    // Route::get('/updateTransaction/{id}', [TransactionsController::class, 'updateUserForm'])->name('admin.updateUser');
+    // Route::post('/updateTransaction/{id}', [TransactionsController::class, 'updateUser']);
+    Route::post('/deleteTransaction/{id}', [TransactionsController::class, 'deleteTransaction'])->name('admin.deleteTransaction');
 
     Route::post('/add-balance', [UsersController::class, 'addBalance'])->name('admin.addBalance');
 });

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking History</title>
+    <title>Transaction History</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -130,41 +130,44 @@
     </div>
 
     <div class="max-w-7xl mx-auto py-12 px-6 sm:px-8">
-        <h1 class="text-4xl font-extrabold text-gray-800 mb-8 border-b pb-4">Pending Bookings</h1>
+        <h1 class="text-4xl font-extrabold text-gray-800 mb-8 border-b pb-4">Transaction History</h1>
 
         <div class="bg-white shadow-xl rounded-lg overflow-hidden">
             <div class="overflow-x-auto w-full">
                 <table class="table w-full text-base">
                     <thead class="bg-gray-100 text-gray-600 uppercase tracking-wider">
                         <tr>
+                            <th class="py-4 px-4 font-semibold text-left">Booker Name</th>
                             <th class="py-4 px-4 font-semibold text-left">Room Type</th>
-                            <th class="py-4 px-4 font-semibold text-center">Start Date</th>
-                            <th class="py-4 px-4 font-semibold text-center">End Date</th>
                             <th class="py-4 px-4 font-semibold text-right">Price/Night</th>
                             <th class="py-4 px-4 font-semibold text-right">Days Booked</th>
-                            <th class="py-4 px-4 font-semibold text-right">Total Cost</th>
-                            <th class="py-4 px-4 font-semibold text-center">Actions</th>
+                            <th class="py-4 px-4 font-semibold text-center">Start Date</th>
+                            <th class="py-4 px-4 font-semibold text-center">End Date</th>
+                            <th class="py-4 px-4 font-semibold text-right">Calculated Total</th>
+                            <th class="py-4 px-4 font-semibold text-right">Price Paid</th>
                         </tr>
                     </thead>
                     
                     <tbody>
-                        @foreach ($bookings as $booking)
+                        @foreach ($transactions as $transaction)
                             <tr class="hover:bg-gray-50 border-b border-gray-200 transition duration-150">
                                 @php
-                                    $total_cost = $booking->room_price * $booking->num_days;
+                                    // Calculate total for comparison (assuming booker->num_days is defined)
+                                    $calculated_total = $transaction->room->room_price * $transaction->booker->num_days;
                                 @endphp
-                                
-                                <td class="py-4 px-4 font-medium text-left">{{ $booking->type }}</td>
-                                <td class="py-4 px-4 text-center">{{ $booking->book_date }}</td>
-                                <td class="py-4 px-4 text-center">{{ $booking->end_date }}</td>
-                                <td class="py-4 px-4 text-right">${{ number_format($booking->room_price, 2) }}</td>
-                                <td class="py-4 px-4 text-right">{{ $booking->num_days }}</td>
-                                <td class="py-4 px-4 font-bold text-right text-primary-blue">${{ number_format($total_cost, 2) }}</td>
-                                
-                                <td class="py-4 px-4 flex justify-center gap-2">
-                                    <button class="btn bg-primary-blue hover:bg-primary-dark border-none text-white btn-sm">Edit</button>
-                                    <button class="btn btn-outline btn-error btn-sm">Delete</button>
-                                </td>
+
+                                @if ($calculated_total <= $transaction->price_paid)
+                                    <td class="py-4 px-4 font-medium text-left">{{ $transaction->booker->name }}</td>
+                                    <td class="py-4 px-4 text-left">{{ $transaction->room->room_type }}</td>
+                                    <td class="py-4 px-4 text-right">${{ number_format($transaction->room->room_price, 2) }}</td>
+                                    <td class="py-4 px-4 text-right">{{ $transaction->booker->num_days }}</td>
+                                    <td class="py-4 px-4 text-center">{{ $transaction->book_date }}</td>
+                                    <td class="py-4 px-4 text-center">{{ $transaction->end_date }}</td>
+                                    <td class="py-4 px-4 font-bold text-right text-primary-blue">${{ number_format($calculated_total, 2) }}</td>
+                                    <td class="py-4 px-4 font-bold text-right text-green-600">${{ number_format($transaction->price_paid, 2) }}</td>
+                                    
+                                    
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

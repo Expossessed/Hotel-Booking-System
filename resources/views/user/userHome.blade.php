@@ -167,12 +167,22 @@
                         <img src="{{ $room->image_link }}" class="w-full h-52 object-cover" alt="Room Image">
 
                         <div class="p-6 flex flex-col h-full">
-                            <h3 class="text-xl font-bold mb-2 flex items-center gap-2">
-                                {{ $room->room_name }}
+                            
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-xl font-bold mb-2 flex items-center gap-2">
+                                    {{ $room->room_name }}
+                                    @if (!$room->is_available)
+                                        <span class="badge badge-error">Unavailable</span>
+                                    @endif
+                                </h3>
+
                                 @if (!$room->is_available)
-                                    <span class="badge badge-error">Unavailable</span>
+                                    <span class="badge badge-warning text-xs p-3 font-semibold text-white">Unavailable</span>
+                                @else
+                                    <span class="badge badge-success text-xs p-3 font-semibold text-white">Available</span>
                                 @endif
-                            </h3>
+                            </div>
+
 
                             <p class="text-gray-200 mb-4 line-clamp-3">{{ $room->room_desc }}</p>
 
@@ -180,7 +190,7 @@
                                 <span class="text-lg font-semibold text-primary">${{ $room->room_price }}</span>
                                 <div class="flex gap-2">
                                     <a href="{{ route('rooms.view', ['id' => $room->room_id]) }}" class="btn btn-outline btn-sm">Details</a>
-                                    <a href="{{ route('bookings.form', ['room_id' => $room->room_id]) }}" class="btn btn-primary btn-sm {{ !$room->is_available ? 'btn-disabled' : '' }}">Book</a>
+                                    <a href="{{ route('bookings.form', ['room_id' => $room->room_id]) }}" class="btn btn-success btn-sm {{ !$room->is_available ? 'btn-disabled' : '' }}">Book</a>
                                 </div>
                             </div>
                         </div>

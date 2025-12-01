@@ -75,7 +75,7 @@
 
             <div class="flex-none">
                 <ul class="menu menu-horizontal gap-4 text-base font-semibold text-gray-700">
-                    <li><a class="hover:text-primary-blue px-3">Home</a></li>
+                    <li><a class="hover:text-primary-blue px-3" href="home">Home</a></li>
                     <li>
                         <details class="dropdown dropdown-end">
                             <summary class="hover:text-primary-blue px-3 cursor-pointer">Views</summary>
@@ -83,7 +83,7 @@
                                 <li><a href="viewbookings" class="hover:bg-gray-100 py-2">View Pending Bookings</a></li>
                                 <li><a href="history" class="hover:bg-gray-100 py-2">View Booking History</a></li>
                                 <li><a href="viewtransactions" class="hover:bg-gray-100 py-2">View Pending Transactions</a></li>
-                                <li><a href="" class="hover:bg-gray-100 py-2">View Transaction History</a></li>
+                                <li><a href="transactionHistory" class="hover:bg-gray-100 py-2">View Transaction History</a></li>
                                 <li><a href="viewUser" class="hover:bg-gray-100 py-2">View Users</a></li>
                             </ul>
                         </details>
