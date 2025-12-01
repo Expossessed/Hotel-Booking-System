@@ -175,9 +175,9 @@
                                 <button class="btn w-full bg-primary-blue hover:bg-primary-dark border-none text-white font-bold">View Details</button>
                             </form>
                             
-                            <form action="/admin/edit/{{ $room->room_id }}" method="GET" class="flex-1">
+                            <form action="/admin/reviews/{{ $room->room_id }}" method="GET" class="flex-1">
                                     <button class="btn btn-outline btn-warning btn-sm w-full">View Reviews</button>
-                                </form>
+                            </form>
                             <div class="flex justify-between w-full gap-2">
                                 <form action="/admin/edit/{{ $room->room_id }}" method="GET" class="flex-1">
                                     <button class="btn btn-outline btn-blue btn-sm w-full">Edit</button>

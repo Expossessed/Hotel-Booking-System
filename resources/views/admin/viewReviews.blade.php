@@ -130,12 +130,42 @@
     </div>
 
     <div class="max-w-7xl mx-auto py-12 px-6 sm:px-8">
-        <h1 class="text-4xl font-extrabold text-gray-800 mb-8 border-b pb-4">Reviews for {{ $reviews->$room->$room_type }}</h1>
+        {{-- <h1 class="text-4xl font-extrabold text-gray-800 mb-8 border-b pb-4">Reviews for {{ $reviews->room->room_type }} Room</h1> --}}
 
         <div class="bg-white shadow-xl rounded-lg overflow-hidden">
             <div class="overflow-x-auto w-full">
                 <table class="table w-full text-base">
+                    <thead class="bg-gray-100 text-gray-600 uppercase tracking-wider">
+                        <tr>
+                            <th class="py-4 px-6 font-semibold">Review ID</th>
+                            <th class="py-4 px-6 font-semibold">Username</th>
+                            <th class="py-4 px-6 font-semibold">Rating</th>
+                            <th class="py-4 px-6 font-semibold">Comment</th>
+                            <th class="py-4 px-6 font-semibold text-center">Actions</th>
+                        </tr>
+                    </thead>
                     
+                    <tbody>
+                        @foreach ($reviews as $review)
+                        <tr class="hover:bg-gray-50 border-b border-gray-200 transition duration-150">
+                                    <th class="py-4 px-6 font-medium">{{ $review->id }}</th>
+                                    <td class="py-4 px-6">{{ $review->user->name }}</td>
+                                    <td class="py-4 px-6">{{ $review->rating }}</td>
+                                    <td class="py-4 px-6">
+                                        <textarea class="w-80" readonly style="resize:vertical;">{{ $review->comment }}</textarea>
+                                    </td>
+                                    <td class="py-4 px-6 flex justify-center gap-3">
+                                        <form action="/admin/reviews/{{ $review->room->room_id }}" method="POST" 
+                                            onsubmit="return confirm('Are you absolutely sure you want to delete the user review of: {{ $review->user->name }}?');">
+                                            @csrf
+                                            <button class="btn btn-outline btn-error btn-sm">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                        @endforeach
+                                
+                        
+                    </tbody>
                 </table>
             </div>
         </div>

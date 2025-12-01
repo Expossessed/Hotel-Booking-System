@@ -65,6 +65,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/deleteTransaction/{id}', [TransactionsController::class, 'deleteTransaction'])->name('admin.deleteTransaction');
 
     Route::post('/add-balance', [UsersController::class, 'addBalance'])->name('admin.addBalance');
+
+    Route::get('/reviews/{id}', [ReviewsController::class, 'viewReviews'])->name('admin.viewReviews');
 });
 
 Route::get('/user/reviews/create', [ReviewsController::class, 'showReviewForm'])
