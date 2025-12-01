@@ -80,5 +80,18 @@ Route::get('user/reviews/view/{room_identifier?}', [ReviewsController::class, 'v
     ->name('reviews.viewReviews');
 
 
+Route::get('user/about', function () {
+    return view('user.about'); 
+})->name('about');
+
+Route::get('user/contact', function () {
+    return view('user.contacts');  
+})->name('contact');
+
+
+Route::get('user/rooms', function () {
+    return view('user.rooms');
+})->name('rooms');
+
 require __DIR__.'/auth.php';
 
