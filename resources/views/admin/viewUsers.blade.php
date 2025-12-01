@@ -148,7 +148,7 @@
                     <tbody>
                         @foreach ($users as $user)
                             <tr class="hover:bg-gray-50 border-b border-gray-200 transition duration-150">
-                                @if ($user->id === 1)
+                                @if ($user->role === 'admin' )
                                     <th class="py-4 px-6 font-medium">{{ $user->id }}</th>
                                     <td class="py-4 px-6">{{ $user->name }}</td>
                                     <td class="py-4 px-6">{{ $user->email }}</td>
