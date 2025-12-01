@@ -175,9 +175,12 @@
                                 <button class="btn w-full bg-primary-blue hover:bg-primary-dark border-none text-white font-bold">View Details</button>
                             </form>
                             
+                            <form action="/admin/edit/{{ $room->room_id }}" method="GET" class="flex-1">
+                                    <button class="btn btn-outline btn-warning btn-sm w-full">View Reviews</button>
+                                </form>
                             <div class="flex justify-between w-full gap-2">
                                 <form action="/admin/edit/{{ $room->room_id }}" method="GET" class="flex-1">
-                                    <button class="btn btn-outline btn-warning btn-sm w-full">Edit</button>
+                                    <button class="btn btn-outline btn-blue btn-sm w-full">Edit</button>
                                 </form>
                                 <form action="/admin/delete/{{ $room->room_id }}" method="POST" class="flex-1"
                                         onsubmit="return confirm('Are you sure you want to delete this room?');">

@@ -24,7 +24,7 @@ class Transactions extends Model
 
     public function booker()
     {
-        return $this->belongsTo(User::class, 'booker_id', 'id');
+        return $this->belongsTo(User::class, 'booker_id', 'booker_id');
     }
 
     public function room()
