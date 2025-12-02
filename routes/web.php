@@ -89,9 +89,9 @@ Route::get('user/contact', function () {
 })->name('contact');
 
 
-Route::get('user/rooms', function () {
-    return view('user.rooms');
-})->name('rooms');
+Route::get('user/rooms', [RoomsController::class, 'displayRooms'])->name('user.rooms');
+
+
 
 require __DIR__.'/auth.php';
 

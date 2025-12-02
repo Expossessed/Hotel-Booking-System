@@ -107,10 +107,10 @@
 
     <div class="flex-none">
         <ul class="menu menu-horizontal p-0 hidden md:flex gap-6 navbar-menu text-lg">
-            <li><a href="{{ route('home') }}">Home</a></li>
-            <li><a href="{{ route('rooms.list') }}">Rooms</a></li>
-            <li><a href="{{ route('about') }}">About</a></li>
-            <li><a href="{{ route('contact') }}">Contact</a></li>
+            <li><a href="">Home</a></li>
+            <li><a href="rooms">Rooms</a></li>
+            <li><a href="about">About</a></li>
+            <li><a href="contact">Contact</a></li>
         </ul>
 
         @auth
@@ -149,10 +149,11 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content z-[1] p-2 shadow-xl rounded-box w-52 mt-3 profile-dropdown-content">
-                <li><a href="{{ route('rooms.list') }}">Home</a></li>
-                <li><a href="{{ route('rooms.list') }}">Rooms</a></li>
-                <li><a href="{{ route('about') }}">About</a></li>
-                <li><a href="{{ route('contact') }}">Contact</a></li>
+                <li><a href="">Home</a></li>
+                <li><a href="rooms">Rooms</a></li>
+                <li><a href="about">About</a></li>
+                <li><a href="contact">Contact</a></li>
+                
                 @auth
                     <li><a href="bookings.html" class="font-medium">My Bookings</a></li>
                     

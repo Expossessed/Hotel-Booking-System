@@ -7,26 +7,57 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
     <style>
-        /* Make non-editable form controls non-interactive on this page */
-        input[readonly],
-        textarea[readonly],
-        input:disabled,
-        textarea:disabled {
-            pointer-events: none;
-            cursor: default;
-            caret-color: transparent;
+        /* 🎨 STYLING: Consistent Dark Brown & Orange Theme */
+
+        :root {
+            --color-dark-brown: #3C2A21;
+            --color-accent-orange: #C45B3A;
+            --color-text-light: #F7F7F7;
         }
-        /* Disable caret / text selection for non-input text on this page */
+
         body {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
+            background-color: var(--color-dark-brown);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: var(--color-text-light);
         }
-        input,
-        textarea {
-            -webkit-user-select: text;
-            -moz-user-select: text;
-            user-select: text;
+        
+        .navbar-top {
+            background-color: #312620; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar-menu a {
+            color: var(--color-text-light);
+            transition: color 0.3s ease;
+        }
+        .navbar-menu a:hover {
+            color: var(--color-accent-orange);
+        }
+
+        .profile-dropdown-content {
+            background: #312620;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-accent-color {
+            background-color: var(--color-accent-orange);
+            border-color: var(--color-accent-orange);
+            color: var(--color-text-light);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .btn-accent-color:hover {
+            background-color: #A94E31; 
+            border-color: #A94E31;
+        }
+
+        .content-section {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        .section-title {
+            color: var(--color-accent-orange);
+            font-family: serif;
+            font-weight: 300;
         }
     </style>
 
@@ -41,7 +72,7 @@
             <h4>Create New Booking</h4>
         </div>
 
-        <div class="card-body">
+        <div class="card-body bg-[#d37b5dff] text-black-200">
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <strong>There were some problems with your input:</strong>

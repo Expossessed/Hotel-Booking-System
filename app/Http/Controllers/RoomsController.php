@@ -152,4 +152,10 @@ class RoomsController extends Controller
 
         return view('user.viewRoom', compact('room', 'averageRating'));
     }
+
+    public function displayRooms()
+    {
+        $rooms = Rooms::all();
+        return view('user.rooms', compact('rooms'));
+    }
 }

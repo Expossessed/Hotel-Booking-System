@@ -112,7 +112,7 @@
     <div class="flex-none">
         <ul class="menu menu-horizontal p-0 hidden md:flex gap-6 navbar-menu text-lg">
             <li><a href="{{ route('rooms.list') }}">Home</a></li>
-            <li><a href="{{ route('rooms') }}">Rooms</a></li>
+            <li><a href="">Rooms</a></li>
             <li><a href="{{ route('about') }}">About</a></li>
             <li><a href="{{ route('contact') }}">Contact</a></li>
         </ul>
@@ -155,7 +155,7 @@
             <ul tabindex="0" class="menu menu-sm dropdown-content z-[1] p-2 shadow-xl rounded-box w-52 mt-3 profile-dropdown-content">
                 <!-- Corrected mobile navigation links -->
                 <li><a href="{{ route('rooms.list') }}">Home</a></li>
-                <li><a href="{{ route('rooms') }}">Rooms</a></li>
+                <li><a href="">Rooms</a></li>
                 <li><a href="{{ route('about') }}">About</a></li>
                 <li><a href="{{ route('contact') }}">Contact</a></li>
                 @auth
@@ -229,8 +229,7 @@
     <!-- Room Grid Listing -->
     <section class="max-w-6xl mx-auto rooms-grid">
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            @if (empty($rooms)) 
-                <!-- Using empty() check since $rooms might be null or an empty collection -->
+            @if ($rooms->isEmpty())
                 <div class="p-10 text-center col-span-full bg-black/40 rounded-lg">
                     <h2 class="text-3xl font-semibold text-red-400">No Rooms Found</h2>
                     <p class="text-gray-300 mt-2">Try adjusting your search dates or filters.</p>
@@ -238,10 +237,7 @@
             @else
                 @foreach ($rooms as $room)
                     <div class="shadow-xl rounded-lg overflow-hidden flex flex-col room-card-style">
-                        <!-- Placeholder Image URL - Replace with actual URL in production -->
-                        <img src="{{ $room->image_link ?? 'https://placehold.co/600x400/3C2A21/F7F7F7?text=Room+Image' }}" 
-                            class="w-full h-52 object-cover transition duration-300" 
-                            alt="{{ $room->room_name }}">
+                        <img src="{{ $room->image_link }}" class="w-full h-52 object-cover transition duration-300" alt="Room Image">
 
                         <div class="p-6 flex flex-col h-full">
                             
@@ -250,21 +246,21 @@
                                     {{ $room->room_name }}
                                 </h3>
                                 
-                                @if (!($room->is_available ?? true)) 
+                                @if (!$room->is_available)
                                     <span class="badge badge-error text-xs p-3 font-semibold text-white rounded-none">Sold Out</span>
                                 @else
                                     <span class="badge badge-success text-xs p-3 font-semibold text-white rounded-none">Available</span>
                                 @endif
                             </div>
 
-                            <p class="text-gray-300 mb-4 line-clamp-3 text-sm">{{ $room->room_desc ?? 'A luxurious room featuring all modern amenities and breathtaking views.' }}</p>
+
+                            <p class="text-gray-300 mb-4 line-clamp-3 text-sm">{{ $room->room_desc }}</p>
 
                             <div class="flex justify-between items-center mt-auto border-t border-white/10 pt-4">
-                                <span class="text-2xl font-extrabold text-white">${{ $room->room_price ?? '299' }}</span>
+                                <span class="text-2xl font-extrabold text-white">${{ $room->room_price }}</span>
                                 <div class="flex gap-3">
                                     <a href="{{ route('rooms.view', ['id' => $room->room_id]) }}" class="btn btn-outline btn-sm text-white rounded-none hover:bg-white/10 border-white/40">Details</a>
-                                    <a href="{{ route('bookings.form', ['room_id' => $room->room_id]) }}" 
-                                       class="btn btn-accent-color btn-sm rounded-none {{ !($room->is_available ?? true) ? 'btn-disabled opacity-50' : '' }}">
+                                    <a href="{{ route('bookings.form', ['room_id' => $room->room_id]) }}" class="btn btn-accent-color btn-sm rounded-none {{ !$room->is_available ? 'btn-disabled opacity-50' : '' }}">
                                         Reserve
                                     </a>
                                 </div>
