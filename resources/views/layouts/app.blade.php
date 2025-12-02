@@ -23,6 +23,13 @@
             --color-bg-contrast: #312620; /* Slightly darker for deeper contrast elements */
         }
         
+        /* CSS variables for tab animations */
+        :root {
+            --tab-fade-duration: 700ms; /* default fade duration */
+            --tab-easing: cubic-bezier(.2,.8,.2,1);
+            --tab-slide-duration: 700ms; /* default slide duration */
+        }
+
         /* 1. Body Background (Full Dark Theme Look) */
         body {
             background: linear-gradient(to bottom, rgba(0,0,0,0.8), var(--color-dark-brown) 90%),
@@ -130,14 +137,46 @@
             border-color: #1b5e20;
         }
 
-        /* Smooth fade */
-        .tab-content > div {
-            transition: opacity 0.4s ease-in-out;
+        /* Slide-replace behavior: panes are stacked vertically inside #panesInner.
+           #tabContent is a fixed viewport (overflow:hidden) and we slide the inner
+           container up/down so the active pane replaces the previous one without
+           changing the outer container size. */
+        #tabContent {
+            flex: 1 1 auto;
+            overflow: hidden; /* hide the off-screen pane */
+            position: relative;
         }
-        .tab-content > .hidden {
+
+        #panesInner {
+            display: block;
+            transition: transform var(--tab-slide-duration) var(--tab-easing);
+            will-change: transform;
+        }
+
+        .tab-pane {
+            opacity: 0; /* fade in when active */
+            transition: opacity var(--tab-fade-duration) var(--tab-easing);
+            pointer-events: none;
+            padding-bottom: 1rem;
+        }
+
+        .tab-pane.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Inputs and labels use opacity only for a gentle fade (no translate)
+           Keep transitions matched to pane for consistent timing */
+        .tab-pane .input,
+        .tab-pane .label-text,
+        .tab-pane .btn {
             opacity: 0;
-            height: 0;
-            overflow: hidden;
+            transition: opacity var(--tab-fade-duration) var(--tab-easing);
+        }
+        .tab-pane.active .input,
+        .tab-pane.active .label-text,
+        .tab-pane.active .btn {
+            opacity: 1;
         }
 
         /* Responsive adjustments */
@@ -182,15 +221,16 @@
         
         <!-- TAB BUTTONS -->
         <div role="tablist" class="tabs tabs-boxed mb-6 bg-black/30 w-full">
-            <a role="tab" class="tab font-semibold" id="login-tab">Login</a>
+            <a role="tab" class="tab font-semibold tab-active" id="login-tab">Login</a>
             <a role="tab" class="tab font-semibold" id="register-tab">Register</a>
         </div>
 
         <!-- TAB CONTENT -->
         <!-- Min-height is set in CSS on .auth-card to ensure consistent right panel size -->
         <div id="tabContent">
+            <div id="panesInner">
             <!-- LOGIN FORM -->
-            <div id="login" class="tab-pane">
+            <div id="login" class="tab-pane active">
                 <!-- We intercept the default Laravel action with a simulated JS function -->
                 <form id="loginForm" action="{{ route('login') }}" method="POST">
                     @csrf
@@ -215,7 +255,7 @@
             </div>
 
             <!-- REGISTER FORM - Now uses stacked, full-width inputs -->
-            <div id="register" class="tab-pane hidden">
+            <div id="register" class="tab-pane">
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
                     <!-- Full Name (Full Width) -->
@@ -246,6 +286,72 @@
     </div>
 </div>
 @endguest
+
+<!-- Tab toggle script: switches between Login and Register panes -->
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    const loginTab = document.getElementById('login-tab');
+    const registerTab = document.getElementById('register-tab');
+    const loginPane = document.getElementById('login');
+    const registerPane = document.getElementById('register');
+    const tabContentEl = document.getElementById('tabContent');
+    const panesInner = document.getElementById('panesInner');
+
+    function showPane(pane){
+        const panes = Array.from(document.querySelectorAll('#tabContent .tab-pane'));
+        panes.forEach(p => {
+            if(p === pane){
+                p.classList.add('active');
+            } else {
+                p.classList.remove('active');
+            }
+        });
+
+        // Slide the inner panes container so the requested pane replaces the current.
+        // We compute the index of the pane and translate by index * visibleHeight.
+        if(panesInner && tabContentEl && pane){
+            // use the pane's offsetTop within panesInner so the translate matches
+            // the actual vertical position of the pane regardless of heights
+            const targetY = pane.offsetTop || 0;
+            setTimeout(() => {
+                panesInner.style.transform = `translateY(-${targetY}px)`;
+            }, 20);
+        }
+    }
+
+    function setActive(tab){
+        [loginTab, registerTab].forEach(t => t.classList.remove('tab-active'));
+        if(tab) tab.classList.add('tab-active');
+    }
+
+    if(loginTab && registerTab){
+        loginTab.addEventListener('click', function(e){
+            e.preventDefault();
+            // use a slightly faster fade when switching to login
+            document.documentElement.style.setProperty('--tab-fade-duration', '480ms');
+            document.documentElement.style.setProperty('--tab-easing', 'cubic-bezier(.2,.8,.2,1)');
+            document.documentElement.style.setProperty('--tab-slide-duration', '480ms');
+            setActive(loginTab);
+            showPane(loginPane);
+        });
+
+        registerTab.addEventListener('click', function(e){
+            e.preventDefault();
+            // use a slower, smoother fade when switching to register
+            document.documentElement.style.setProperty('--tab-fade-duration', '1000ms');
+            document.documentElement.style.setProperty('--tab-easing', 'cubic-bezier(.16,.84,.24,1)');
+            document.documentElement.style.setProperty('--tab-slide-duration', '1000ms');
+            setActive(registerTab);
+            showPane(registerPane);
+        });
+    }
+
+    // Ensure default visible pane on load
+    setActive(loginTab);
+    // make sure panesInner has correct initial transform (0)
+    if(typeof panesInner !== 'undefined' && panesInner) panesInner.style.transform = 'translateY(0)';
+    showPane(loginPane);
+});
 </script>
 
 </body>
