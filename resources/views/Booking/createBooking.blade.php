@@ -1,9 +1,6 @@
-
-
 @section('body_class', 'booking-page bg-gray-100')
 
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
     <style>
@@ -63,24 +60,30 @@
 
 
 
-<div class="container mt-5">
-    <div class="mb-3">
-        <a href="javascript:history.back()" class="btn btn-outline-secondary">← Back</a>
+<div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div class="mb-6">
+        <a href="javascript:history.back()" class="btn btn-ghost">← Back</a>
     </div>
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h4>Create New Booking</h4>
+
+    <div class="bg-[#312620] rounded-lg shadow-xl overflow-hidden">
+        <div class="p-6 border-b border-white/10">
+            <h3 class="text-2xl font-semibold text-white">Create New Booking</h3>
         </div>
 
-        <div class="card-body bg-[#d37b5dff] text-black-200">
+        <div class="p-6 bg-[#3C2A21]/80 text-white">
             @if ($errors->any())
-                <div class="alert alert-danger">
-                    <strong>There were some problems with your input:</strong>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                <div class="alert alert-error shadow-lg mb-4">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M4.5 19.5L19.5 4.5"/></svg>
+                        <span>
+                            <strong>There were some problems with your input:</strong>
+                            <ul class="mt-1 list-disc list-inside">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </span>
+                    </div>
                 </div>
             @endif
 
@@ -89,71 +92,73 @@
 
                 <input type="hidden" name="room_id" value="{{ $room_id }}">
 
-                <div class="mb-3">
-                    <label class="form-label">Room Type</label>
-                    <input type="text" class="form-control" value="{{ $room_type }}" readonly tabindex="-1">
+                <div class="mb-4">
+                    <label class="block text-sm text-white/85 mb-2">Room Type</label>
+                    <input type="text" name="room_type" class="input input-bordered w-full bg-transparent text-white" value="{{ old('room_type', $room_type ?? '') }}" readonly tabindex="-1">
                 </div>
 
-                <div class="mb-3">
-                    <label for="book_date" class="form-label">Booking Start Date</label>
-                    <input type="date" name="book_date" id="book_date" class="form-control" value="{{ old('book_date') }}" required>
+                <div class="mb-4">
+                    <label for="book_date" class="block text-sm text-white/85 mb-2">Booking Start Date</label>
+                    <input type="date" name="book_date" id="book_date" class="input input-bordered w-full bg-white/5 text-white" value="{{ old('book_date') }}" required>
                 </div>
 
-                <div class="mb-3">
-                    <label for="end_date" class="form-label">Booking End Date</label>
-                    <input type="date" name="end_date" id="end_date" class="form-control" value="" readonly tabindex="-1">
+                <div class="mb-4">
+                    <label for="end_date" class="block text-sm text-white/85 mb-2">Booking End Date</label>
+                    <input type="date" name="end_date" id="end_date" class="input input-bordered w-full bg-white/5 text-white" value="" readonly tabindex="-1">
                 </div>
 
-                <div class="mb-3">
-                    <label for="room_price" class="form-label">Price per Night</label>
-                    <input type="number" id="room_price" class="form-control" value="{{ old('room_price', $room_price ?? '') }}" readonly tabindex="-1">
+                <div class="mb-4">
+                    <label for="room_price" class="block text-sm text-white/85 mb-2">Price per Night</label>
+                    <input type="number" name="room_price" id="room_price" class="input input-bordered w-full bg-white/5 text-white" value="{{ old('room_price', $room_price ?? '') }}" readonly tabindex="-1">
                 </div>
 
-                <div class="mb-3">
-                    <label for="num_days" class="form-label">Number of Days</label>
-                    <div class="input-group">
-                        <button type="button" class="btn btn-outline-secondary" id="minus_days">-</button>
-                        <input type="number" name="num_days" id="num_days" class="form-control" value="{{ old('num_days', 1) }}" min="1">
-                        <button type="button" class="btn btn-outline-secondary" id="plus_days">+</button>
+                <div class="mb-4">
+                    <label for="num_days" class="block text-sm text-white/85 mb-2">Number of Days</label>
+                    <div class="flex items-center gap-2">
+                        <button type="button" class="btn btn-outline btn-sm" id="minus_days">-</button>
+                        <input type="number" name="num_days" id="num_days" class="input input-bordered w-24 text-white" value="{{ old('num_days', 1) }}" min="1">
+                        <button type="button" class="btn btn-outline btn-sm" id="plus_days">+</button>
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="total_price" class="form-label">Total Price</label>
-                    <input type="text" id="total_price" class="form-control" readonly tabindex="-1">
+                <div class="mb-6">
+                    <label for="total_price" class="block text-sm text-white/85 mb-2">Total Price</label>
+                    <input type="text" name="total_price" id="total_price" class="input input-bordered w-full bg-white/5 text-white" value="{{ old('total_price', $preview_total ?? '') }}" readonly tabindex="-1">
                 </div>
 
-                <button type="submit" class="btn btn-success">Create Booking</button>
+                <div class="flex justify-end">
+                    <button type="submit" class="btn btn-accent-color">Create Booking</button>
+                </div>
             </form>
         </div>
     </div>
 </div>
 
 @if (!empty($preview ?? false))
-    <div id="booking-preview" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-4">
+    <div id="booking-preview" class="modal modal-open">
+        <div class="modal-box bg-white text-black max-w-md w-full">
             <h5 class="text-xl font-semibold mb-3">Booking Receipt</h5>
-            <ul class="list-group mb-4">
-                <li class="list-group-item"><strong>Customer Name:</strong> {{ $preview_user_name }}</li>
-                <li class="list-group-item"><strong>Customer Email:</strong> {{ $preview_user_email }}</li>
-                <li class="list-group-item"><strong>Room Type:</strong> {{ $preview_room_type }}</li>
-                <li class="list-group-item"><strong>Start Date:</strong> {{ $preview_book_date }}</li>
-                <li class="list-group-item"><strong>End Date:</strong> {{ $preview_end_date }}</li>
-                <li class="list-group-item"><strong>Number of Days:</strong> {{ $preview_num_days }}</li>
-                <li class="list-group-item"><strong>Price per Night:</strong> {{ $preview_room_price }}</li>
-                <li class="list-group-item"><strong>Total Price:</strong> {{ $preview_total }}</li>
+            <ul class="space-y-2 mb-4">
+                <li><strong>Customer Name:</strong> {{ $preview_user_name }}</li>
+                <li><strong>Customer Email:</strong> {{ $preview_user_email }}</li>
+                <li><strong>Room Type:</strong> {{ $preview_room_type }}</li>
+                <li><strong>Start Date:</strong> {{ $preview_book_date }}</li>
+                <li><strong>End Date:</strong> {{ $preview_end_date }}</li>
+                <li><strong>Number of Days:</strong> {{ $preview_num_days }}</li>
+                <li><strong>Price per Night:</strong> {{ $preview_room_price }}</li>
+                <li><strong>Total Price:</strong> {{ $preview_total }}</li>
             </ul>
             <p class="mb-3">Are you sure?</p>
-            <div class="d-flex gap-2 justify-content-end">
+            <div class="flex gap-2 justify-end">
                 <form method="POST" action="{{ route('bookings.create') }}">
                     @csrf
                     <input type="hidden" name="room_id" value="{{ $room_id }}">
                     <input type="hidden" name="book_date" value="{{ $preview_book_date }}">
                     <input type="hidden" name="num_days" value="{{ $preview_num_days }}">
                     <input type="hidden" name="confirm" value="yes">
-                    <button type="submit" class="btn btn-success btn-sm">Yes</button>
+                    <button type="submit" class="btn btn-accent-color btn-sm">Yes</button>
                 </form>
-                <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('booking-preview').remove();">No</button>
+                <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('booking-preview').remove();">No</button>
             </div>
         </div>
     </div>

@@ -154,7 +154,7 @@
                                     $total_cost = $booking->room_price * $booking->num_days;
                                 @endphp
                                 
-                                <td class="py-4 px-4 font-medium text-left">{{ $booking->type }}</td>
+                                <td class="py-4 px-4 font-medium text-left">{{ $booking->room->room_type }}</td>
                                 <td class="py-4 px-4 text-center">{{ $booking->book_date }}</td>
                                 <td class="py-4 px-4 text-center">{{ $booking->end_date }}</td>
                                 <td class="py-4 px-4 text-right">${{ number_format($booking->room_price, 2) }}</td>

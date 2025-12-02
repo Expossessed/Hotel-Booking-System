@@ -77,10 +77,10 @@ class BookingController extends Controller
             'num_days'   => $numDays,
         ]);
 
-        return view('Booking.created', [
-            'booking' => $booking,
-            'user'    => $request->user(),
-        ]);
+        // Redirect to the user-facing room listing (user home) so the user lands
+        // on the page they expect after booking and can continue browsing.
+        return redirect()->route('rooms.list')->with('success', 'Booking created successfully.');
+
     }
 
     public function userHistory(Request $request)

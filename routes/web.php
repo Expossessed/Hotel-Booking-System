@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Backwards-compatible route: help users who accidentally visit /book (root)
+// — redirect them to the authenticated booking form route.
+Route::get('/book', function () {
+    return redirect()->route('bookings.form');
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -31,8 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/history', [BookingController::class, 'userHistory'])->name('bookings.history');
 
     // Booking routes
-    Route::get('/book', [BookingController::class, 'showForm'])->name('bookings.form');
-    Route::post('/book', [BookingController::class, 'createBooking'])->name('bookings.create');
+    Route::get('user/book', [BookingController::class, 'showForm'])->name('bookings.form');
+    Route::post('user/book', [BookingController::class, 'createBooking'])->name('bookings.create');
+
 });
 
 // Admin-only routes - protected by both auth and admin middleware.
@@ -88,10 +95,12 @@ Route::get('user/contact', function () {
     return view('user.contacts');  
 })->name('contact');
 
+// Static pages used across the public layout
+Route::view('/terms', 'pages.terms')->name('terms');
+Route::view('/privacy', 'pages.privacy')->name('privacy');
+
 
 Route::get('user/rooms', [RoomsController::class, 'displayRooms'])->name('user.rooms');
-
-
 
 require __DIR__.'/auth.php';
 
