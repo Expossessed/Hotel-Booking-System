@@ -65,7 +65,7 @@ class RoomsController extends Controller
     public function updateRoomForm($id)
     {
         $rooms = Rooms::findOrFail($id);
-        return view('admin.update', compact('rooms'));
+        return view('admin.updateRoom', compact('rooms'));
     }
 
     public function updateRoom(Request $request, $id)

@@ -3,48 +3,77 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>HOTEL BOOKIE</title>
+    <title>Hotel Bookie | Dashboard</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
+    <!-- Bootstrap for consistency with login/register -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
-        /* Make non-editable form controls non-interactive on this page */
-        input[readonly],
-        textarea[readonly],
-        input:disabled,
-        textarea:disabled {
-            pointer-events: none;
-            cursor: default;
-            caret-color: transparent;
-        }
-        /* Disable caret / text selection for non-input text on this page */
         body {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0,0,0,0.7)),
+                        url('https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg')
+                        center/cover no-repeat fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: "Segoe UI", sans-serif;
         }
-        input,
-        textarea {
-            -webkit-user-select: text;
-            -moz-user-select: text;
-            user-select: text;
+
+        .dashboard-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 60px;
+            border-radius: 20px;
+            backdrop-filter: blur(8px);
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            max-width: 700px;
+        }
+
+        .hotel-title {
+            font-family: "Georgia", serif;
+            font-weight: bold;
+            font-size: 55px;
+            letter-spacing: 2px;
+            color: #ffffff;
+        }
+
+        .dashboard-btn {
+            padding: 12px 40px;
+            font-size: 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            border: none;
+            backdrop-filter: blur(6px);
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        p {
+            font-size: 18px;
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="text-center px-4">
-        <h1 class="text-6xl md:text-7xl font-bold text-primary mb-4">
-            HOTEL BOOKIE
-        </h1>
+<body>
 
-        <p class="text-xl md:text-2xl text-gray-700 mb-8 max-w-2xl mx-auto">
-            Welcome to HOTEL BOOKIE – Stay here, With bookie ;)
-        </p>
+<div class="dashboard-box">
+    <h1 class="hotel-title">Hotel Bookie</h1>
 
-        <a href="{{ auth()->user()->isAdmin() ? route('admin.front') : route('rooms.list') }}"
-           class="btn btn-primary btn-lg">
-            Go to Rooms
-        </a>
-    </div>
+    <p class="mt-3 mb-4">
+        Welcome to your dashboard!  
+        Your stay begins here — where comfort meets convenience.
+    </p>
+
+    <a href="{{ auth()->user()->isAdmin() ? route('admin.front') : route('rooms.list') }}"
+       class="btn btn-light dashboard-btn">
+        Explore Rooms
+    </a>
+</div>
+
 </body>
 </html>

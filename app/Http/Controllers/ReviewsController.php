@@ -108,6 +108,13 @@ class ReviewsController extends Controller
        return view('Reviews.viewReviews', ['reviews' => $reviews, 'room_id' => $room_id, 'room_name' => $room_name]);
    }
 
+   public function viewReviews($id)
+    {
+
+        $reviews = Reviews::all()->where('room_id', $id);
+        return view('admin.viewReviews', compact('reviews'));
+    }
+
    
 
 }

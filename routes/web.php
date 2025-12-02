@@ -51,6 +51,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/viewUser', [UsersController::class, 'view'])->name('admin.viewUsers');
     Route::get('/updateUser/{id}', [UsersController::class, 'updateUserForm'])->name('admin.updateUser');
     Route::post('/updateUser/{id}', [UsersController::class, 'updateUser']);
+    Route::post('/deleteUser/{id}', [UsersController::class, 'deleteUser'])->name('admin.deleteUser');
 
     Route::get('/viewbookings', [BookingController::class, 'viewBookings'])->name('admin.viewBookings');
 
@@ -58,8 +59,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/history/{id}/updateStatus', [BookingController::class, 'updateBookingStatus'])->name('admin.updateBookingStatus');
 
     Route::get('/viewtransactions', [TransactionsController::class, 'viewTransactions'])->name('admin.viewTransactions');
+    Route::get('/transactionHistory', [TransactionsController::class, 'transactionHistory'])->name('admin.transactionHistory');
+    // Route::get('/updateTransaction/{id}', [TransactionsController::class, 'updateUserForm'])->name('admin.updateUser');
+    // Route::post('/updateTransaction/{id}', [TransactionsController::class, 'updateUser']);
+    Route::post('/deleteTransaction/{id}', [TransactionsController::class, 'deleteTransaction'])->name('admin.deleteTransaction');
 
     Route::post('/add-balance', [UsersController::class, 'addBalance'])->name('admin.addBalance');
+
+    Route::get('/reviews/{id}', [ReviewsController::class, 'viewReviews'])->name('admin.viewReviews');
 });
 
 Route::get('/user/reviews/create', [ReviewsController::class, 'showReviewForm'])
@@ -73,13 +80,18 @@ Route::get('user/reviews/view/{room_identifier?}', [ReviewsController::class, 'v
     ->name('reviews.viewReviews');
 
 
+Route::get('user/about', function () {
+    return view('user.about'); 
+})->name('about');
+
+Route::get('user/contact', function () {
+    return view('user.contacts');  
+})->name('contact');
+
+
+Route::get('user/rooms', function () {
+    return view('user.rooms');
+})->name('rooms');
+
 require __DIR__.'/auth.php';
 
-// Public pages used by layout footer / info pages
-Route::view('/about', 'pages.about')->name('about');
-Route::view('/gallery', 'pages.gallery')->name('gallery');
-Route::view('/offers', 'pages.offers')->name('offers');
-Route::view('/events', 'pages.events')->name('events');
-Route::view('/restaurant', 'pages.restaurant')->name('restaurant');
-Route::view('/terms', 'pages.terms')->name('terms');
-Route::view('/privacy', 'pages.privacy')->name('privacy');

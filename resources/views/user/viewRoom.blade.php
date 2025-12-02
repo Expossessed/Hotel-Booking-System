@@ -122,31 +122,35 @@
                 <p class="text-lg md:text-xl text-gray-500">
                     {{ $room->room_desc }}
                 </p>
-                
-    </div>
-    <a href="{{ route('reviews.createReview', ['room_name' => $room->room_name]) }}" class="btn btn-primary text-lg w-42">
-        Add a Review
-    </a>
+                    <!-- Free Items Button + Collapse -->
+                <div class="mt-6 flex flex-col gap-2 ">
+                    <a href="{{ route('reviews.createReview', ['room_name' => $room->room_name]) }}" class="btn btn-primary flex text-lg w-42">
+                        Add a Review
+                    </a>
+                    <button type="button" 
+                            class="btn btn-outline btn-primary w-full text-lg"
+                            onclick="document.getElementById('freeItems').classList.toggle('hidden')">
+                        Free Items Included
+                    </button>
+                    
+                    <a href="{{ route('bookings.form', ['room_id' => $room->room_id]) }}" class="btn btn-success flex text-lg w-42">
+                        Book Now!
+                    </a>
 
-            <!-- Free Items Button + Collapse -->
-<div class="mt-6">
-    <button type="button" 
-            class="btn btn-outline btn-primary w-full text-lg"
-            onclick="document.getElementById('freeItems').classList.toggle('hidden')">
-        Free Items Included
-    </button>
+                    <!-- Hidden list toggled by button -->
+                    <div id="freeItems" class="hidden mt-4 bg-gray-100 rounded-lg p-4">
+                        <ul class="list-disc list-inside text-gray-700 text-lg">
+                            @foreach($room->free_items as $item)
+                                <li>{{ $item }}</li>
+                            @endforeach
+                        </ul>
 
-    <!-- Hidden list toggled by button -->
-    <div id="freeItems" class="hidden mt-4 bg-gray-100 rounded-lg p-4">
-        <ul class="list-disc list-inside text-gray-700 text-lg">
-            @foreach($room->free_items as $item)
-                <li>{{ $item }}</li>
-            @endforeach
-        </ul>
+                    </div>
+                </div>
+            </div>
+    
 
         </div>
-    </div>
-</div>
 </div>
 
 <!-- Room Interior Images Card -->

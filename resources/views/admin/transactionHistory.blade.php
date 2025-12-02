@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management</title>
+    <title>Transaction History</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -130,51 +130,43 @@
     </div>
 
     <div class="max-w-7xl mx-auto py-12 px-6 sm:px-8">
-        <h1 class="text-4xl font-extrabold text-gray-800 mb-8 border-b pb-4">User Management</h1>
+        <h1 class="text-4xl font-extrabold text-gray-800 mb-8 border-b pb-4">Transaction History</h1>
 
         <div class="bg-white shadow-xl rounded-lg overflow-hidden">
             <div class="overflow-x-auto w-full">
                 <table class="table w-full text-base">
                     <thead class="bg-gray-100 text-gray-600 uppercase tracking-wider">
                         <tr>
-                            <th class="py-4 px-6 font-semibold">ID</th>
-                            <th class="py-4 px-6 font-semibold">Username</th>
-                            <th class="py-4 px-6 font-semibold">Email</th>
-                            <th class="py-4 px-6 font-semibold">Role</th>
-                            <th class="py-4 px-6 font-semibold text-center">Actions</th>
+                            <th class="py-4 px-4 font-semibold text-left">Booker Name</th>
+                            <th class="py-4 px-4 font-semibold text-left">Room Type</th>
+                            <th class="py-4 px-4 font-semibold text-right">Price/Night</th>
+                            <th class="py-4 px-4 font-semibold text-right">Days Booked</th>
+                            <th class="py-4 px-4 font-semibold text-center">Start Date</th>
+                            <th class="py-4 px-4 font-semibold text-center">End Date</th>
+                            <th class="py-4 px-4 font-semibold text-right">Calculated Total</th>
+                            <th class="py-4 px-4 font-semibold text-right">Price Paid</th>
                         </tr>
                     </thead>
                     
                     <tbody>
-                        @foreach ($users as $user)
+                        @foreach ($transactions as $transaction)
                             <tr class="hover:bg-gray-50 border-b border-gray-200 transition duration-150">
-                                @if ($user->role === 'admin' )
-                                    <th class="py-4 px-6 font-medium">{{ $user->id }}</th>
-                                    <td class="py-4 px-6">{{ $user->name }}</td>
-                                    <td class="py-4 px-6">{{ $user->email }}</td>
-                                    <td class="py-4 px-6">
-                                        <span class="badge badge-lg bg-primary-blue text-white font-bold">{{ $user->role }}</span>
-                                    </td>
-                                    <td class="py-4 px-6 text-center text-gray-400">
-                                        (Protected)
-                                    </td>
-                                @else
-                                    <th class="py-4 px-6 font-medium">{{ $user->id }}</th>
-                                    <td class="py-4 px-6">{{ $user->name }}</td>
-                                    <td class="py-4 px-6">{{ $user->email }}</td>
-                                    <td class="py-4 px-6">
-                                        <span class="badge badge-lg badge-neutral font-bold">{{ $user->role }}</span>
-                                    </td>
-                                    <td class="py-4 px-6 flex justify-center gap-3">
-                                        <form action="/admin/updateUser/{{ $user->id }}" method="GET">
-                                            <button class="btn bg-primary-blue hover:bg-primary-dark border-none text-white btn-sm">Edit</button>
-                                        </form>
-                                        <form action="/admin/deleteUser/{{ $user->id }}" method="POST" 
-                                            onsubmit="return confirm('Are you absolutely sure you want to delete the user: {{ $user->name }}?');">
-                                            @csrf
-                                            <button class="btn btn-outline btn-error btn-sm">Delete</button>
-                                        </form>
-                                    </td>
+                                @php
+                                    // Calculate total for comparison (assuming booker->num_days is defined)
+                                    $calculated_total = $transaction->room->room_price * $transaction->booker->num_days;
+                                @endphp
+
+                                @if ($calculated_total <= $transaction->price_paid)
+                                    <td class="py-4 px-4 font-medium text-left">{{ $transaction->booker->name }}</td>
+                                    <td class="py-4 px-4 text-left">{{ $transaction->room->room_type }}</td>
+                                    <td class="py-4 px-4 text-right">${{ number_format($transaction->room->room_price, 2) }}</td>
+                                    <td class="py-4 px-4 text-right">{{ $transaction->booker->num_days }}</td>
+                                    <td class="py-4 px-4 text-center">{{ $transaction->book_date }}</td>
+                                    <td class="py-4 px-4 text-center">{{ $transaction->end_date }}</td>
+                                    <td class="py-4 px-4 font-bold text-right text-primary-blue">${{ number_format($calculated_total, 2) }}</td>
+                                    <td class="py-4 px-4 font-bold text-right text-green-600">${{ number_format($transaction->price_paid, 2) }}</td>
+                                    
+                                    
                                 @endif
                             </tr>
                         @endforeach
@@ -182,7 +174,6 @@
                 </table>
             </div>
         </div>
-        
     </div>
 
 </body>

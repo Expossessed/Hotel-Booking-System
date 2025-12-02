@@ -12,6 +12,12 @@ class TransactionsController extends Controller
         return view('admin.viewTransactions', compact('transactions'));
     }
 
+    public function transactionHistory()
+    {
+        $transactions = Transactions::all();
+        return view('admin.transactionHistory', compact('transactions'));
+    }
+
     public function storeTransaction(Request $request)
     {
         $request->validate([

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Bookie | World Class Accommodation</title>
+    <title>Hotel Bookie | View All Rooms & Suites</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
@@ -54,14 +54,15 @@
             background: #312620;
             border: 1px solid rgba(255, 255, 255, 0.15);
         }
-
-
-        /* 3. Hero Section Split Screen */
-        .hero-split-left {
-            background-color: var(--color-dark-brown);
+        
+        /* Input Focus State for Dark Theme */
+        .input:focus, .select:focus {
+            border-color: var(--color-accent-orange) !important;
+            box-shadow: 0 0 0 2px var(--color-accent-orange);
+            outline: none;
         }
 
-        /* 4. Accent Button Style (Orange/Brown) */
+        /* 3. Accent Button Style (Orange/Brown) */
         .btn-accent-color {
             background-color: var(--color-accent-orange);
             border-color: var(--color-accent-orange);
@@ -82,7 +83,7 @@
             color: white;
         }
 
-        /* 5. Room Card Styling for scrolling content */
+        /* 4. Room Card Styling for scrolling content */
         .room-card-style {
             background-color: rgba(0, 0, 0, 0.3); /* Darker card background for contrast */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -97,18 +98,21 @@
 </head>
 <body class="relative">
 
+<!-- ========================================================= -->
+<!-- NAVBAR (Copied from original file) -->
+<!-- ========================================================= -->
 <div class="navbar navbar-top px-4 md:px-12 py-3 sticky top-0 z-50 shadow-lg">
     
     <div class="flex-1">
-        <a href="{{ route('home') }}" class="text-xl md:text-2xl font-extrabold tracking-widest text-white">
+        <a href="{{ route('rooms.list') }}" class="text-xl md:text-2xl font-extrabold tracking-widest text-white">
             HOTEL BOOKIE
         </a>
     </div>
 
     <div class="flex-none">
         <ul class="menu menu-horizontal p-0 hidden md:flex gap-6 navbar-menu text-lg">
-            <li><a href="{{ route('home') }}">Home</a></li>
-            <li><a href="{{ route('rooms.list') }}">Rooms</a></li>
+            <li><a href="{{ route('rooms.list') }}">Home</a></li>
+            <li><a href="{{ route('rooms') }}">Rooms</a></li>
             <li><a href="{{ route('about') }}">About</a></li>
             <li><a href="{{ route('contact') }}">Contact</a></li>
         </ul>
@@ -149,8 +153,9 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content z-[1] p-2 shadow-xl rounded-box w-52 mt-3 profile-dropdown-content">
+                <!-- Corrected mobile navigation links -->
                 <li><a href="{{ route('rooms.list') }}">Home</a></li>
-                <li><a href="{{ route('rooms.list') }}">Rooms</a></li>
+                <li><a href="{{ route('rooms') }}">Rooms</a></li>
                 <li><a href="{{ route('about') }}">About</a></li>
                 <li><a href="{{ route('contact') }}">Contact</a></li>
                 @auth
@@ -171,65 +176,48 @@
     </div>
 </div>
 
-<header class="relative w-full h-[80vh] flex">
-    
-    <div class="hero-split-left w-full lg:w-1/2 flex items-center justify-center p-10 md:p-16">
-        <div class="max-w-xl text-left">
-            <h1 class="text-5xl md:text-6xl font-serif font-bold leading-tight text-white mb-6">
-                World Class Accommodation
-            </h1>
-            <p class="text-lg text-white/80 mb-8 max-w-sm">
-                Discover a hotel that defines a new dimension of luxury.
-            </p>
-            <a href="{{ route('about') }}" class="btn btn-accent-color btn-lg px-10 rounded-none text-base font-semibold">
-                View More
-            </a>
-        </div>
-    </div>
-    <div class="hidden lg:block w-1/2">
-        <img src="https://tse1.mm.bing.net/th/id/OIP.L2Cxp3TdbaRTwyckzEJE3wHaEo?w=2560&h=1600&rs=1&pid=ImgDetMain&o=7&rm=3"
-             alt="Luxury Hotel Room"
-             class="w-full h-full object-cover">
-    </div>
-</header>
-
-
+<!-- ========================================================= -->
+<!-- MAIN CONTENT: Search, Filter, and Room Grid -->
+<!-- ========================================================= -->
 <main class="px-4 md:px-6 py-16 bg-white/5">
 
     <section class="max-w-6xl mx-auto mb-16">
-        <h2 class="text-4xl font-serif font-normal text-white mb-2">
-            Available Rooms & Suites
-        </h2>
-        <p class="text-white/70 mb-8">Discover a hotel that defines a new dimension of luxury.</p>
+        <h1 class="text-5xl font-serif font-bold text-white mb-2">
+            Browse All Rooms & Suites
+        </h1>
+        <p class="text-white/70 mb-8 text-lg">Find your perfect stay by searching dates or applying filters below.</p>
         
-        <div class="p-8 grid gap-6 md:grid-cols-4 items-end bg-black/40 rounded-lg shadow-2xl">
+        <!-- Search Form -->
+        <form action="" method="GET" class="p-8 grid gap-6 md:grid-cols-4 items-end bg-black/40 rounded-lg shadow-2xl">
             <div>
-                <label class="text-sm font-light text-white/80 block mb-1">Check-in</label>
-                <input type="date" class="input input-bordered w-full bg-white/10 text-white border-white/30 rounded-none" />
+                <label for="check_in" class="text-sm font-light text-white/80 block mb-1">Check-in</label>
+                <input type="date" id="check_in" name="check_in" class="input input-bordered w-full bg-white/10 text-white border-white/30 rounded-none" />
             </div>
             <div>
-                <label class="text-sm font-light text-white/80 block mb-1">Check-out</label>
-                <input type="date" class="input input-bordered w-full bg-white/10 text-white border-white/30 rounded-none" />
+                <label for="check_out" class="text-sm font-light text-white/80 block mb-1">Check-out</label>
+                <input type="date" id="check_out" name="check_out" class="input input-bordered w-full bg-white/10 text-white border-white/30 rounded-none" />
             </div>
             <div>
-                <label class="text-sm font-light text-white/80 block mb-1">Guests</label>
-                <select class="select select-bordered w-full bg-white/10 text-white border-white/30 rounded-none">
-                    <option>1 guest</option>
-                    <option>2 guests</option>
-                    <option>3 guests</option>
-                    <option>4+ guests</option>
+                <label for="guests" class="text-sm font-light text-white/80 block mb-1">Guests</label>
+                <select id="guests" name="guests" class="select select-bordered w-full bg-white/10 text-white border-white/30 rounded-none">
+                    <option value="1">1 guest</option>
+                    <option value="2" selected>2 guests</option>
+                    <option value="3">3 guests</option>
+                    <option value="4">4+ guests</option>
                 </select>
             </div>
             <div class="mt-4 md:mt-0">
-                <button class="btn btn-accent-color btn-md w-full rounded-none font-semibold">
+                <button type="submit" class="btn btn-accent-color btn-md w-full rounded-none font-semibold">
                     Search
                 </button>
             </div>
-        </div>
+        </form>
 
+        <!-- Filters and Sorting -->
         <div class="mt-8 flex items-center gap-4 flex-wrap">
-            <span class="text-md font-semibold text-white/90">Filter by:</span>
+            <span class="text-md font-semibold text-white/90">Filter & Sort:</span>
             <div class="btn-group shadow-lg">
+                <!-- Note: The variables $currentFilter and $currentSort are assumed to be passed to this view -->
                 <a href="{{ route('rooms.list') }}" class="btn btn-sm btn-outline-accent text-white hover:bg-accent-orange {{ empty($currentFilter) && empty($currentSort) ? 'bg-accent-orange/30' : '' }} rounded-none">All</a>
                 <a href="{{ route('rooms.list', ['filter' => 'available']) }}" class="btn btn-sm btn-outline-accent text-white hover:bg-accent-orange {{ ($currentFilter ?? null) === 'available' ? 'bg-accent-orange/30' : '' }} rounded-none">Available</a>
                 <a href="{{ route('rooms.list', ['sort' => 'price_low']) }}" class="btn btn-sm btn-outline-accent text-white hover:bg-accent-orange {{ ($currentSort ?? null) === 'price_low' ? 'bg-accent-orange/30' : '' }} rounded-none">Price Low</a>
@@ -238,9 +226,11 @@
         </div>
     </section>
 
+    <!-- Room Grid Listing -->
     <section class="max-w-6xl mx-auto rooms-grid">
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            @if ($rooms->isEmpty())
+            @if (empty($rooms)) 
+                <!-- Using empty() check since $rooms might be null or an empty collection -->
                 <div class="p-10 text-center col-span-full bg-black/40 rounded-lg">
                     <h2 class="text-3xl font-semibold text-red-400">No Rooms Found</h2>
                     <p class="text-gray-300 mt-2">Try adjusting your search dates or filters.</p>
@@ -248,7 +238,10 @@
             @else
                 @foreach ($rooms as $room)
                     <div class="shadow-xl rounded-lg overflow-hidden flex flex-col room-card-style">
-                        <img src="{{ $room->image_link }}" class="w-full h-52 object-cover transition duration-300" alt="Room Image">
+                        <!-- Placeholder Image URL - Replace with actual URL in production -->
+                        <img src="{{ $room->image_link ?? 'https://placehold.co/600x400/3C2A21/F7F7F7?text=Room+Image' }}" 
+                            class="w-full h-52 object-cover transition duration-300" 
+                            alt="{{ $room->room_name }}">
 
                         <div class="p-6 flex flex-col h-full">
                             
@@ -257,21 +250,21 @@
                                     {{ $room->room_name }}
                                 </h3>
                                 
-                                @if (!$room->is_available)
+                                @if (!($room->is_available ?? true)) 
                                     <span class="badge badge-error text-xs p-3 font-semibold text-white rounded-none">Sold Out</span>
                                 @else
                                     <span class="badge badge-success text-xs p-3 font-semibold text-white rounded-none">Available</span>
                                 @endif
                             </div>
 
-
-                            <p class="text-gray-300 mb-4 line-clamp-3 text-sm">{{ $room->room_desc }}</p>
+                            <p class="text-gray-300 mb-4 line-clamp-3 text-sm">{{ $room->room_desc ?? 'A luxurious room featuring all modern amenities and breathtaking views.' }}</p>
 
                             <div class="flex justify-between items-center mt-auto border-t border-white/10 pt-4">
-                                <span class="text-2xl font-extrabold text-white">${{ $room->room_price }}</span>
+                                <span class="text-2xl font-extrabold text-white">${{ $room->room_price ?? '299' }}</span>
                                 <div class="flex gap-3">
                                     <a href="{{ route('rooms.view', ['id' => $room->room_id]) }}" class="btn btn-outline btn-sm text-white rounded-none hover:bg-white/10 border-white/40">Details</a>
-                                    <a href="{{ route('bookings.form', ['room_id' => $room->room_id]) }}" class="btn btn-accent-color btn-sm rounded-none {{ !$room->is_available ? 'btn-disabled opacity-50' : '' }}">
+                                    <a href="{{ route('bookings.form', ['room_id' => $room->room_id]) }}" 
+                                       class="btn btn-accent-color btn-sm rounded-none {{ !($room->is_available ?? true) ? 'btn-disabled opacity-50' : '' }}">
                                         Reserve
                                     </a>
                                 </div>

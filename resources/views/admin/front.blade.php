@@ -91,7 +91,7 @@
 
             <div class="flex-none">
                 <ul class="menu menu-horizontal gap-4 text-base font-semibold text-gray-700">
-                    <li><a class="hover:text-primary-blue px-3">Home</a></li>
+                    <li><a class="hover:text-primary-blue px-3" href="home">Home</a></li>
                     <li>
                         <details class="dropdown dropdown-end">
                             <summary class="hover:text-primary-blue px-3 cursor-pointer">Views</summary>
@@ -99,7 +99,7 @@
                                 <li><a href="viewbookings" class="hover:bg-gray-100 py-2">View Pending Bookings</a></li>
                                 <li><a href="history" class="hover:bg-gray-100 py-2">View Booking History</a></li>
                                 <li><a href="viewtransactions" class="hover:bg-gray-100 py-2">View Pending Transactions</a></li>
-                                <li><a href="" class="hover:bg-gray-100 py-2">View Transaction History</a></li>
+                                <li><a href="transactionHistory" class="hover:bg-gray-100 py-2">View Transaction History</a></li>
                                 <li><a href="viewUser" class="hover:bg-gray-100 py-2">View Users</a></li>
                             </ul>
                         </details>
@@ -158,7 +158,7 @@
                         <div class="flex items-center justify-between mb-2">
                             <h2 class="text-2xl font-bold text-gray-800">{{ $room->room_name }}</h2>
                             @if (!$room->is_available)
-                                <span class="badge badge-error text-xs p-3 font-semibold text-white">Unavailable</span>
+                                <span class="badge badge-warning text-xs p-3 font-semibold text-white">Unavailable</span>
                             @else
                                 <span class="badge badge-success text-xs p-3 font-semibold text-white">Available</span>
                             @endif
@@ -175,9 +175,12 @@
                                 <button class="btn w-full bg-primary-blue hover:bg-primary-dark border-none text-white font-bold">View Details</button>
                             </form>
                             
+                            <form action="/admin/reviews/{{ $room->room_id }}" method="GET" class="flex-1">
+                                    <button class="btn btn-outline btn-warning btn-sm w-full">View Reviews</button>
+                            </form>
                             <div class="flex justify-between w-full gap-2">
                                 <form action="/admin/edit/{{ $room->room_id }}" method="GET" class="flex-1">
-                                    <button class="btn btn-outline btn-warning btn-sm w-full">Edit</button>
+                                    <button class="btn btn-outline btn-blue btn-sm w-full">Edit</button>
                                 </form>
                                 <form action="/admin/delete/{{ $room->room_id }}" method="POST" class="flex-1"
                                         onsubmit="return confirm('Are you sure you want to delete this room?');">
