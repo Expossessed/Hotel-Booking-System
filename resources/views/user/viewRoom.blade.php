@@ -1,15 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Booking</title>
+    <title>Hotel Bookie | Room Details</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
     <style>
-        /* Make non-editable form controls non-interactive on this page */
+        /* 🎨 CUSTOM STYLING: Dark Brown & Orange Theme */
+
+        /* Define Core Colors */
+        :root {
+            --color-dark-brown: #3C2A21; /* Rich dark brown for background/side panel */
+            --color-accent-orange: #C45B3A; /* Reddish-orange accent (like the button/bed runner) */
+            --color-text-light: #F7F7F7; /* Near-white for text */
+        }
+
+        /* 1. Reset Body Background */
+        body {
+            background-color: var(--color-dark-brown);
+            min-height: 100vh;
+            color: var(--color-text-light);
+            font-family: sans-serif;
+        }
+        
+        /* 2. NAVBAR Styling */
+        .navbar-top {
+            /* Using a slightly darker shade for the fixed bar */
+            background-color: #312620; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar-menu a {
+            color: var(--color-text-light);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .navbar-menu a:hover {
+            color: var(--color-accent-orange);
+        }
+
+        /* 3. Accent Button Style (Orange/Brown) */
+        .btn-accent-color {
+            background-color: var(--color-accent-orange);
+            border-color: var(--color-accent-orange);
+            color: var(--color-text-light);
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .btn-accent-color:hover {
+            background-color: #A94E31; 
+            border-color: #A94E31;
+        }
+        .btn-outline-accent {
+            color: var(--color-accent-orange);
+            border-color: var(--color-accent-orange);
+        }
+        .btn-outline-accent:hover {
+            background-color: var(--color-accent-orange);
+            color: white;
+        }
+
+        /* 4. Main Card/Container Styling (Used for Room Info and Reviews) */
+        .dark-card {
+            background-color: #312620; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--color-text-light);
+        }
+        .dark-card-inner {
+            background-color: #3C2A21; /* Slightly darker than the card for contrast */
+        }
+
+        /* Utility classes from previous styles */
         input[readonly],
         textarea[readonly],
         input:disabled,
@@ -18,7 +82,6 @@
             cursor: default;
             caret-color: transparent;
         }
-        /* Disable caret / text selection for non-input text on this page */
         body {
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -33,253 +96,252 @@
     </style>
 </head>
 
-<body class="bg-gray-100 min-h-screen">
+<body class="relative">
 
-    <!-- Navbar -->
-    <nav class="navbar shadow-md bg-white px-6 py-3 sticky top-0 z-50 flex justify-between items-center">
-        <a href="{{ auth()->check() ? (auth()->user()->isAdmin() ? route('admin.front') : route('rooms.list')) : route('home') }}" class="text-3xl font-bold text-primary">HOTEL BOOKIE</a>
-        <ul class="menu menu-horizontal gap-6 text-lg font-medium">
+    <nav class="navbar navbar-top px-4 md:px-12 py-3 sticky top-0 z-50 shadow-lg flex justify-between items-center">
+        <a href="{{ auth()->check() ? (auth()->user()->isAdmin() ? route('admin.front') : route('rooms.list')) : route('home') }}" 
+           class="text-3xl md:text-2xl font-extrabold tracking-widest text-white">
+            HOTEL BOOKIE
+        </a>
+        <ul class="menu menu-horizontal gap-6 text-lg font-medium hidden md:flex navbar-menu">
             @auth
                 @if(auth()->user()->isAdmin())
-                    <li><a href="{{ route('admin.front') }}" class="text-primary font-bold">Home</a></li>
-                    <li><a href="{{ route('admin.history') }}" class="hover:text-primary">History</a></li>
-                    <li><a href="{{ route('admin.createRoom') }}" class="hover:text-primary">Add</a></li>
+                    <li><a href="{{ route('admin.front') }}" class="text-white hover:text-accent-orange">Home</a></li>
+                    <li><a href="{{ route('admin.history') }}" class="hover:text-accent-orange">History</a></li>
+                    <li><a href="{{ route('admin.createRoom') }}" class="hover:text-accent-orange">Add Room</a></li>
                 @else
-                    <li><a href="{{ route('rooms.list') }}" class="text-primary font-bold">Home</a></li>
-                    <li><a href="{{ route('bookings.history') }}" class="hover:text-primary">History</a></li>
+                    <li><a href="{{ route('rooms.list') }}" class="text-white hover:text-accent-orange">Home</a></li>
+                    <li><a href="{{ route('bookings.history') }}" class="hover:text-accent-orange">My Bookings</a></li>
                 @endif
             @else
-                <li><a href="{{ route('home') }}" class="text-primary font-bold">Home</a></li>
+                <li><a href="{{ route('home') }}" class="text-white hover:text-accent-orange">Home</a></li>
             @endauth
         </ul>
         @auth
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="btn btn-primary btn-sm">Logout</button>
+                <button type="submit" class="btn btn-sm btn-outline-accent rounded-none">Logout</button>
             </form>
         @else
-            <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Login</a>
+            <a href="{{ route('login') }}" class="btn btn-sm btn-accent-color rounded-none">Login</a>
         @endauth
     </nav>
 
     @if(session('success'))
         <script>
-            // show a SweetAlert modal for success messages
             document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Success',
+                    title: 'Success!',
                     text: "{{ session('success') }}",
                     timer: 2500,
-                    showConfirmButton: false
+                    showConfirmButton: false,
+                    // Apply custom dark styling to SweetAlert
+                    customClass: {
+                        popup: 'bg-[#312620] text-white rounded-none border border-green-400',
+                        title: 'text-white',
+                        content: 'text-green-300'
+                    },
+                    background: '#312620', // Dark background
                 });
             });
         </script>
     @endif
 
-    <!-- Room Details Card -->
-<div class="container mx-auto py-12 px-4">
-    <h1 class="text-5xl md:text-6xl font-bold text-center text-black mb-12">Room Details</h1>
+    <div class="container mx-auto py-12 px-4">
+        <h1 class="text-5xl md:text-6xl font-bold text-center text-white mb-12">Room Details</h1>
 
-<div class="flex flex-col lg:flex-row gap-12 items-start bg-white shadow-xl rounded-xl p-8">
+        <div class="flex flex-col lg:flex-row gap-12 items-start dark-card shadow-2xl rounded-xl p-8">
 
-        
-        <!-- Room Image (kept as is) -->
-        <div class="w-full lg:w-1/2">
-            <img src="{{ $room->image_link }}" 
-                 alt="{{ $room->room_name }}" 
-                 class="rounded-xl shadow-md w-full object-cover h-[400px]">
-        </div>
+            <div class="w-full lg:w-1/2">
+                <img src="{{ $room->image_link }}" 
+                    alt="{{ $room->room_name }}" 
+                    class="rounded-xl shadow-md w-full object-cover h-[400px]">
+            </div>
 
-        <!-- Room Info -->
-        <div class="w-full lg:w-1/2 flex flex-col justify-between gap-8">
-            
-            <div>
-                <h2 class="text-4xl md:text-5xl font-bold text-primary mb-2">
-                    {{ $room->room_name }}
-                </h2>
-                <h3 class="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
-                    ${{ $room->room_price }}/Night
-                </h3>
+            <div class="w-full lg:w-1/2 flex flex-col justify-between gap-8">
+                
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-serif text-accent-orange mb-2 tracking-wide">
+                        {{ $room->room_name }}
+                    </h2>
+                    <h3 class="text-2xl md:text-3xl font-semibold text-white/90 mb-4">
+                        <span class="text-accent-orange">${{ $room->room_price }}</span>/Night
+                    </h3>
 
-                <!-- Average Rating -->
-                <div class="flex items-center mb-4">
-                    @php $avg = $averageRating ?? 0; $full = floor($avg); @endphp
-                    <div class="text-yellow-500 mr-3">
-                        @for ($i = 0; $i < $full; $i++)
-                            <span class="text-2xl">&#9733;</span>
-                        @endfor
-                        @for ($i = $full; $i < 5; $i++)
-                            <span class="text-gray-300 text-2xl">&#9733;</span>
-                        @endfor
+                    <div class="flex items-center mb-4">
+                        @php $avg = $averageRating ?? 0; $full = floor($avg); @endphp
+                        <div class="text-yellow-400 mr-3">
+                            @for ($i = 0; $i < $full; $i++)
+                                <span class="text-3xl">&#9733;</span>
+                            @endfor
+                            @for ($i = $full; $i < 5; $i++)
+                                <span class="text-gray-600 text-3xl">&#9733;</span>
+                            @endfor
+                        </div>
+                        <span class="ml-2 text-white/70 text-lg">({{ $averageRating }}/5)</span>
                     </div>
-                    <span class="ml-2 text-gray-600 text-lg">({{ $averageRating }}/5)</span>
-                </div>
-                <!-- Room Description -->
-                <p class="text-lg md:text-xl text-black-700 font-bold">
-                    {{ strtoupper($room->room_type) }}
-                </p>
-                <p class="text-lg md:text-xl text-gray-500">
-                    {{ $room->room_desc }}
-                </p>
-                    <!-- Free Items Button + Collapse -->
-                <div class="mt-6 flex flex-col gap-2 ">
-                    <a href="{{ route('reviews.createReview', ['room_name' => $room->room_name]) }}" class="btn btn-primary flex text-lg w-42">
-                        Add a Review
-                    </a>
-                    <button type="button" 
-                            class="btn btn-outline btn-primary w-full text-lg"
-                            onclick="document.getElementById('freeItems').classList.toggle('hidden')">
-                        Free Items Included
-                    </button>
-                    
-                    <a href="{{ route('bookings.form', ['room_id' => $room->room_id]) }}" class="btn btn-success flex text-lg w-42">
-                        Book Now!
-                    </a>
 
-                    <!-- Hidden list toggled by button -->
-                    <div id="freeItems" class="hidden mt-4 bg-gray-100 rounded-lg p-4">
-                        <ul class="list-disc list-inside text-gray-700 text-lg">
-                            @foreach($room->free_items as $item)
-                                <li>{{ $item }}</li>
-                            @endforeach
-                        </ul>
+                    <p class="text-lg md:text-xl text-white font-bold">
+                        {{ strtoupper($room->room_type) }}
+                    </p>
+                    <p class="text-lg md:text-xl text-white/70 mt-1">
+                        {{ $room->room_desc }}
+                    </p>
 
+                    <div class="mt-8 flex flex-col gap-4">
+                        
+                        <a href="{{ route('reviews.createReview', ['room_name' => $room->room_name]) }}" 
+                           class="btn btn-outline-accent btn-lg w-full text-lg rounded-none">
+                            Add a Review
+                        </a>
+                        
+                        <a href="{{ route('bookings.form', ['room_id' => $room->room_id]) }}" 
+                           class="btn btn-accent-color btn-lg w-full text-xl rounded-none font-semibold">
+                            Book Now!
+                        </a>
+
+                        <button type="button" 
+                                class="btn btn-ghost text-white/80 hover:bg-white/10 w-full text-lg rounded-none"
+                                onclick="document.getElementById('freeItems').classList.toggle('hidden')">
+                            Free Items Included (Click to Toggle)
+                        </button>
+
+                        <div id="freeItems" class="hidden mt-2 dark-card-inner rounded-lg p-4">
+                            <ul class="list-disc list-inside text-white/80 text-lg">
+                                @foreach($room->free_items as $item)
+                                    <li>{{ $item }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-    
-
-        </div>
-</div>
-
-<!-- Room Interior Images Card -->
-<div class="container mx-auto py-12 px-4">
-    <h2 class="text-4xl font-bold text-center text-black mb-8">Inside the Room</h2>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Image 1 -->
-        <div class="bg-white shadow-lg rounded-xl overflow-hidden">
-            <img src="{{ $room->room_image1 }}" 
-                 alt="Room Interior 1" 
-                 class="w-full h-64 object-cover">
-            <div class="p-4">
-                <p class="text-gray-700">Cozy bedroom with modern furniture.</p>
-            </div>
-        </div>
-
-        <!-- Image 2 -->
-        <div class="bg-white shadow-lg rounded-xl overflow-hidden">
-            <img src="{{ $room->room_image2 }}" 
-                 alt="Room Interior 2" 
-                 class="w-full h-64 object-cover">
-            <div class="p-4">
-                <p class="text-gray-700">Spacious bathroom with elegant design.</p>
-            </div>
-        </div>
-
-        <!-- Image 3 -->
-        <div class="bg-white shadow-lg rounded-xl overflow-hidden">
-            <img src="{{ $room->room_image3 }}" 
-                 alt="Room Interior 3" 
-                 class="w-full h-64 object-cover">
-            <div class="p-4">
-                <p class="text-gray-700">Beautiful view from the balcony.</p>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Reviews List -->
-<div class="container mx-auto py-8 px-4">
-    <h2 class="text-3xl font-bold text-center mb-6">Guest Reviews</h2>
+    <div class="container mx-auto py-12 px-4">
+        <h2 class="text-4xl font-bold text-center text-white mb-8">Inside the Room</h2>
 
-    @php
-        $reviews = $room->reviews ?? collect();
-        $totalReviews = $reviews->count();
-        $initialReviews = $reviews->slice(0, 10);
-        $extraReviews = $reviews->slice(10);
-    @endphp
-
-    @if($reviews->isEmpty())
-        <p class="text-gray-600 text-center">No reviews yet — be the first to leave one!</p>
-    @else
-        <div class="space-y-4 max-w-3xl mx-auto" id="reviews-list">
-            @foreach($initialReviews as $review)
-                <div class="bg-white p-4 rounded-lg shadow-md review-item">
-                    <div class="flex items-center justify-between mb-2">
-                        <div>
-                            <strong class="text-gray-800">{{ $review->user?->name ?? 'Guest' }}</strong>
-                            <div class="text-yellow-500 inline-block ml-3">
-                                @for ($i = 0; $i < $review->rating; $i++)
-                                    &#9733;
-                                @endfor
-                                @for ($i = $review->rating; $i < 5; $i++)
-                                    &#9734;
-                                @endfor
-                            </div>
-                        </div>
-                        <div class="text-sm text-gray-500">{{ $review->created_at->format('F j, Y') }}</div>
-                    </div>
-                    <p class="text-gray-700">{{ $review->comment }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="dark-card shadow-lg rounded-xl overflow-hidden">
+                <img src="{{ $room->room_image1 }}" 
+                    alt="Room Interior 1" 
+                    class="w-full h-64 object-cover transition duration-300 hover:scale-[1.02]">
+                <div class="p-4">
+                    <p class="text-white/80">Cozy bedroom with modern furniture.</p>
                 </div>
-            @endforeach
+            </div>
 
-            @if($extraReviews->isNotEmpty())
-                <div id="extra-reviews" style="display:none;" class="space-y-4 mt-4">
-                    @foreach($extraReviews as $review)
-                        <div class="bg-white p-4 rounded-lg shadow-md review-item">
-                            <div class="flex items-center justify-between mb-2">
-                                <div>
-                                    <strong class="text-gray-800">{{ $review->user?->name ?? 'Guest' }}</strong>
-                                    <div class="text-yellow-500 inline-block ml-3">
-                                        @for ($i = 0; $i < $review->rating; $i++)
-                                            &#9733;
-                                        @endfor
-                                        @for ($i = $review->rating; $i < 5; $i++)
-                                            &#9734;
-                                        @endfor
-                                    </div>
-                                </div>
-                                <div class="text-sm text-gray-500">{{ $review->created_at->format('F j, Y') }}</div>
-                            </div>
-                            <p class="text-gray-700">{{ $review->comment }}</p>
-                        </div>
-                    @endforeach
+            <div class="dark-card shadow-lg rounded-xl overflow-hidden">
+                <img src="{{ $room->room_image2 }}" 
+                    alt="Room Interior 2" 
+                    class="w-full h-64 object-cover transition duration-300 hover:scale-[1.02]">
+                <div class="p-4">
+                    <p class="text-white/80">Spacious bathroom with elegant design.</p>
                 </div>
+            </div>
 
-                <div class="text-center mt-6">
-                    <button id="toggle-reviews-btn" data-hidden-count="{{ $extraReviews->count() }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                        Show more ({{ $extraReviews->count() }} more)
-                    </button>
+            <div class="dark-card shadow-lg rounded-xl overflow-hidden">
+                <img src="{{ $room->room_image3 }}" 
+                    alt="Room Interior 3" 
+                    class="w-full h-64 object-cover transition duration-300 hover:scale-[1.02]">
+                <div class="p-4">
+                    <p class="text-white/80">Beautiful view from the balcony.</p>
                 </div>
-            @endif
+            </div>
         </div>
-    @endif
+    </div>
 
-    @if($extraReviews->isNotEmpty())
-        <script>
-            (function(){
-                const btn = document.getElementById('toggle-reviews-btn');
-                const extra = document.getElementById('extra-reviews');
-                let shown = false;
-                if(!btn || !extra) return;
-                btn.addEventListener('click', function(){
-                    shown = !shown;
-                    if(shown) {
-                        extra.style.display = '';
-                        btn.textContent = 'Show less';
-                    } else {
-                        extra.style.display = 'none';
-                        btn.textContent = 'Show more (' + btn.dataset.hiddenCount + ' more)';
-                        // scroll back up to the first hidden review
-                        window.scrollTo({ top: extra.getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
-                    }
-                });
-            })();
-        </script>
-    @endif
-</div>
+    <div class="container mx-auto py-8 px-4">
+        <h2 class="text-3xl font-bold text-center text-white mb-6">Guest Reviews</h2>
+
+        @php
+            $reviews = $room->reviews ?? collect();
+            $totalReviews = $reviews->count();
+            $initialReviews = $reviews->slice(0, 10);
+            $extraReviews = $reviews->slice(10);
+        @endphp
+
+        @if($reviews->isEmpty())
+            <p class="text-white/60 text-center">No reviews yet — be the first to leave one!</p>
+        @else
+            <div class="space-y-4 max-w-3xl mx-auto" id="reviews-list">
+                @foreach($initialReviews as $review)
+                    <div class="dark-card p-4 rounded-lg shadow-md review-item">
+                        <div class="flex items-center justify-between mb-2">
+                            <div>
+                                <strong class="text-white">{{ $review->user?->name ?? 'Guest' }}</strong>
+                                <div class="text-yellow-400 inline-block ml-3">
+                                    @for ($i = 0; $i < $review->rating; $i++)
+                                        &#9733;
+                                    @endfor
+                                    @for ($i = $review->rating; $i < 5; $i++)
+                                        <span class="text-gray-600">&#9734;</span>
+                                    @endfor
+                                </div>
+                            </div>
+                            <div class="text-sm text-white/50">{{ $review->created_at->format('F j, Y') }}</div>
+                        </div>
+                        <p class="text-white/80">{{ $review->comment }}</p>
+                    </div>
+                @endforeach
+
+                @if($extraReviews->isNotEmpty())
+                    <div id="extra-reviews" style="display:none;" class="space-y-4 mt-4">
+                        @foreach($extraReviews as $review)
+                            <div class="dark-card p-4 rounded-lg shadow-md review-item">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div>
+                                        <strong class="text-white">{{ $review->user?->name ?? 'Guest' }}</strong>
+                                        <div class="text-yellow-400 inline-block ml-3">
+                                            @for ($i = 0; $i < $review->rating; $i++)
+                                                &#9733;
+                                            @endfor
+                                            @for ($i = $review->rating; $i < 5; $i++)
+                                                <span class="text-gray-600">&#9734;</span>
+                                            @endfor
+                                        </div>
+                                    </div>
+                                    <div class="text-sm text-white/50">{{ $review->created_at->format('F j, Y') }}</div>
+                                </div>
+                                <p class="text-white/80">{{ $review->comment }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="text-center mt-6">
+                        <button id="toggle-reviews-btn" data-hidden-count="{{ $extraReviews->count() }}" class="btn btn-outline-accent text-white px-6 py-2 rounded-none hover:text-white">
+                            Show more ({{ $extraReviews->count() }} more)
+                        </button>
+                    </div>
+                @endif
+            </div>
+        @endif
+
+        @if($extraReviews->isNotEmpty())
+            <script>
+                (function(){
+                    const btn = document.getElementById('toggle-reviews-btn');
+                    const extra = document.getElementById('extra-reviews');
+                    let shown = false;
+                    if(!btn || !extra) return;
+                    btn.addEventListener('click', function(){
+                        shown = !shown;
+                        if(shown) {
+                            extra.style.display = '';
+                            btn.textContent = 'Show less';
+                        } else {
+                            extra.style.display = 'none';
+                            btn.textContent = 'Show more (' + btn.dataset.hiddenCount + ' more)';
+                            // scroll back up to the first hidden review
+                            window.scrollTo({ top: extra.getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
+                        }
+                    });
+                })();
+            </script>
+        @endif
+    </div>
 
 </body>
 
