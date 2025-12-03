@@ -17,10 +17,14 @@ class Transactions extends Model
     protected $fillable = [
         'booker_id',
         'room_id',
-        'price_paid',
         'book_date',
         'end_date',
+        'price_paid',
+        'total',
     ];
+    
+
+
 
     public function booker()
     {

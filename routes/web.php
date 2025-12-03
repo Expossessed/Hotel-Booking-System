@@ -86,6 +86,10 @@ Route::post('/user/reviews/store', [ReviewsController::class, 'storeReview'])
 Route::get('user/reviews/view/{room_identifier?}', [ReviewsController::class, 'view'])
     ->name('reviews.viewReviews');
 
+Route::get('/user/pending', [TransactionsController::class, 'viewPending']);
+Route::post('/user/pending', [TransactionsController::class, 'payPending']);
+
+
 
 Route::get('user/about', function () {
     return view('user.about'); 

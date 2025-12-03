@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('room_price');
             $table->date('end_date');
             $table->integer('num_days');
+            $table->integer('total');
             $table->timestamps();
 
             $table->foreign('booker_id')

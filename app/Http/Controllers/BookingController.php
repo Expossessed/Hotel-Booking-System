@@ -75,6 +75,7 @@ class BookingController extends Controller
             'end_date'   => $end->toDateString(),
             'room_price' => $roomPrice,
             'num_days'   => $numDays,
+            'total'   => $total,
         ]);
 
         // Redirect to the user-facing room listing (user home) so the user lands
@@ -94,6 +95,8 @@ class BookingController extends Controller
             'bookings' => $bookings,
         ]);
     }
+
+    
 
     public function adminHistory()
     {

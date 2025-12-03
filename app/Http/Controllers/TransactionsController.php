@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Transactions;
+use App\Models\Booking;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 class TransactionsController extends Controller
 {
     public function viewTransactions()
@@ -48,4 +51,24 @@ class TransactionsController extends Controller
 
         return redirect()->back()->with('success', 'Transaction deleted!');
     }
+
+    public function viewPending(Request $request)
+    {
+        $transactions = Transactions::all();
+        $booking = Booking::all()->where('booker_id', $request->user()->id);
+        
+        
+        return view('user.pendingReservation', [
+            'bookings' => $booking,
+            'transactions' => $transactions,
+        ]);
+    }
+
+    public function payPending(Request $request)
+    {
+        $transactions = Transactions::all()->where('booker_id', $request->user()->id);
+        $total = $transactions->booker->total;
+        $payment = $total - $transactions->booker->user->balance;
+    }
+    
 }
