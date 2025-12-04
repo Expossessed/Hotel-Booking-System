@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('end_date');
             $table->integer('num_days');
             $table->integer('total');
+            $table->string('status')->default('pending');
             $table->timestamps();
 
             $table->foreign('booker_id')

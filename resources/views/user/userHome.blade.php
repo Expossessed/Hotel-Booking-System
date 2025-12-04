@@ -123,7 +123,7 @@
                 </div>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content z-[1] p-2 shadow-xl rounded-box w-52 mt-3 profile-dropdown-content">
-                <li><a href="bookings.html" class="font-medium">My Bookings</a></li>
+                <li><a href="{{ route('bookings.userHistory') }}" class="font-medium">My Bookings</a></li>
                 
                 <li><a href="{{ route('profile.edit') }}" class="font-medium">Profile & Settings</a></li>
                 @if(auth()->user()->isAdmin())
@@ -155,7 +155,7 @@
                 <li><a href="contact">Contact</a></li>
                 
                 @auth
-                    <li><a href="bookings.html" class="font-medium">My Bookings</a></li>
+                    <li><a href="{{ route('bookings.userHistory') }}" class="font-medium">My Bookings</a></li>
                     
                     <li><a href="{{ route('profile.edit') }}" class="font-medium">Profile</a></li>
                     <li>

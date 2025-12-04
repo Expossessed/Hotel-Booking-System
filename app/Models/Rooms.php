@@ -27,4 +27,9 @@ class Rooms extends Model
     {
         return $this->hasMany(\App\Models\Reviews::class, 'room_id', 'room_id');
     }
+
+    public function bookings()
+    {
+        return $this->hasMany(\App\Models\Booking::class, 'room_id', 'room_id');
+    }
 }

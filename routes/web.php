@@ -106,5 +106,8 @@ Route::view('/privacy', 'pages.privacy')->name('privacy');
 
 Route::get('user/rooms', [RoomsController::class, 'displayRooms'])->name('user.rooms');
 
+//route for check booking history
+Route::get('user/checkHistory', [BookingController::class, 'checkBookingHistory'])->name('bookings.userHistory');
+
 require __DIR__.'/auth.php';
 

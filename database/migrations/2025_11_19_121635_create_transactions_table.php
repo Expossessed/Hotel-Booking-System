@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id('transaction_id');
             $table->unsignedBigInteger('booker_id');
             $table->unsignedInteger('room_id');
+            $table->string('payment_method');
             $table->integer('price_paid');
+            $table->integer('num_days');
             $table->date('book_date');
             $table->date('end_date');
             $table->timestamps();
@@ -29,6 +31,8 @@ return new class extends Migration
                 ->references('room_id')
                 ->on('rooms')
                 ->onDelete('cascade');
+
+            
         });
     }
 

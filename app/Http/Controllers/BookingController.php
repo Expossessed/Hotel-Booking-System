@@ -64,6 +64,7 @@ class BookingController extends Controller
                 'preview_total'     => $total,
                 'preview_user_name' => $request->user()->name,
                 'preview_user_email'=> $request->user()->email,
+                
             ]);
         }
 
@@ -126,4 +127,15 @@ class BookingController extends Controller
 
         return redirect()->route('admin.history')->with('success', 'Booking status updated successfully.');
     }
+
+    //check booking history for user
+    public function checkBookingHistory(Request $request)
+    {
+        $userId = $request->user()->id;
+        $bookings = Booking::where('booker_id', $userId)->get();
+
+        return view('user.checkHistory', compact('bookings'));
+    }
+
+    
 }
