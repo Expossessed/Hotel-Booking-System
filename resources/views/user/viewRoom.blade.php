@@ -98,34 +98,7 @@
 
 <body class="relative">
 
-    <nav class="navbar navbar-top px-4 md:px-12 py-3 sticky top-0 z-50 shadow-lg flex justify-between items-center">
-        <a href="{{ auth()->check() ? (auth()->user()->isAdmin() ? route('admin.front') : route('rooms.list')) : route('home') }}" 
-           class="text-3xl md:text-2xl font-extrabold tracking-widest text-white">
-            HOTEL BOOKIE
-        </a>
-        <ul class="menu menu-horizontal gap-6 text-lg font-medium hidden md:flex navbar-menu">
-            @auth
-                @if(auth()->user()->isAdmin())
-                    <li><a href="{{ route('admin.front') }}" class="text-white hover:text-accent-orange">Home</a></li>
-                    <li><a href="{{ route('admin.history') }}" class="hover:text-accent-orange">History</a></li>
-                    <li><a href="{{ route('admin.createRoom') }}" class="hover:text-accent-orange">Add Room</a></li>
-                @else
-                    <li><a href="{{ route('rooms.list') }}" class="text-white hover:text-accent-orange">Home</a></li>
-                    <li><a href="{{ route('bookings.history') }}" class="hover:text-accent-orange">My Bookings</a></li>
-                @endif
-            @else
-                <li><a href="{{ route('home') }}" class="text-white hover:text-accent-orange">Home</a></li>
-            @endauth
-        </ul>
-        @auth
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-outline-accent rounded-none">Logout</button>
-            </form>
-        @else
-            <a href="{{ route('login') }}" class="btn btn-sm btn-accent-color rounded-none">Login</a>
-        @endauth
-    </nav>
+    @include('layouts.hotelNav')
 
     @if(session('success'))
         <script>

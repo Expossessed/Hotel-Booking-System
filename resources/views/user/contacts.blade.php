@@ -75,55 +75,7 @@
 </head>
 <body class="relative">
 
-<!-- 💎 NAVBAR 💎 -->
-<div class="navbar navbar-top px-4 md:px-12 py-3 sticky top-0 z-50 shadow-lg">
-    <div class="flex-1">
-        <!-- In a Blade file, the href would ideally use the Laravel route helper -->
-        <a href="{{ url('/') }}" class="text-xl md:text-2xl font-extrabold tracking-widest text-white">
-            HOTEL BOOKIE
-        </a>
-    </div>
-
-    <div class="flex-none">
-        <!-- Desktop Menu: HOME, ROOMS, ABOUT, CONTACT -->
-        <ul class="menu menu-horizontal p-0 hidden md:flex gap-6 navbar-menu text-lg">
-
-            <li><a href="home">Home</a></li>
-            <li><a href="rooms">Rooms</a></li>
-            <li><a href="about">About</a></li>
-            <li><a href="contact" class="font-bold text-accent-orange">Contact</a></li>
-            <li>
-                        <label for="my-modal" class="modal-button cursor-pointer">
-                            <span class="font-bold hover:text-primary-blue transition duration-200 px-3">Balance: ${{ auth()->user()->balance }}</span>
-                        </label>
-                </li>
-        </ul>
-
-        <!-- Profile/Booking Placeholder -->
-        <div class="ml-8 hidden md:block">
-            <a href="{{ url('/bookings') }}" class="btn btn-accent-color btn-md px-6 font-semibold rounded-none">Book Now</a>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div class="dropdown dropdown-end md:hidden ml-2">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-circle text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-            </div>
-            <ul tabindex="0" class="menu menu-sm dropdown-content z-[1] p-2 shadow-xl rounded-box w-52 mt-3 profile-dropdown-content">
-                <li>
-                        <label for="my-modal" class="modal-button cursor-pointer">
-                            <span class="font-bold hover:text-primary-blue transition duration-200 px-3">Balance: ${{ auth()->user()->balance }}</span>
-                        </label>
-                </li>
-                <li><a href="home">Home</a></li>
-                <li><a href="rooms">Rooms</a></li>
-                <li><a href="about">About</a></li>
-                <li><a href="" class="font-bold text-accent-orange">Contact</a></li>
-                <li class="mt-2"><a href="{{ url('/bookings') }}" class="btn btn-accent-color btn-sm rounded-none">Book Now</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
+@include('layouts.hotelNav')
 
 <!-- 🖼️ CONTACT HERO BANNER 🖼️ -->
 <header class="relative w-full h-[50vh] flex items-center justify-center overflow-hidden">
@@ -173,19 +125,6 @@
         <!-- Contact Details -->
         <div class="space-y-10 p-8">
             <div class="space-y-4">
-                <h2 class="text-3xl font-serif font-bold text-white border-b border-white/10 pb-4">Our Details</h2>
-                
-                <!-- Address -->
-                <div class="flex items-start space-x-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-accent-orange mt-1 flex-shrink-0">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                    </svg>
-                    <div>
-                        <p class="font-semibold text-white">Location</p>
-                        <p class="text-white/70">66/A, Green Lane, New York, NY 10001</p>
-                    </div>
-                </div>
 
                 <!-- Phone -->
                 <div class="flex items-start space-x-4">

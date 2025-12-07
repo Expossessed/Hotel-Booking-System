@@ -65,43 +65,7 @@
 </head>
 <body class="relative">
 
-<!-- 💎 NAVBAR 💎 -->
-<div class="navbar navbar-top px-4 md:px-12 py-3 sticky top-0 z-50 shadow-lg">
-    <div class="flex-1">
-        <a href="{{ url('/') }}" class="text-xl md:text-2xl font-extrabold tracking-widest text-white">
-            HOTEL BOOKIE
-        </a>
-    </div>
-
-    <div class="flex-none">
-        <!-- Desktop Menu -->
-        <ul class="menu menu-horizontal p-0 hidden md:flex gap-6 navbar-menu text-lg">
-            <li><a href="home">Home</a></li>
-            <li><a href="rooms">Rooms</a></li>
-            <li><a href="" class="font-bold text-accent-orange">About</a></li>
-            <li><a href="contact">Contact</a></li>
-        </ul>
-
-        <!-- Profile/Booking Placeholder -->
-        <div class="ml-8 hidden md:block">
-            <a href="{{ url('/bookings') }}" class="btn btn-accent-color btn-md px-6 font-semibold rounded-none">Book Now</a>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div class="dropdown dropdown-end md:hidden ml-2">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-circle text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-            </div>
-            <ul tabindex="0" class="menu menu-sm dropdown-content z-[1] p-2 shadow-xl rounded-box w-52 mt-3 profile-dropdown-content">
-                <li><a href="home">Home</a></li>
-                <li><a href="rooms">Rooms</a></li>
-                <li><a href="" class="font-bold text-accent-orange">About</a></li>
-                <li><a href="contact">Contact</a></li>
-                <li class="mt-2"><a href="{{ url('/bookings') }}" class="btn btn-accent-color btn-sm rounded-none">Book Now</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
+@include('layouts.hotelNav')
 
 <!-- 🖼️ ABOUT US HERO BANNER 🖼️ -->
 <header class="relative w-full h-[60vh] flex items-center justify-center overflow-hidden">

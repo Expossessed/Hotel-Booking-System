@@ -9,28 +9,21 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
 
     <style>
-        /* 🎨 STYLING: Consistent Dark Brown & Orange Theme (Copied from Homepage) */
-
-        /* Define Core Colors */
         :root {
-            --color-dark-brown: #3C2A21; /* Rich dark brown for background/side panel */
-            --color-accent-orange: #C45B3A; /* Reddish-orange accent (like the button/bed runner) */
-            --color-text-light: #F7F7F7; /* Near-white for text */
+            --color-dark-brown: #3C2A21;
+            --color-accent-orange: #C45B3A;
+            --color-text-light: #F7F7F7;
         }
 
-        /* 1. Reset Body Background */
         body {
+            background-image: none;
             background-color: var(--color-dark-brown);
             min-height: 100vh;
-            color: var(--color-text-light);
-            font-family: sans-serif; /* Using sans-serif for form consistency */
+            position: relative;
         }
         
-        /* 2. NAVBAR Styling (Clean, Simple, White on Dark) */
-        .navbar-top {
-            /* Using a slightly darker shade for the fixed bar */
-            background-color: #312620; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        body, .text-gray-100 {
+            color: var(--color-text-light);
         }
 
         .navbar-menu a {
@@ -42,14 +35,11 @@
             color: var(--color-accent-orange);
         }
 
-        /* Profile Dropdown Styling */
         .profile-dropdown-content {
             background: #312620;
             border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-
-        /* 3. Accent Button Style (Orange/Brown) */
         .btn-accent-color {
             background-color: var(--color-accent-orange);
             border-color: var(--color-accent-orange);
@@ -61,25 +51,15 @@
             background-color: #A94E31; 
             border-color: #A94E31;
         }
-        .btn-outline-accent {
-            color: var(--color-accent-orange);
-            border-color: var(--color-accent-orange);
-        }
-        .btn-outline-accent:hover {
-            background-color: var(--color-accent-orange);
-            color: white;
-        }
 
-        /* 4. Form/Container Styling */
         .booking-container {
-            background-color: #312620; /* Slightly darker background for the main container */
+            background-color: #312620;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Input Styling */
         .input-dark, .select-dark {
-            background-color: rgba(255, 255, 255, 0.05); /* White/5 opacity for inputs */
-            border-color: rgba(255, 255, 255, 0.3); /* Lighter border for visibility */
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.3);
             color: var(--color-text-light);
             transition: border-color 0.2s ease;
         }
@@ -87,11 +67,10 @@
             border-color: var(--color-accent-orange);
         }
         .input-readonly {
-            background-color: #312620; /* Darker background for readonly fields */
+            background-color: #312620;
             border-color: rgba(255, 255, 255, 0.1);
         }
 
-        /* Number of Days Buttons */
         .btn-num-days {
             color: var(--color-accent-orange);
             border-color: var(--color-accent-orange);
@@ -104,80 +83,7 @@
 </head>
 <body class="relative">
 
-<div class="navbar navbar-top px-4 md:px-12 py-3 sticky top-0 z-50 shadow-lg">
-    
-    <div class="flex-1">
-        <a href="{{ route('home') }}" class="text-xl md:text-2xl font-extrabold tracking-widest text-white">
-            HOTEL BOOKIE
-        </a>
-    </div>
-
-    <div class="flex-none">
-        <ul class="menu menu-horizontal p-0 hidden md:flex gap-6 navbar-menu text-lg">
-            <li><a href="">Home</a></li>
-            <li><a href="rooms">Rooms</a></li>
-            <li><a href="about">About</a></li>
-            <li><a href="contact">Contact</a></li>
-        </ul>
-
-        @auth
-        <div class="dropdown dropdown-end ml-6">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar border-2 border-white/50 hover:bg-white/10 transition-colors">
-                <div class="w-10 rounded-full bg-white/10 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 19.5a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                    </svg>
-                </div>
-            </div>
-            <ul tabindex="0" class="menu menu-sm dropdown-content z-[1] p-2 shadow-xl rounded-box w-52 mt-3 profile-dropdown-content">
-                <li><a href="bookings.html" class="font-medium">My Bookings</a></li>
-                
-                <li><a href="{{ route('profile.edit') }}" class="font-medium">Profile & Settings</a></li>
-                @if(auth()->user()->isAdmin())
-                    <li><a href="{{ route('admin.front') }}" class="text-yellow-400 font-medium">Admin Panel</a></li>
-                @endif
-                <li>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="text-error hover:bg-error hover:text-white transition-colors duration-200">Logout</button>
-                    </form>
-                </li>
-            </ul>
-        </div>
-        @else
-        <div class="ml-8 hidden md:block">
-            <a href="{{ route('bookings.form') }}" class="btn btn-accent-color btn-md px-6 font-semibold rounded-none">Book Now</a>
-        </div>
-        @endauth
-
-
-        <div class="dropdown dropdown-end md:hidden ml-2">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-circle text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-            </div>
-            <ul tabindex="0" class="menu menu-sm dropdown-content z-[1] p-2 shadow-xl rounded-box w-52 mt-3 profile-dropdown-content">
-                <li><a href="">Home</a></li>
-                <li><a href="rooms">Rooms</a></li>
-                <li><a href="about">About</a></li>
-                <li><a href="contact">Contact</a></li>
-                
-                @auth
-                    <li><a href="bookings.html" class="font-medium">My Bookings</a></li>
-                    
-                    <li><a href="{{ route('profile.edit') }}" class="font-medium">Profile</a></li>
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="text-error hover:bg-error hover:text-white transition-colors duration-200">Logout</button>
-                        </form>
-                    </li>
-                @else
-                    <li class="mt-2"><a href="{{ route('bookings.form') }}" class="btn btn-accent-color btn-sm rounded-none">Book Now</a></li>
-                @endauth
-            </ul>
-        </div>
-    </div>
-</div>
+@include('layouts.hotelNav')
 
 <main>
     <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">

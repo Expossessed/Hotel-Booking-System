@@ -62,23 +62,23 @@
             <div class="card-body p-6 lg:w-2/3">
                 
                 <div class="flex items-center justify-between mb-2">
-                    <h2 class="card-title text-3xl font-bold text-white leading-snug">{{ $booking->service_name }}</h2>
-                    <span class="text-white/50 text-sm">Booking ID: {{ $booking->id }}</span>
+                    <h2 class="card-title text-3xl font-bold text-white leading-snug">{{ $booking->service_name ?? optional($booking->room)->room_type ?? 'Booking' }}</h2>
+                    <span class="text-white/50 text-sm">Booking ID: {{ $booking->booking_id ?? $booking->id }}</span>
                 </div>
                 
                 <p class="text-gray-300 mb-6">{{ $booking->room_desc ?? 'A brief description of the booked room or service.' }}</p>
 
                 <div class="grid grid-cols-2 gap-4 text-lg mb-6 border-b border-white/10 pb-4">
                     <p class="font-medium text-white/70">Check-in/Service Date:</p>
-                    <p class="font-semibold text-white">{{ $booking->date }}</p>
+                    <p class="font-semibold text-white">{{ $booking->book_date ?? $booking->date }}</p>
 
                     <p class="font-medium text-white/70">Total Guests:</p>
                     <p class="font-semibold text-white">{{ $booking->guests ?? 'N/A' }}</p>
                 </div>
 
                 <div class="flex justify-between items-center pt-2">
-                    <span class="text-4xl font-extrabold text-white">
-                        ${{ $booking->room_price ?? 'N/A' }} 
+                        <span class="text-4xl font-extrabold text-white">
+                        ${{ $booking->total ?? $booking->room_price ?? 'N/A' }} 
                         <span class="text-base font-normal text-white/50">Total Amount</span>
                     </span>
 
@@ -91,15 +91,23 @@
                     @endif
                 </div>
 
-                <div class="card-actions justify-end mt-8">
-                    @if($booking->status === 'pending')
-                        <button 
-                            class="btn btn-accent-color btn-lg px-8 rounded-none font-semibold"
-                            onclick="document.getElementById('payment_modal').showModal()">
+                <!-- Payment Method Display (shown after selection) -->
+                <div id="payment_method_display" class="mt-6">
+                    <p class="text-white/70 text-sm mb-2">Selected Payment Method:</p>
+                    <div class="px-4 py-3 bg-black/50 border border-white/20 rounded-md flex items-center justify-between cursor-pointer hover:bg-black/70 transition-colors" onclick="showPaymentModal()">
+                        <span class="text-white font-semibold" id="display_method_value">Choose a payment method</span>
+                        <span class="text-white/50 text-sm">Select</span>
+                    </div>
+                </div>
+
+                <div class="card-actions justify-center mt-8 w-full">
+                    @php $isPending = (isset($booking->status) && $booking->status === 'pending'); @endphp
+                    @if($isPending)
+                        <button type="button" class="btn btn-accent-color w-full h-12 rounded-none font-semibold text-lg" onclick="showPaymentModal()">
                             Pay Now
                         </button>
                     @else
-                        <button class="btn btn-accent-color btn-lg px-8 rounded-none font-semibold opacity-50 btn-disabled">
+                        <button class="btn btn-accent-color w-full h-12 rounded-none font-semibold text-lg opacity-50 btn-disabled">
                             Payment Complete
                         </button>
                     @endif
@@ -121,29 +129,49 @@
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-white">✕</button>
             </form>
             <h3 class="font-bold text-3xl mb-4 text-white">Choose Payment Method</h3>
-            <p class="text-white/80 mb-6">Select your preferred method to complete the payment of ${{ $booking->room_price ?? 'N/A' }}.</p>
+            <p class="text-white/80 mb-6">Select your preferred method to complete the payment of ${{ $booking->total ?? 'N/A' }}.</p>
             
-            <form action="{{ route('user.payBooking', ['id' => $booking->id]) }}" method="POST">
+            <!-- Balance Check Alert -->
+            <div id="insufficient_balance_alert" class="alert alert-error shadow-lg mb-6 rounded-none bg-red-800/30 border-red-400 hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M4.5 19.5L19.5 4.5"/></svg>
+                <span class="text-red-300">Insufficient balance. Please add funds to proceed.</span>
+            </div>
+
+            <form id="payment_form" action="{{ route('user.payBooking', ['id' => $booking->booking_id ?? $booking->id]) }}" method="POST">
                 @csrf
-                <div class="space-y-4">
+                <div class="space-y-4 mb-6">
+                    <div class="form-control">
+                        <label class="label cursor-pointer p-4 bg-black/50 hover:bg-black/70 rounded-md transition-colors">
+                            <div class="flex-1">
+                                <span class="label-text text-white text-lg font-medium">Account Balance</span>
+                                <p class="text-white/60 text-sm">Available: ${{ number_format(auth()->user()->balance, 2) }}</p>
+                            </div>
+                            <input type="radio" name="payment_method" value="balance" class="radio radio-lg radio-warning" onchange="updatePaymentSelected()" checked/>
+                        </label>
+                    </div>
                     <div class="form-control">
                         <label class="label cursor-pointer p-4 bg-black/50 hover:bg-black/70 rounded-md transition-colors">
                             <span class="label-text text-white text-lg font-medium">Credit/Debit Card</span> 
-                            <input type="radio" name="payment_method" value="card" class="radio radio-lg radio-warning" checked/>
+                            <input type="radio" name="payment_method" value="card" class="radio radio-lg radio-warning" onchange="updatePaymentSelected()"/>
                         </label>
                     </div>
                     <div class="form-control">
                         <label class="label cursor-pointer p-4 bg-black/50 hover:bg-black/70 rounded-md transition-colors">
                             <span class="label-text text-white text-lg font-medium">PayPal</span> 
-                            <input type="radio" name="payment_method" value="paypal" class="radio radio-lg radio-warning"/>
+                            <input type="radio" name="payment_method" value="paypal" class="radio radio-lg radio-warning" onchange="updatePaymentSelected()"/>
                         </label>
                     </div>
                     <div class="form-control">
                         <label class="label cursor-pointer p-4 bg-black/50 hover:bg-black/70 rounded-md transition-colors">
                             <span class="label-text text-white text-lg font-medium">Bank Transfer</span> 
-                            <input type="radio" name="payment_method" value="bank" class="radio radio-lg radio-warning"/>
+                            <input type="radio" name="payment_method" value="bank" class="radio radio-lg radio-warning" onchange="updatePaymentSelected()"/>
                         </label>
                     </div>
+                </div>
+
+                <!-- Selected method preview -->
+                <div class="mt-4 text-white/80">
+                    <p class="text-sm">Selected payment method: <span id="selected_method_value" class="font-semibold">Account Balance</span></p>
                 </div>
 
                 <div class="modal-action mt-8">
@@ -159,4 +187,77 @@
         </form>
     </dialog>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const labels = {
+            balance: 'Account Balance',
+            card: 'Credit/Debit Card',
+            paypal: 'PayPal',
+            bank: 'Bank Transfer'
+        };
+
+        const radios = document.querySelectorAll('input[name="payment_method"]');
+        const selected = document.getElementById('selected_method_value');
+        const userBalance = parseFloat('{{ auth()->user()->balance }}');
+        const bookingTotal = parseFloat('{{ $booking->total ?? 0 }}');
+        const balanceOption = document.querySelector('input[name="payment_method"][value="balance"]');
+        const insufficientAlert = document.getElementById('insufficient_balance_alert');
+        const paymentForm = document.getElementById('payment_form');
+
+        function updateSelected() {
+            const checked = document.querySelector('input[name="payment_method"]:checked');
+            if (checked && selected) {
+                const methodText = labels[checked.value] || checked.value;
+                selected.textContent = methodText;
+            }
+        }
+
+        function validateBalance() {
+            const checked = document.querySelector('input[name="payment_method"]:checked');
+            
+            if (checked && checked.value === 'balance' && userBalance < bookingTotal) {
+                insufficientAlert.classList.remove('hidden');
+                return false;
+            } else {
+                insufficientAlert.classList.add('hidden');
+                return true;
+            }
+        }
+
+        // Expose a global helper so inline handlers can call it
+        window.updatePaymentSelected = updateSelected;
+
+        radios.forEach(r => {
+            r.addEventListener('change', updateSelected);
+            r.addEventListener('change', validateBalance);
+        });
+
+        // Handle form submission
+        if (paymentForm) {
+            paymentForm.addEventListener('submit', function(e) {
+                if (!validateBalance()) {
+                    e.preventDefault();
+                    // Switch to a different payment method
+                    const cardOption = document.querySelector('input[name="payment_method"][value="card"]');
+                    if (cardOption) {
+                        cardOption.checked = true;
+                        updateSelected();
+                    }
+                }
+            });
+        }
+
+        // Initialize
+        updateSelected();
+        validateBalance();
+    });
+
+    // Called by the "Pay Now" button to open the dialog
+    function showPaymentModal() {
+        const dlg = document.getElementById('payment_modal');
+        if (dlg && typeof dlg.showModal === 'function') {
+            dlg.showModal();
+        }
+    }
+</script>
 </html>

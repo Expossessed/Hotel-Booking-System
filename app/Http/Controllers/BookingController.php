@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\Rooms;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema;
 
 class BookingController extends Controller
 {
@@ -140,22 +141,101 @@ class BookingController extends Controller
     // View pending reservations for the current user
     public function viewPendingReservations(Request $request)
     {
-        $bookings = Booking::with('room')
+        $query = Booking::with('room')
             ->where('booker_id', $request->user()->id)
-            ->where('status', 'pending')
-            ->orderByDesc('book_date')
-            ->get();
+            ->orderByDesc('book_date');
+
+        // Only add status filter if the column exists (some environments may be on older schemas)
+        if (Schema::hasColumn('bookings', 'status')) {
+            $query->where('status', 'pending');
+        }
+
+        $bookings = $query->get();
 
         return view('user.pendingReservation', [
             'bookings' => $bookings,
         ]);
     }
 
+    // Show a single pending booking details to the owner
+    public function showPending(Request $request, $id)
+    {
+        $booking = Booking::with('room', 'user')->findOrFail($id);
+
+        // Only the booker (owner) or an admin should view this
+        if ($booking->booker_id !== $request->user()->id && !$request->user()->is_admin) {
+            return redirect()->route('bookings.pending')->with('error', 'Unauthorized access.');
+        }
+
+        return view('user.viewPending', [
+            'booking' => $booking,
+        ]);
+    }
+
+    /**
+     * Show the combined view-or-pay page for a booking.
+     */
+    public function viewOrPay(Request $request, $id)
+    {
+        $booking = Booking::with('room', 'user')->findOrFail($id);
+
+        if ($booking->booker_id !== $request->user()->id && !$request->user()->is_admin) {
+            return redirect()->route('bookings.pending')->with('error', 'Unauthorized access.');
+        }
+
+        return view('user.viewOrPayBooking', [
+            'booking' => $booking,
+        ]);
+    }
+
+    /**
+     * Pay for a booking from the view-or-pay page.
+     */
+    public function payFromView(Request $request, $id)
+    {
+        // Find booking by primary key (booking_id)
+        $booking = Booking::findOrFail($id);
+
+        // Ensure the booking belongs to the current user
+        if ($booking->booker_id !== $request->user()->id) {
+            return redirect()->back()->with('error', 'Unauthorized access.');
+        }
+
+        // Validate payment method
+        $validated = $request->validate([
+            'payment_method' => 'required|in:balance,card,paypal,bank',
+        ]);
+
+        $user = $request->user();
+
+        // If using account balance, check if sufficient
+        if ($validated['payment_method'] === 'balance') {
+            if ($user->balance < $booking->total) {
+                return redirect()->back()->with('error', 'Insufficient balance. Please add funds.');
+            }
+
+            // Deduct balance and mark booking confirmed
+            $user->balance -= $booking->total;
+            $user->save();
+        }
+        // For other payment methods, just mark as confirmed
+        // (In a real system, you'd integrate with payment gateways)
+
+        if (Schema::hasColumn('bookings', 'status')) {
+            $booking->status = 'confirmed';
+        }
+        $booking->save();
+
+        return redirect()->route('bookings.history')->with('success', 'Booking confirmed successfully!');
+    }
+
     // Pay for a pending reservation
     public function payPendingReservation(Request $request)
     {
         $request->validate([
-            'booking_id' => 'required|integer|exists:bookings,id',
+            // bookings table uses `booking_id` as the primary key column
+            'booking_id' => 'required|integer|exists:bookings,booking_id',
+            'payment_method' => 'required|in:balance,card,paypal,bank',
         ]);
 
         $booking = Booking::findOrFail($request->input('booking_id'));
@@ -165,17 +245,26 @@ class BookingController extends Controller
             return redirect()->back()->with('error', 'Unauthorized access.');
         }
 
-        // Check if user has sufficient balance
+        // Check if user has sufficient balance for account balance payment
         $user = $request->user();
-        if ($user->account_balance < $booking->total) {
-            return redirect()->back()->with('error', 'Insufficient balance. Please add funds.');
+        $paymentMethod = $request->input('payment_method');
+
+        if ($paymentMethod === 'balance') {
+            if ($user->balance < $booking->total) {
+                return redirect()->back()->with('error', 'Insufficient balance. Please add funds or choose another payment method.');
+            }
+
+            // Deduct from user balance
+            $user->balance -= $booking->total;
+            $user->save();
         }
+        // For other payment methods (card, paypal, bank), just mark as confirmed
+        // (In a real system, you'd integrate with payment gateway APIs)
 
-        // Deduct from user balance and mark booking as confirmed
-        $user->account_balance -= $booking->total;
-        $user->save();
-
-        $booking->status = 'confirmed';
+        // Mark booking as confirmed
+        if (Schema::hasColumn('bookings', 'status')) {
+            $booking->status = 'confirmed';
+        }
         $booking->save();
 
         return redirect()->route('bookings.history')->with('success', 'Booking confirmed successfully!');

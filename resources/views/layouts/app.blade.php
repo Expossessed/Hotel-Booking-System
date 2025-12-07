@@ -6,13 +6,10 @@
     <title>Hotel Bookie | Secure Login & Register</title>
 
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
-    
+    {{-- Use locally-built assets via Vite for offline resilience --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    {{-- If you want fonts available offline, consider downloading them and referencing locally. --}}
 
     <style>
         :root {
@@ -29,7 +26,9 @@
         }
 
         body {
+            /* Prefer local images under /public/images for offline use; remote URL as fallback */
             background: linear-gradient(to bottom, rgba(0,0,0,0.8), var(--color-dark-brown) 90%),
+                        url('/images/hero-164595.jpg'),
                         url('https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg')
                         center/cover no-repeat fixed;
             min-height: 100vh;
@@ -55,7 +54,11 @@
 
 
         .left-panel {
-            background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), /* Darker gradient overlay */
+            /* Use a local image when available (public/images/left-271639.jpg)
+               with the remote URL as a fallback for development.
+            */
+            background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.4)),
+                        url('/images/left-271639.jpg'),
                         url('https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg')
                         center/cover no-repeat;
             flex: 1;
@@ -182,6 +185,9 @@
     </style>
 </head>
 <body>
+
+<!-- Offline indicator: toggles when navigator goes offline/online -->
+<div id="offline-banner" style="display:none;position:fixed;top:0;left:0;right:0;background:#b91c1c;color:white;padding:6px 12px;text-align:center;z-index:9999;">Offline — some features may be unavailable</div>
 
 @auth
 <script> 
@@ -319,6 +325,23 @@ document.addEventListener('DOMContentLoaded', function(){
     if(typeof panesInner !== 'undefined' && panesInner) panesInner.style.transform = 'translateY(0)';
     showPane(loginPane);
 });
+</script>
+
+<script>
+// Show offline banner when navigator.offline
+function updateOnlineStatus() {
+    const el = document.getElementById('offline-banner');
+    if (!el) return;
+    if (navigator.onLine) {
+        el.style.display = 'none';
+    } else {
+        el.style.display = 'block';
+    }
+}
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+// initialize
+updateOnlineStatus();
 </script>
 
 </body>

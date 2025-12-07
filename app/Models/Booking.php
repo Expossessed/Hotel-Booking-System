@@ -10,6 +10,20 @@ class Booking extends Model
     
 {
     use HasFactory;
+    /**
+     * The primary key associated with the table.
+     */
+    protected $primaryKey = 'booking_id';
+
+    /**
+     * The "type" of the primary key ID.
+     */
+    protected $keyType = 'int';
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     */
+    public $incrementing = true;
 
     protected $fillable = [
         'booker_id',

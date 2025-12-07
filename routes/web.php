@@ -7,6 +7,7 @@ use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CashInController;
 use App\Models\Rooms;
 use Illuminate\Support\Facades\Route;
 
@@ -36,11 +37,20 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/user/history', [BookingController::class, 'userHistory'])->name('bookings.history');
     Route::get('/user/pending', [BookingController::class, 'viewPendingReservations'])->name('bookings.pending');
+    Route::get('/user/pending/{id}', [BookingController::class, 'showPending'])->name('bookings.viewPending');
     Route::post('/user/pending', [BookingController::class, 'payPendingReservation'])->name('bookings.payPending');
+    // Combined view-or-pay page and pay endpoint (explicit routes)
+    Route::get('/user/pending/{id}/vieworpay', [BookingController::class, 'viewOrPay'])->name('bookings.viewOrPay');
+    Route::post('/user/pending/{id}/pay', [BookingController::class, 'payFromView'])->name('user.payBooking');
 
     // Booking routes
     Route::get('user/book', [BookingController::class, 'showForm'])->name('bookings.form');
     Route::post('user/book', [BookingController::class, 'createBooking'])->name('bookings.create');
+
+    // Cash-in routes
+    Route::get('/user/cash-in', [CashInController::class, 'show'])->name('cashIn.show');
+    Route::post('/user/cash-in', [CashInController::class, 'store'])->name('cashIn.store');
+    Route::get('/api/user/balance', [CashInController::class, 'getBalance'])->name('api.balance');
 
 });
 
@@ -88,8 +98,8 @@ Route::post('/user/reviews/store', [ReviewsController::class, 'storeReview'])
 Route::get('user/reviews/view/{room_identifier?}', [ReviewsController::class, 'view'])
     ->name('reviews.viewReviews');
 
-Route::get('/user/pending', [TransactionsController::class, 'viewPending']);
-Route::post('/user/pending', [TransactionsController::class, 'payPending']);
+// Pending payments are handled via BookingController inside the authenticated group.
+// Old TransactionsController routes were removed to avoid conflicts.
 
 
 

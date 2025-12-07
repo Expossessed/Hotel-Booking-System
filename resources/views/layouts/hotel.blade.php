@@ -64,10 +64,17 @@
 
         <div>
             @auth
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-primary btn-sm">Logout</button>
-                </form>
+                <div class="flex items-center gap-3">
+                    <div class="text-right mr-3">
+                        <div class="text-xs text-gray-500">Balance</div>
+                        <div class="font-semibold">${{ number_format(auth()->user()->balance ?? 0, 2) }}</div>
+                    </div>
+                    <a href="{{ route('cashIn.show') }}" class="btn btn-sm btn-primary mr-3">+</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-outline btn-sm">Logout</button>
+                    </form>
+                </div>
             @else
                 <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Login</a>
             @endauth
