@@ -1,347 +1,278 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Bookie | Secure Login & Register</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hotel Bookie | Secure Login & Register</title>
+
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+
+<style>
+:root{
+  --dark-brown:#3C2A21;
+  --accent:#C45B3A;
+  --accent-dark:#A94E31;
+  --muted:#9CA3AF;
+  --glass:rgba(255,255,255,0.08);
+  --radius:18px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(180deg, rgba(0,0,0,0.72), var(--dark-brown) 80%),
+             url('https://tse1.mm.bing.net/th/id/OIP.FtudhIBH-HYhxMpS4TU-sAHaE8?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3') center/cover no-repeat fixed;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* Card */
+.auth-card{
+  height:600px;
+  width:min(980px,96vw);
+  border-radius:var(--radius);
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.25));
+  box-shadow:0 10px 40px rgba(2,6,23,0.7);
+  backdrop-filter:blur(6px) saturate(120%);
+}
+
+/* Left panel */
+.left-panel{
+  padding:2.25rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:12px;
+  text-align:center;
+  background-image:linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.25)), url('/images/left-271639.jpg');
+  background-size:cover;
+  background-position:center;
+}
+.left-panel h2{font-size:2.4rem;margin:0;color:var(--accent)}
+.left-panel p{margin:0;color:var(--muted)}
+
+/* Right panel */
+.right-panel{
+  padding:2.25rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:14px;
+}
+.brand{font-weight:800;color:var(--accent);letter-spacing:0.08em}
+.subtitle{color:var(--muted);font-size:.95rem}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;justify-content:center;padding:6px}
+.tab{
+  padding:8px 18px;
+  min-width:150px;
+  text-align:center;
+  border-radius:10px;
+  border:1px solid transparent;
+  cursor:pointer;
+  font-weight:600;
+  color:var(--accent);
+  background:transparent;
+  transition:all 180ms var(--ease);
+}
+.tab[aria-selected="true"]{
+  background:var(--accent);
+  color:#fff;
+  box-shadow:0 6px 18px rgba(196,91,58,0.18);
+}
+
+/* Form styles */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
+label{font-size:.85rem;color:var(--muted)}
+input, textarea{
+  width:100%;
+  padding:14px 16px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.12);
+  color:#fff;
+  font-size:1rem;
+  line-height:1.4rem;
+  outline:none;
+  resize:none;
+  backdrop-filter: blur(12px);
+  transition: all .18s var(--ease);
+}
+input::placeholder, textarea::placeholder{color:rgba(255,255,255,0.55)}
+input:hover, textarea:hover{border-color:rgba(255,255,255,0.40)}
+input:focus, textarea:focus{
+  background: rgba(255,255,255,0.20);
+  border-color:var(--accent);
+  box-shadow:0 0 0 2px rgba(196,91,58,0.35);
+}
+
+.btn{padding:14px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:700;width:100%;transition:.2s}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-accent:hover{background:var(--accent-dark)}
+.btn-secondary{background:var(--accent);color:#fff}
+.muted-right{text-align:right;font-size:.9rem;color:var(--muted)}
+
+/* Panes & consistent layout */
+.panes{position:relative;min-height:360px}
+.pane{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(8px);
+  transition:opacity 360ms var(--ease), transform 360ms var(--ease);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.pane[aria-hidden="false"]{opacity:1;pointer-events:auto;transform:none}
+.pane form{display:flex;flex-direction:column;justify-content:space-between}
+
+/* Responsive */
+@media (max-width:880px){
+  .auth-card{grid-template-columns:1fr;}
+  .left-panel{display:none}
+}
+@media (max-width:420px){
+  .right-panel{padding:1.25rem}
+  .left-panel h2{font-size:1.6rem}
+}
 
 
-    {{-- Use locally-built assets via Vite for offline resilience --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    {{-- If you want fonts available offline, consider downloading them and referencing locally. --}}
-
-    <style>
-        :root {
-            --color-dark-brown: #3C2A21;
-            --color-accent-orange: #C45B3A;
-            --color-text-light: #F7F7F7; 
-            --color-bg-contrast: #312620; 
-        }
-        
-        :root {
-            --tab-fade-duration: 700ms; 
-            --tab-easing: cubic-bezier(.2,.8,.2,1);
-            --tab-slide-duration: 700ms; 
-        }
-
-        body {
-            /* Prefer local images under /public/images for offline use; remote URL as fallback */
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), var(--color-dark-brown) 90%),
-                        url('/images/hero-164595.jpg'),
-                        url('https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg')
-                        center/cover no-repeat fixed;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Inter', sans-serif;
-            color: white;
-        }
-
-
-        .auth-card {
-            max-width: 900px;
-            min-height: 580px;
-
-            border-radius: 20px;
-            overflow: hidden;
-            display: flex;
-            box-shadow: 0px 8px 30px rgba(0,0,0,0.8);
-            background: var(--color-bg-contrast);
-            transition: all 0.3s ease;
-        }
-
-
-        .left-panel {
-            /* Use a local image when available (public/images/left-271639.jpg)
-               with the remote URL as a fallback for development.
-            */
-            background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.4)),
-                        url('/images/left-271639.jpg'),
-                        url('https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg')
-                        center/cover no-repeat;
-            flex: 1;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .right-panel {
-            flex: 1;
-            padding: 2.5rem; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-       
-        .hotel-title {
-            font-weight: 800;
-            color: var(--color-accent-orange);
-            letter-spacing: 0.1em;
-            text-shadow: 0 0 5px rgba(196, 91, 58, 0.4);
-        }
-
-        .tab-active {
-            color: white !important;
-            background-color: var(--color-accent-orange) !important;
-        }
-
-        .tabs a {
-            color: var(--color-accent-orange);
-            border-radius: 0.5rem;
-            transition: background-color 0.3s;
-        }
-
-        .input, .input:focus, .input-bordered {
-            background-color: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border-radius: 0.5rem;
-        }
-        
-        .input:focus {
-            border-color: var(--color-accent-orange) !important;
-            box-shadow: 0 0 0 2px var(--color-accent-orange);
-        }
-
-        .btn-accent-color {
-            background-color: var(--color-accent-orange);
-            border-color: var(--color-accent-orange);
-            color: var(--color-text-light);
-            transition: background-color 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            border-radius: 0.5rem;
-        }
-        .btn-accent-color:hover {
-            background-color: #A94E31; 
-            border-color: #A94E31;
-        }
-        
-        .btn-secondary-color {
-            background-color: #2e7d32;
-            border-color: #2e7d32;
-            color: var(--color-text-light);
-            transition: background-color 0.3s ease;
-            border-radius: 0.5rem;
-        }
-        .btn-secondary-color:hover {
-            background-color: #1b5e20;
-            border-color: #1b5e20;
-        }
-
-        
-        #tabContent {
-            flex: 1 1 auto;
-            overflow: hidden;
-            position: relative;
-        }
-
-        #panesInner {
-            display: block;
-            transition: transform var(--tab-slide-duration) var(--tab-easing);
-            will-change: transform;
-        }
-
-        .tab-pane {
-            opacity: 0;
-            transition: opacity var(--tab-fade-duration) var(--tab-easing);
-            pointer-events: none;
-            padding-bottom: 1rem;
-        }
-
-        .tab-pane.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .tab-pane .input,
-        .tab-pane .label-text,
-        .tab-pane .btn {
-            opacity: 0;
-            transition: opacity var(--tab-fade-duration) var(--tab-easing);
-        }
-        .tab-pane.active .input,
-        .tab-pane.active .label-text,
-        .tab-pane.active .btn {
-            opacity: 1;
-        }
-
-
-        @media (max-width: 768px) {
-            .auth-card {
-                margin: 1rem;
-                min-height: auto;
-            }
-            .right-panel {
-                padding: 1.5rem;
-            }
-        }
-    </style>
+</style>
 </head>
 <body>
 
-<!-- Offline indicator: toggles when navigator goes offline/online -->
-<div id="offline-banner" style="display:none;position:fixed;top:0;left:0;right:0;background:#b91c1c;color:white;padding:6px 12px;text-align:center;z-index:9999;">Offline — some features may be unavailable</div>
+<div id="offline-banner">Offline — some features may be unavailable</div>
 
 @auth
-<script> 
-    window.location.href = "{{ route('rooms.list') }}"; 
-</script>
+<script>window.location.href = "{{ route('rooms.list') }}";</script>
 @endauth
 
 @guest
-<div class="auth-card mx-4 sm:mx-auto">
-    
-    <div class="left-panel hidden md:block">
-        <h2 class="text-5xl font-extrabold mb-4" style="color: var(--color-text-light);">
-            Welcome Back.
-        </h2>
-        <p class="text-gray-300 text-lg mb-8">
-            Your next luxury stay awaits. Fast check-in and room management at your fingertips.
-        </p>
+<main class="auth-card" role="main" aria-live="polite">
+
+  <section class="left-panel" aria-hidden="true">
+    <h2>Welcome Back.</h2>
+    <p>Your next luxury stay awaits. Fast check-in and room management at your fingertips.</p>
+  </section>
+
+  <section class="right-panel">
+    <div style="text-align:center">
+      <h1 class="brand">HOTEL BOOKIE</h1>
+      <p class="subtitle">Luxury • Comfort • Convenience</p>
     </div>
 
-    <div class="right-panel">
-        <h3 class="text-3xl text-center hotel-title mb-1">HOTEL BOOKIE</h3>
-        <p class="text-center text-gray-400 mb-6 text-sm">Luxury • Comfort • Convenience</p>
-        
-        <div role="tablist" class="tabs tabs-boxed mb-6 bg-black/30 w-full">
-            <a role="tab" class="tab font-semibold tab-active" id="login-tab">Login</a>
-            <a role="tab" class="tab font-semibold" id="register-tab">Register</a>
-        </div>
-
-        <div id="tabContent">
-            <div id="panesInner">
-
-            <div id="login" class="tab-pane active">
-                <form id="loginForm" action="{{ route('login') }}" method="POST">
-                    @csrf
-                    <div class="mb-4">
-                        <label class="label"><span class="label-text text-gray-300">Email Address</span></label>
-                        <input type="email" class="input input-bordered w-full" name="email" id="login_email" required autofocus>
-                    </div>
-                    <div class="mb-2">
-                        <label class="label"><span class="label-text text-gray-300">Password</span></label>
-                        <input type="password" class="input input-bordered w-full" name="password" required>
-                    </div>
-                    
-                    <div class="text-right mb-6"> 
-                        <a href="{{ route('password.request') }}" class="text-sm text-gray-400 hover:text-white transition-colors">
-                            Forgot Password?
-                        </a>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-accent-color w-full">Login</button>
-                </form>
-            </div>
-
-            <div id="register" class="tab-pane">
-                <form method="POST" action="{{ route('register') }}">
-                    @csrf
-                    <div class="mb-4">
-                        <label class="label"><span class="label-text text-gray-300">Full Name</span></label>
-                        <input type="text" class="input input-bordered w-full" name="name" required>
-                    </div>
-                    <div class="mb-4">
-                        <label class="label"><span class="label-text text-gray-300">Email Address</span></label>
-                        <input type="email" class="input input-bordered w-full" name="email" required>
-                    </div>
-                    <div class="mb-4">
-                        <label class="label"><span class="label-text text-gray-300">Password</span></label>
-                        <input type="password" class="input input-bordered w-full" name="password" required>
-                    </div>
-                    <div class="mb-6">
-                        <label class="label"><span class="label-text text-gray-300">Confirm Password</span></label>
-                        <input type="password" class="input input-bordered w-full" name="password_confirmation" required>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-secondary-color w-full">Create Account</button>
-                </form>
-            </div>
-        </div>
+    <div class="tabs" role="tablist" aria-label="Authentication Tabs">
+      <button id="tab-login" class="tab" role="tab" aria-selected="true" aria-controls="pane-login">Login</button>
+      <button id="tab-register" class="tab" role="tab" aria-selected="false" aria-controls="pane-register">Register</button>
     </div>
-</div>
+
+    <div class="panes" id="panes">
+
+      <!-- LOGIN -->
+      <div id="pane-login" class="pane" role="tabpanel" aria-hidden="false" aria-labelledby="tab-login">
+        <form id="loginForm" action="{{ route('login') }}" method="POST" novalidate>
+          @csrf
+          <div class="field">
+            <label for="login_email">Email address</label>
+            <input id="login_email" name="email" type="email" required autocomplete="email" placeholder="Enter your email">
+          </div>
+
+          <div class="field">
+            <label for="login_password">Password</label>
+            <input id="login_password" name="password" type="password" required autocomplete="current-password" placeholder="Enter your password">
+          </div>
+
+          <div class="muted-right"><a href="{{ route('password.request') }}" style="color:var(--muted);text-decoration:underline">Forgot password?</a></div>
+
+          <button type="submit" class="btn btn-accent">Login</button>
+        </form>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="pane-register" class="pane" role="tabpanel" aria-hidden="true" aria-labelledby="tab-register">
+        <form id="registerForm" action="{{ route('register') }}" method="POST" novalidate>
+          @csrf
+          <div class="field">
+            <label for="reg_name">Full name</label>
+            <input id="reg_name" name="name" type="text" required autocomplete="name" placeholder="Enter your full name">
+          </div>
+
+          <div class="field">
+            <label for="reg_email">Email address</label>
+            <input id="reg_email" name="email" type="email" required autocomplete="email" placeholder="Enter your email">
+          </div>
+
+          <div class="field">
+            <label for="reg_password">Password</label>
+            <input id="reg_password" name="password" type="password" required autocomplete="new-password" placeholder="Enter your password">
+          </div>
+
+          <div class="field">
+            <label for="reg_password_confirmation">Confirm password</label>
+            <input id="reg_password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password" placeholder="Confirm your password">
+          </div>
+
+          <button type="submit" class="btn btn-accent">Create Account</button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+</main>
 @endguest
 
 <script>
-document.addEventListener('DOMContentLoaded', function(){
-    const loginTab = document.getElementById('login-tab');
-    const registerTab = document.getElementById('register-tab');
-    const loginPane = document.getElementById('login');
-    const registerPane = document.getElementById('register');
-    const tabContentEl = document.getElementById('tabContent');
-    const panesInner = document.getElementById('panesInner');
+(function(){
+  const tabLogin = document.getElementById('tab-login');
+  const tabRegister = document.getElementById('tab-register');
+  const paneLogin = document.getElementById('pane-login');
+  const paneRegister = document.getElementById('pane-register');
 
-    function showPane(pane){
-        const panes = Array.from(document.querySelectorAll('#tabContent .tab-pane'));
-        panes.forEach(p => {
-            if(p === pane){
-                p.classList.add('active');
-            } else {
-                p.classList.remove('active');
-            }
-        });
-
-        if(panesInner && tabContentEl && pane){
-            const targetY = pane.offsetTop || 0;
-            setTimeout(() => {
-                panesInner.style.transform = `translateY(-${targetY}px)`;
-            }, 20);
-        }
+  function selectTab(selected){
+    if(selected==='login'){
+      tabLogin.setAttribute('aria-selected','true');
+      tabRegister.setAttribute('aria-selected','false');
+      paneLogin.setAttribute('aria-hidden','false');
+      paneRegister.setAttribute('aria-hidden','true');
+      setTimeout(()=>{ const f=paneLogin.querySelector('input'); if(f) f.focus();},80);
+    }else{
+      tabLogin.setAttribute('aria-selected','false');
+      tabRegister.setAttribute('aria-selected','true');
+      paneLogin.setAttribute('aria-hidden','true');
+      paneRegister.setAttribute('aria-hidden','false');
+      setTimeout(()=>{ const f=paneRegister.querySelector('input'); if(f) f.focus();},80);
     }
+  }
 
-    function setActive(tab){
-        [loginTab, registerTab].forEach(t => t.classList.remove('tab-active'));
-        if(tab) tab.classList.add('tab-active');
-    }
+  tabLogin.addEventListener('click', e=>{e.preventDefault(); selectTab('login');});
+  tabRegister.addEventListener('click', e=>{e.preventDefault(); selectTab('register');});
 
-    if(loginTab && registerTab){
-        loginTab.addEventListener('click', function(e){
-            e.preventDefault();
-            document.documentElement.style.setProperty('--tab-fade-duration', '480ms');
-            document.documentElement.style.setProperty('--tab-easing', 'cubic-bezier(.2,.8,.2,1)');
-            document.documentElement.style.setProperty('--tab-slide-duration', '480ms');
-            setActive(loginTab);
-            showPane(loginPane);
-        });
+  // Keyboard navigation
+  document.addEventListener('keydown', e=>{
+    if(e.key==='ArrowLeft') selectTab('login');
+    if(e.key==='ArrowRight') selectTab('register');
+  });
 
-        registerTab.addEventListener('click', function(e){
-            e.preventDefault();
-            document.documentElement.style.setProperty('--tab-fade-duration', '1000ms');
-            document.documentElement.style.setProperty('--tab-easing', 'cubic-bezier(.16,.84,.24,1)');
-            document.documentElement.style.setProperty('--tab-slide-duration', '1000ms');
-            setActive(registerTab);
-            showPane(registerPane);
-        });
-    }
-
-    setActive(loginTab);
-    if(typeof panesInner !== 'undefined' && panesInner) panesInner.style.transform = 'translateY(0)';
-    showPane(loginPane);
-});
-</script>
-
-<script>
-// Show offline banner when navigator.offline
-function updateOnlineStatus() {
-    const el = document.getElementById('offline-banner');
-    if (!el) return;
-    if (navigator.onLine) {
-        el.style.display = 'none';
-    } else {
-        el.style.display = 'block';
-    }
-}
-window.addEventListener('online', updateOnlineStatus);
-window.addEventListener('offline', updateOnlineStatus);
-// initialize
-updateOnlineStatus();
+  // Offline banner
+  const offlineBanner=document.getElementById('offline-banner');
+  function updateOnline(){ if(navigator.onLine) offlineBanner.style.display='none'; else offlineBanner.style.display='block'; }
+  window.addEventListener('online', updateOnline);
+  window.addEventListener('offline', updateOnline);
+  updateOnline();
+})();
 </script>
 
 </body>
