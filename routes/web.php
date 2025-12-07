@@ -35,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/rooms/{id}', [RoomsController::class, 'view'])->name('rooms.view');
 
     Route::get('/user/history', [BookingController::class, 'userHistory'])->name('bookings.history');
+    Route::get('/user/pending', [BookingController::class, 'viewPendingReservations'])->name('bookings.pending');
+    Route::post('/user/pending', [BookingController::class, 'payPendingReservation'])->name('bookings.payPending');
 
     // Booking routes
     Route::get('user/book', [BookingController::class, 'showForm'])->name('bookings.form');
@@ -53,7 +55,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/edit/{id}', [RoomsController::class, 'updateRoomForm'])->name('admin.updateRoom');
     Route::post('/edit/{id}', [RoomsController::class, 'updateRoom']);
     Route::post('/delete/{id}', [RoomsController::class, 'deleteRoom'])->name('admin.deleteRoom');
-    Route::post('/viewUser/{id}', [UsersController::class, 'deleteUser'])->name('admin.deleteRoom');
+    Route::post('/viewUser/{id}', [UsersController::class, 'deleteUser'])->name('admin.deleteUser');
 
     Route::get('/viewUser', [UsersController::class, 'view'])->name('admin.viewUsers');
     Route::get('/updateUser/{id}', [UsersController::class, 'updateUserForm'])->name('admin.updateUser');

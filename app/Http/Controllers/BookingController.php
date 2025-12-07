@@ -137,5 +137,49 @@ class BookingController extends Controller
         return view('user.checkHistory', compact('bookings'));
     }
 
+    // View pending reservations for the current user
+    public function viewPendingReservations(Request $request)
+    {
+        $bookings = Booking::with('room')
+            ->where('booker_id', $request->user()->id)
+            ->where('status', 'pending')
+            ->orderByDesc('book_date')
+            ->get();
+
+        return view('user.pendingReservation', [
+            'bookings' => $bookings,
+        ]);
+    }
+
+    // Pay for a pending reservation
+    public function payPendingReservation(Request $request)
+    {
+        $request->validate([
+            'booking_id' => 'required|integer|exists:bookings,id',
+        ]);
+
+        $booking = Booking::findOrFail($request->input('booking_id'));
+
+        // Ensure the booking belongs to the current user
+        if ($booking->booker_id !== $request->user()->id) {
+            return redirect()->back()->with('error', 'Unauthorized access.');
+        }
+
+        // Check if user has sufficient balance
+        $user = $request->user();
+        if ($user->account_balance < $booking->total) {
+            return redirect()->back()->with('error', 'Insufficient balance. Please add funds.');
+        }
+
+        // Deduct from user balance and mark booking as confirmed
+        $user->account_balance -= $booking->total;
+        $user->save();
+
+        $booking->status = 'confirmed';
+        $booking->save();
+
+        return redirect()->route('bookings.history')->with('success', 'Booking confirmed successfully!');
+    }
+
     
 }

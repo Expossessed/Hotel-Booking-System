@@ -68,9 +68,10 @@
                                     ${{ $booking->total }}
                                 </td>
                                 <td>
-                                    <form action="/user/pending" method="POST" 
-                                            onsubmit="return confirm('Are you sure you want to pay for this booking of: {{ $booking->room_price * $booking->num_days }}?');">
+                                    <form action="{{ route('bookings.payPending') }}" method="POST" 
+                                            onsubmit="return confirm('Are you sure you want to pay for this booking of: ${{ $booking->room_price * $booking->num_days }}?');">
                                             @csrf   
+                                            <input type="hidden" name="booking_id" value="{{ $booking->id }}">
                                             <button class="btn btn-outline btn-error btn-sm">Pay</button>
                                     </form>
                                 </td>
