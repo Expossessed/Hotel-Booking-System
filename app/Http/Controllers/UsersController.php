@@ -68,7 +68,11 @@ class UsersController extends Controller
     return back()->with('success', 'Balance added successfully!');
 }
 
-
+    public function profileSettings(): View
+    {
+        $user = auth()->user();
+        return view('user.profileSettings', compact('user'));
+    }
     
     
 

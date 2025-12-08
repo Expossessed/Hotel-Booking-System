@@ -121,5 +121,8 @@ Route::get('user/rooms', [RoomsController::class, 'displayRooms'])->name('user.r
 //route for check booking history
 Route::get('user/checkHistory', [BookingController::class, 'checkBookingHistory'])->name('bookings.userHistory');
 
+//route for profile settings
+Route::get('user/profileSettings', [UsersController::class, 'profileSettings'])->name('profile.settings');
+
 require __DIR__.'/auth.php';
 

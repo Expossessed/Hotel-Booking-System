@@ -31,7 +31,7 @@
                 </div>
                 <ul tabindex="0" class="menu menu-sm dropdown-content z-[1] p-2 shadow-xl rounded-box w-52 mt-3" style="background: #312620; border: 1px solid rgba(255, 255, 255, 0.15);">
                     <li><a href="{{ route('bookings.userHistory') }}" class="font-medium" style="color: #F7F7F7;">My Bookings</a></li>
-                    <li><a href="{{ route('profile.edit') }}" class="font-medium" style="color: #F7F7F7;">Profile & Settings</a></li>
+                    <li><a href="{{ route('profile.settings') }}" class="font-medium" style="color: #F7F7F7;">Profile & Settings</a></li>
                     @if(auth()->user()->isAdmin())
                         <li><a href="{{ route('admin.front') }}" style="color: #FFD700; font-weight: bold;">Admin Panel</a></li>
                     @endif
