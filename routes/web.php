@@ -123,6 +123,7 @@ Route::get('user/checkHistory', [BookingController::class, 'checkBookingHistory'
 
 //route for profile settings
 Route::get('user/profileSettings', [UsersController::class, 'profileSettings'])->name('profile.settings');
+Route::post('user/profileSettings', [UsersController::class, 'profileSettingsUpdate'])->name('profile.settings.update');
 
 require __DIR__.'/auth.php';
 
