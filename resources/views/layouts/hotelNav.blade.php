@@ -2,20 +2,34 @@
 
     <!-- LOGO -->
     <div class="flex-1">
+        @auth
+        <a href="{{ route('rooms.list') }}" class="text-2xl md:text-3xl font-extrabold tracking-widest text-white drop-shadow-sm">
+            HOTEL BOOKIE
+        </a>
+        @else
         <a href="{{ route('home') }}" class="text-2xl md:text-3xl font-extrabold tracking-widest text-white drop-shadow-sm">
             HOTEL BOOKIE
         </a>
+        @endauth
     </div>
 
     <!-- DESKTOP MENU -->
     <div class="hidden md:flex items-center gap-10">
 
         <!-- HOME -->
+        @auth
+        <a href="{{ route('rooms.list') }}"
+           class="{{ request()->routeIs('user.rooms') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}
+                  hover:text-white hover:underline underline-offset-4 transition">
+            Home
+        </a>
+        @else
         <a href="{{ route('home') }}"
            class="{{ request()->routeIs('home') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}
                   hover:text-white hover:underline underline-offset-4 transition">
             Home
         </a>
+        @endauth
 
         <!-- ROOMS -->
         <a href="{{ route('user.rooms') }}"

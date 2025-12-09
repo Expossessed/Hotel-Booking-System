@@ -158,7 +158,11 @@
                                     @if($booking->status === 'pending')
                                         <button 
                                             class="btn btn-accent-color btn-sm rounded-none font-semibold"
-                                            onclick="openPaymentModal({{ $booking->booking_id ?? $booking->id }}, '{{ $booking->room->room_type ?? 'Room' }}', {{ $booking->total }}, {{ auth()->user()->balance }})">
+                                            data-booking-id="{{ $booking->booking_id ?? $booking->id }}"
+                                            data-room-type="{{ $booking->room->room_type ?? 'Room' }}"
+                                            data-total="{{ $booking->total }}"
+                                            data-balance="{{ auth()->user()->balance ?? 0 }}"
+                                            onclick="openPaymentModal(this.dataset.bookingId, this.dataset.roomType, parseFloat(this.dataset.total), parseFloat(this.dataset.balance))">
                                             Pay Now
                                         </button>
                                     @else

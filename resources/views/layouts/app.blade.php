@@ -109,18 +109,34 @@ input, textarea{
   backdrop-filter: blur(12px);
   transition: all .18s var(--ease);
 }
-input::placeholder, textarea::placeholder{color:rgba(255,255,255,0.55)}
-input:hover, textarea:hover{border-color:rgba(255,255,255,0.40)}
-input:focus, textarea:focus{
-  background: rgba(255,255,255,0.20);
-  border-color:var(--accent);
-  box-shadow:0 0 0 2px rgba(196,91,58,0.35);
+input::placeholder, textarea::placeholder{color: #fff0ff 0.8;}
+input:hover, textarea:hover{border-color:#fff}
+
+
+/* Ensure autofilled inputs remain visible */
+/* Make AUTOFILL use normal dark text */
+/* FIXED AUTOFILL — matches your dark background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff !important;
+  -webkit-box-shadow: 0 0 0px 1000px rgba(0,0,0,0.35) inset !important;
+
+}
+
+
+
+/* Ensure password text stays visible */
+input[type="password"] {
+  color: #fff;
+  -webkit-text-security: disc;
 }
 
 .btn{padding:14px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:700;width:100%;transition:.2s}
 .btn-accent{background:var(--accent);color:#fff}
 .btn-accent:hover{background:var(--accent-dark)}
 .btn-secondary{background:var(--accent);color:#fff}
+.field-error{border-color:#dc2626 !important}
 .muted-right{text-align:right;font-size:.9rem;color:var(--muted)}
 
 /* Panes & consistent layout */
@@ -148,13 +164,23 @@ input:focus, textarea:focus{
   .right-panel{padding:1.25rem}
   .left-panel h2{font-size:1.6rem}
 }
+input, textarea {
+  background: #3C2A21 !important;
+  color: #fff !important;
+}
+input:focus, textarea:focus {
+  background: rgba(196,91,58,0.18) !important;
+
+}
+
+
 
 
 </style>
 </head>
 <body>
 
-<div id="offline-banner">Offline — some features may be unavailable</div>
+
 
 @auth
 <script>window.location.href = "{{ route('rooms.list') }}";</script>
@@ -164,8 +190,13 @@ input:focus, textarea:focus{
 <main class="auth-card" role="main" aria-live="polite">
 
   <section class="left-panel" aria-hidden="true">
-    <h2>Welcome Back.</h2>
-    <p>Your next luxury stay awaits. Fast check-in and room management at your fingertips.</p>
+                <h2 class="text-5xl md:text-7xl font-serif font-bold text-white drop-shadow-xl leading-tight mb-6">
+                Welcome Back.
+            </h2>
+
+                    <p class="text-1xl md:text-lg font-serif  text-white drop-shadow-xl leading-tight mb-6">
+                  Your next luxury stay awaits. Fast check-in and room management at your fingertips.
+</p>
   </section>
 
   <section class="right-panel">
@@ -184,7 +215,7 @@ input:focus, textarea:focus{
       <!-- LOGIN -->
       <div id="pane-login" class="pane" role="tabpanel" aria-hidden="false" aria-labelledby="tab-login">
         <!-- Login Error Alert -->
-        @if ($errors->any() && old('email'))
+        @if ($errors->any() && old('form_type') === 'login')
           <div style="background-color: #7f1d1d; padding: 0.875rem; margin-bottom: 1rem; border-left: 4px solid #dc2626; border-radius: 0.375rem;">
             <h4 style="color: #fca5a5; font-size: 0.875rem; font-weight: bold; margin: 0 0 0.5rem 0;">Login Error</h4>
             <ul style="list-style-type: disc; list-style-position: inside; color: #fee2e2; font-size: 0.875rem; margin: 0; padding: 0;">
@@ -197,14 +228,15 @@ input:focus, textarea:focus{
         
         <form id="loginForm" action="{{ route('login') }}" method="POST" novalidate>
           @csrf
+          <input type="hidden" name="form_type" value="login">
           <div class="field">
             <label for="login_email">Email address</label>
-            <input id="login_email" name="email" type="email" required autocomplete="email" placeholder="Enter your email" value="{{ old('email') }}" style="@error('email') border-color: #dc2626; @enderror">
+            <input id="login_email" name="email" type="email" required autocomplete="email" placeholder="Enter your email" value="{{ old('email') }}" class="@error('email') field-error @enderror">
           </div>
 
           <div class="field">
             <label for="login_password">Password</label>
-            <input id="login_password" name="password" type="password" required autocomplete="current-password" placeholder="Enter your password" style="@error('password') border-color: #dc2626; @enderror">
+            <input id="login_password" name="password" type="password" required autocomplete="current-password" placeholder="Enter your password" class="@error('password') field-error @enderror">
           </div>
 
           <div class="muted-right"><a href="{{ route('password.request') }}" style="color:var(--muted);text-decoration:underline">Forgot password?</a></div>
@@ -216,7 +248,7 @@ input:focus, textarea:focus{
       <!-- REGISTER -->
       <div id="pane-register" class="pane" role="tabpanel" aria-hidden="true" aria-labelledby="tab-register">
         <!-- Register Error Alert -->
-        @if ($errors->any() && old('name'))
+        @if ($errors->any() && old('form_type') === 'register')
           <div style="background-color: #7f1d1d; padding: 0.875rem; margin-bottom: 1rem; border-left: 4px solid #dc2626; border-radius: 0.375rem;">
             <h4 style="color: #fca5a5; font-size: 0.875rem; font-weight: bold; margin: 0 0 0.5rem 0;">Registration Error</h4>
             <ul style="list-style-type: disc; list-style-position: inside; color: #fee2e2; font-size: 0.875rem; margin: 0; padding: 0;">
@@ -229,24 +261,25 @@ input:focus, textarea:focus{
         
         <form id="registerForm" action="{{ route('register') }}" method="POST" novalidate>
           @csrf
+          <input type="hidden" name="form_type" value="register">
           <div class="field">
             <label for="reg_name">Full name</label>
-            <input id="reg_name" name="name" type="text" required autocomplete="name" placeholder="Enter your full name" value="{{ old('name') }}" style="@error('name') border-color: #dc2626; @enderror">
+            <input id="reg_name" name="name" type="text" required autocomplete="name" placeholder="Enter your full name" value="{{ old('name') }}" class="@error('name') field-error @enderror">
           </div>
 
           <div class="field">
             <label for="reg_email">Email address</label>
-            <input id="reg_email" name="email" type="email" required autocomplete="email" placeholder="Enter your email" value="{{ old('email') }}" style="@error('email') border-color: #dc2626; @enderror">
+            <input id="reg_email" name="email" type="email" required autocomplete="email" placeholder="Enter your email" value="{{ old('email') }}" class="@error('email') field-error @enderror">
           </div>
 
           <div class="field">
             <label for="reg_password">Password</label>
-            <input id="reg_password" name="password" type="password" required autocomplete="new-password" placeholder="Enter your password" style="@error('password') border-color: #dc2626; @enderror">
+            <input id="reg_password" name="password" type="password" required autocomplete="new-password" placeholder="Enter your password" class="@error('password') field-error @enderror">
           </div>
 
           <div class="field">
             <label for="reg_password_confirmation">Confirm password</label>
-            <input id="reg_password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password" placeholder="Confirm your password" style="@error('password_confirmation') border-color: #dc2626; @enderror">
+            <input id="reg_password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password" placeholder="Confirm your password" class="@error('password_confirmation') field-error @enderror">
           </div>
 
           <button type="submit" class="btn btn-accent">Create Account</button>
@@ -289,6 +322,13 @@ input:focus, textarea:focus{
     if(e.key==='ArrowLeft') selectTab('login');
     if(e.key==='ArrowRight') selectTab('register');
   });
+
+  // If a form submission returned with errors, show the correct tab
+  (function(){
+    const initialForm = "{{ old('form_type') ?? '' }}";
+    if(initialForm === 'register') selectTab('register');
+    else if(initialForm === 'login') selectTab('login');
+  })();
 
   // Offline banner
   const offlineBanner=document.getElementById('offline-banner');
