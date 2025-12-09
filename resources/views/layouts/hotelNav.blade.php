@@ -9,10 +9,34 @@
 
     <!-- DESKTOP MENU -->
     <div class="hidden md:flex items-center gap-10">
-        <a href="{{ route('home') }}" class="text-[#F7F7F7] hover:text-white hover:underline underline-offset-4 transition">Home</a>
-        <a href="{{ route('user.rooms') }}" class="text-[#F7F7F7] hover:text-white hover:underline underline-offset-4 transition">Rooms</a>
-        <a href="{{ route('about') }}" class="text-[#F7F7F7] hover:text-white hover:underline underline-offset-4 transition">About</a>
-        <a href="{{ route('contact') }}" class="text-[#F7F7F7] hover:text-white hover:underline underline-offset-4 transition">Contact</a>
+
+        <!-- HOME -->
+        <a href="{{ route('home') }}"
+           class="{{ request()->routeIs('home') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}
+                  hover:text-white hover:underline underline-offset-4 transition">
+            Home
+        </a>
+
+        <!-- ROOMS -->
+        <a href="{{ route('user.rooms') }}"
+           class="{{ request()->routeIs('user.rooms') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}
+                  hover:text-white hover:underline underline-offset-4 transition">
+            Rooms
+        </a>
+
+        <!-- ABOUT -->
+        <a href="{{ route('about') }}"
+           class="{{ request()->routeIs('about') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}
+                  hover:text-white hover:underline underline-offset-4 transition">
+            About
+        </a>
+
+        <!-- CONTACT -->
+        <a href="{{ route('contact') }}"
+           class="{{ request()->routeIs('contact') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}
+                  hover:text-white hover:underline underline-offset-4 transition">
+            Contact
+        </a>
 
         @auth
         <!-- BALANCE -->
@@ -46,11 +70,14 @@
                 <li>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button class="text-red-400 hover:bg-red-600 hover:text-white rounded-lg transition">Logout</button>
+                        <button class="text-red-400 hover:bg-red-600 hover:text-white rounded-lg transition">
+                            Logout
+                        </button>
                     </form>
                 </li>
             </ul>
         </div>
+
         @else
         <a href="{{ route('login') }}" 
            class="btn bg-[#C45B3A] hover:bg-[#db6d4a] text-white px-6 font-semibold border-none rounded-none">
@@ -71,27 +98,55 @@
             </label>
 
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 w-56 p-3 rounded-xl bg-[#2B2320]/95 backdrop-blur-xl border border-white/10 shadow-2xl">
-                <li><a href="{{ route('home') }}" class="text-[#F7F7F7]">Home</a></li>
-                <li><a href="{{ route('user.rooms') }}" class="text-[#F7F7F7]">Rooms</a></li>
-                <li><a href="{{ route('about') }}" class="text-[#F7F7F7]">About</a></li>
-                <li><a href="{{ route('contact') }}" class="text-[#F7F7F7]">Contact</a></li>
+
+                <li>
+                    <a href="{{ route('home') }}"
+                       class="{{ request()->routeIs('home') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}">
+                       Home
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('user.rooms') }}"
+                       class="{{ request()->routeIs('user.rooms') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}">
+                       Rooms
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('about') }}"
+                       class="{{ request()->routeIs('about') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}">
+                       About
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('contact') }}"
+                       class="{{ request()->routeIs('contact') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}">
+                       Contact
+                    </a>
+                </li>
 
                 @auth
-                    <li><a href="{{ route('bookings.userHistory') }}" class="text-[#F7F7F7]">My Bookings</a></li>
-                    <li><a href="{{ route('profile.settings') }}" class="text-[#F7F7F7]">Profile</a></li>
+                <li><a href="{{ route('bookings.userHistory') }}" class="text-[#F7F7F7]">My Bookings</a></li>
+                <li><a href="{{ route('profile.settings') }}" class="text-[#F7F7F7]">Profile</a></li>
 
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button class="text-red-400 hover:bg-red-600 hover:text-white rounded-lg transition">
-                                Logout
-                            </button>
-                        </form>
-                    </li>
+                <li>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="text-red-400 hover:bg-red-600 hover:text-white rounded-lg transition">
+                            Logout
+                        </button>
+                    </form>
+                </li>
+
                 @else
-                    <li><a href="{{ route('login') }}" class="btn btn-sm bg-[#C45B3A] hover:bg-[#db6d4a] text-white border-none">
+                <li>
+                    <a href="{{ route('login') }}" 
+                       class="btn btn-sm bg-[#C45B3A] hover:bg-[#db6d4a] text-white border-none">
                         Login
-                    </a></li>
+                    </a>
+                </li>
                 @endauth
             </ul>
         </div>

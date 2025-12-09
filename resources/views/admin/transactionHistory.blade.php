@@ -81,9 +81,7 @@
                         <details class="dropdown dropdown-end">
                             <summary class="hover:text-primary-blue px-3 cursor-pointer">Views</summary>
                             <ul class="bg-white rounded-box p-2 w-64 shadow-2xl border border-gray-100 mt-2 z-50">
-                                <li><a href="viewbookings" class="hover:bg-gray-100 py-2">View Pending Bookings</a></li>
                                 <li><a href="history" class="hover:bg-gray-100 py-2">View Booking History</a></li>
-                                <li><a href="viewtransactions" class="hover:bg-gray-100 py-2">View Pending Transactions</a></li>
                                 <li><a href="transactionHistory" class="hover:bg-gray-100 py-2">View Transaction History</a></li>
                                 <li><a href="viewUser" class="hover:bg-gray-100 py-2">View Users</a></li>
                             </ul>
@@ -153,14 +151,14 @@
                             <tr class="hover:bg-gray-50 border-b border-gray-200 transition duration-150">
                                 @php
                                     // Calculate total for comparison (assuming booker->num_days is defined)
-                                    $calculated_total = $transaction->room->room_price * $transaction->booker->num_days;
+                                    $calculated_total = $transaction->room->room_price * $transaction->num_days;
                                 @endphp
 
                                 @if ($calculated_total <= $transaction->price_paid)
                                     <td class="py-4 px-4 font-medium text-left">{{ $transaction->booker->name }}</td>
                                     <td class="py-4 px-4 text-left">{{ $transaction->room->room_type }}</td>
                                     <td class="py-4 px-4 text-right">${{ number_format($transaction->room->room_price, 2) }}</td>
-                                    <td class="py-4 px-4 text-right">{{ $transaction->booker->num_days }}</td>
+                                    <td class="py-4 px-4 text-right">{{ $transaction->num_days }}</td>
                                     <td class="py-4 px-4 text-center">{{ $transaction->book_date }}</td>
                                     <td class="py-4 px-4 text-center">{{ $transaction->end_date }}</td>
                                     <td class="py-4 px-4 font-bold text-right text-primary-blue">${{ number_format($calculated_total, 2) }}</td>

@@ -15,12 +15,14 @@ class Transactions extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
+        'booking_id',
         'booker_id',
         'room_id',
         'book_date',
         'end_date',
         'price_paid',
-        'total',
+        'payment_method',
+        'num_days',
     ];
     
 
@@ -28,7 +30,7 @@ class Transactions extends Model
 
     public function booker()
     {
-        return $this->belongsTo(User::class, 'booker_id', 'booker_id');
+        return $this->belongsTo(User::class, 'booker_id', 'id');
     }
 
     public function room()

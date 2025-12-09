@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CashInController extends Controller
 {
-    /**
-     * Show the cash-in page
-     */
+
     public function show()
     {
         return view('user.cashIn', [
@@ -18,9 +16,7 @@ class CashInController extends Controller
         ]);
     }
 
-    /**
-     * Process cash-in request
-     */
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -32,17 +28,13 @@ class CashInController extends Controller
         $amount = (float) $validated['amount'];
         $method = $validated['payment_method'];
 
-        // In a real application, you would integrate with a payment gateway here
-        // For now, we'll just add the amount to the user's balance
+
         $user->balance += $amount;
         $user->save();
 
         return redirect()->back()->with('success', "Successfully added \${$amount} to your account via {$method}!");
     }
 
-    /**
-     * Get user balance (for AJAX calls if needed)
-     */
     public function getBalance()
     {
         $user = Auth::user();

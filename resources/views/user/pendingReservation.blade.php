@@ -173,7 +173,6 @@
         @endif
     </main>
 
-    <!-- Payment Method Selection Modal -->
     <dialog id="payment_modal" class="modal">
         <div class="modal-box payment-modal-content p-8 rounded-lg max-w-md">
             <form method="dialog">
@@ -186,7 +185,7 @@
                 <span id="modal_total" class="font-semibold text-var(--color-accent-orange)"></span>
             </p>
 
-            <!-- Balance Check Alert -->
+
             <div id="insufficient_balance_alert" class="alert-insufficient alert rounded-none mb-6 p-4 hidden" style="background-color: rgba(220, 38, 38, 0.1); border: 1px solid #f87171;">
                 <span class="text-sm">Insufficient balance. Please add funds to proceed.</span>
             </div>
@@ -221,9 +220,9 @@
                     </div>
 
                     <div class="payment-option p-4 flex items-center rounded-none">
-                        <input type="radio" name="payment_method_choice" value="bank" id="pay_bank" class="radio radio-sm">
-                        <label for="pay_bank" class="ml-4 flex-1 cursor-pointer payment-label text-white">
-                            <span class="font-medium">Bank Transfer</span>
+                        <input type="radio" name="payment_method_choice" value="gcash" id="pay_gcash" class="radio radio-sm">
+                        <label for="pay_cash" class="ml-4 flex-1 cursor-pointer payment-label text-white">
+                            <span class="font-medium">Gcash</span>
                         </label>
                     </div>
                 </div>
@@ -246,13 +245,12 @@
 
     <script>
         function openPaymentModal(bookingId, roomType, totalAmount, userBalance) {
-            // Populate modal with booking details
             document.getElementById('modal_booking_id').value = bookingId;
             document.getElementById('modal_room_type').textContent = roomType;
             document.getElementById('modal_total').textContent = '$' + parseFloat(totalAmount).toFixed(2);
             document.getElementById('user_balance_display').textContent = '$' + parseFloat(userBalance).toFixed(2);
 
-            // Check if balance is sufficient
+
             const balanceOption = document.getElementById('pay_balance');
             const insufficientAlert = document.getElementById('insufficient_balance_alert');
             const confirmBtn = document.getElementById('confirm_payment_btn');
@@ -260,7 +258,7 @@
             if (userBalance < totalAmount) {
                 balanceOption.disabled = true;
                 insufficientAlert.classList.remove('hidden');
-                // Set to first available non-balance method
+
                 document.getElementById('pay_card').checked = true;
             } else {
                 balanceOption.disabled = false;
@@ -268,14 +266,12 @@
                 document.getElementById('pay_balance').checked = true;
             }
 
-            // Update form action
+
             document.getElementById('payment_form').action = '/user/pending';
 
-            // Open modal
             document.getElementById('payment_modal').showModal();
         }
 
-        // Handle payment form submission
         document.getElementById('payment_form').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -284,7 +280,6 @@
             const userBalance = parseFloat(document.getElementById('user_balance_display').textContent.replace('$', ''));
             const totalAmount = parseFloat(document.getElementById('modal_total').textContent.replace('$', ''));
 
-            // Validate balance for account balance payment
             if (selectedMethod === 'balance' && userBalance < totalAmount) {
                 Swal.fire({
                     icon: 'error',
@@ -295,10 +290,8 @@
                 return;
             }
 
-            // Set the payment method hidden field
             document.getElementById('modal_payment_method').value = selectedMethod;
 
-            // Show confirmation
             Swal.fire({
                 title: 'Confirm Payment',
                 text: `Pay $${totalAmount.toFixed(2)} using ${selectedMethod === 'balance' ? 'Account Balance' : selectedMethod.toUpperCase()}?`,
@@ -310,7 +303,6 @@
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Submit the form
                     this.submit();
                 }
             });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\Rooms;
+use App\Models\Transactions;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 
@@ -12,7 +13,7 @@ class BookingController extends Controller
 {
     public function showForm(Request $request)
     {
-        // Prefer an explicit room_id (from clicking a specific room card)
+
         $roomId   = $request->query('room_id');
         $roomType = $request->query('room_type');
 
@@ -20,7 +21,7 @@ class BookingController extends Controller
         if ($roomId) {
             $room = Rooms::where('room_id', $roomId)->first();
         } elseif ($roomType) {
-            // Fallback: first room matching this type (e.g. from navbar dropdown)
+
             $room = Rooms::where('room_type', $roomType)->first();
         }
 
@@ -50,7 +51,6 @@ class BookingController extends Controller
 
         $total = $roomPrice * $numDays;
 
-        // First step: show confirmation overlay on the same booking page
         if (!$request->input('confirm')) {
             return view('Booking.createBooking', [
                 'room_id'           => $roomId,
@@ -69,7 +69,6 @@ class BookingController extends Controller
             ]);
         }
 
-        // Second step: actually create the booking
         $booking = Booking::create([
             'booker_id'  => $request->user()->id,
             'room_id'    => $roomId,
@@ -80,8 +79,6 @@ class BookingController extends Controller
             'total'   => $total,
         ]);
 
-        // Redirect to the user-facing room listing (user home) so the user lands
-        // on the page they expect after booking and can continue browsing.
         return redirect()->route('rooms.list')->with('success', 'Booking created successfully.');
 
     }
@@ -126,10 +123,24 @@ class BookingController extends Controller
         $booking->status = $request->input('status');
         $booking->save();
 
+        // If admin confirmed the booking, create a transaction record (avoid duplicates)
+        if ($booking->status === 'confirmed' && !Transactions::where('booking_id', $booking->booking_id)->exists()) {
+            Transactions::create([
+                'booking_id' => $booking->booking_id,
+                'booker_id' => $booking->booker_id,
+                'room_id' => $booking->room_id,
+                'payment_method' => $request->input('payment_method', 'admin_confirm'),
+                'price_paid' => $booking->total,
+                'num_days' => $booking->num_days,
+                'book_date' => $booking->book_date,
+                'end_date' => $booking->end_date,
+                'total' => $booking->total,
+            ]);
+        }
+
         return redirect()->route('admin.history')->with('success', 'Booking status updated successfully.');
     }
 
-    //check booking history for user
     public function checkBookingHistory(Request $request)
     {
         $userId = $request->user()->id;
@@ -138,14 +149,12 @@ class BookingController extends Controller
         return view('user.checkHistory', compact('bookings'));
     }
 
-    // View pending reservations for the current user
     public function viewPendingReservations(Request $request)
     {
         $query = Booking::with('room')
             ->where('booker_id', $request->user()->id)
             ->orderByDesc('book_date');
 
-        // Only add status filter if the column exists (some environments may be on older schemas)
         if (Schema::hasColumn('bookings', 'status')) {
             $query->where('status', 'pending');
         }
@@ -157,12 +166,10 @@ class BookingController extends Controller
         ]);
     }
 
-    // Show a single pending booking details to the owner
     public function showPending(Request $request, $id)
     {
         $booking = Booking::with('room', 'user')->findOrFail($id);
 
-        // Only the booker (owner) or an admin should view this
         if ($booking->booker_id !== $request->user()->id && !$request->user()->is_admin) {
             return redirect()->route('bookings.pending')->with('error', 'Unauthorized access.');
         }
@@ -172,9 +179,7 @@ class BookingController extends Controller
         ]);
     }
 
-    /**
-     * Show the combined view-or-pay page for a booking.
-     */
+
     public function viewOrPay(Request $request, $id)
     {
         $booking = Booking::with('room', 'user')->findOrFail($id);
@@ -188,64 +193,71 @@ class BookingController extends Controller
         ]);
     }
 
-    /**
-     * Pay for a booking from the view-or-pay page.
-     */
     public function payFromView(Request $request, $id)
     {
-        // Find booking by primary key (booking_id)
         $booking = Booking::findOrFail($id);
 
-        // Ensure the booking belongs to the current user
         if ($booking->booker_id !== $request->user()->id) {
             return redirect()->back()->with('error', 'Unauthorized access.');
         }
 
-        // Validate payment method
+
         $validated = $request->validate([
             'payment_method' => 'required|in:balance,card,paypal,bank',
         ]);
 
         $user = $request->user();
 
-        // If using account balance, check if sufficient
         if ($validated['payment_method'] === 'balance') {
             if ($user->balance < $booking->total) {
                 return redirect()->back()->with('error', 'Insufficient balance. Please add funds.');
             }
 
-            // Deduct balance and mark booking confirmed
+
             $user->balance -= $booking->total;
             $user->save();
         }
-        // For other payment methods, just mark as confirmed
-        // (In a real system, you'd integrate with payment gateways)
+
 
         if (Schema::hasColumn('bookings', 'status')) {
             $booking->status = 'confirmed';
         }
         $booking->save();
 
+        // create a transaction record for this confirmed booking if one doesn't already exist
+        if (!Transactions::where('booking_id', $booking->booking_id)->exists()) {
+            Transactions::create([
+                'booking_id' => $booking->booking_id,
+                'booker_id' => $booking->booker_id,
+                'room_id' => $booking->room_id,
+                'payment_method' => $validated['payment_method'] ?? 'unknown',
+                'price_paid' => $booking->total,
+                'num_days' => $booking->num_days,
+                'book_date' => $booking->book_date,
+                'end_date' => $booking->end_date,
+            ]);
+        }
+
         return redirect()->route('bookings.history')->with('success', 'Booking confirmed successfully!');
     }
 
-    // Pay for a pending reservation
+
     public function payPendingReservation(Request $request)
     {
         $request->validate([
-            // bookings table uses `booking_id` as the primary key column
+
             'booking_id' => 'required|integer|exists:bookings,booking_id',
             'payment_method' => 'required|in:balance,card,paypal,bank',
         ]);
 
         $booking = Booking::findOrFail($request->input('booking_id'));
 
-        // Ensure the booking belongs to the current user
+
         if ($booking->booker_id !== $request->user()->id) {
             return redirect()->back()->with('error', 'Unauthorized access.');
         }
 
-        // Check if user has sufficient balance for account balance payment
+
         $user = $request->user();
         $paymentMethod = $request->input('payment_method');
 
@@ -254,18 +266,29 @@ class BookingController extends Controller
                 return redirect()->back()->with('error', 'Insufficient balance. Please add funds or choose another payment method.');
             }
 
-            // Deduct from user balance
+
             $user->balance -= $booking->total;
             $user->save();
         }
-        // For other payment methods (card, paypal, bank), just mark as confirmed
-        // (In a real system, you'd integrate with payment gateway APIs)
 
-        // Mark booking as confirmed
         if (Schema::hasColumn('bookings', 'status')) {
             $booking->status = 'confirmed';
         }
         $booking->save();
+
+        // create a transaction record for this confirmed booking if one doesn't already exist
+        if (!Transactions::where('booking_id', $booking->booking_id)->exists()) {
+            Transactions::create([
+                'booking_id' => $booking->booking_id,
+                'booker_id' => $booking->booker_id,
+                'room_id' => $booking->room_id,
+                'payment_method' => $paymentMethod ?? 'unknown',
+                'price_paid' => $booking->total,
+                'num_days' => $booking->num_days,
+                'book_date' => $booking->book_date,
+                'end_date' => $booking->end_date,
+            ]);
+        }
 
         return redirect()->route('bookings.history')->with('success', 'Booking confirmed successfully!');
     }

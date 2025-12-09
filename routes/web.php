@@ -125,5 +125,7 @@ Route::get('user/checkHistory', [BookingController::class, 'checkBookingHistory'
 Route::get('user/profileSettings', [UsersController::class, 'profileSettings'])->name('profile.settings');
 Route::post('user/profileSettings', [UsersController::class, 'profileSettingsUpdate'])->name('profile.settings.update');
 
+Route::post('user/storeTransaction', [TransactionsController::class, 'storeTransaction']);
+
 require __DIR__.'/auth.php';
 

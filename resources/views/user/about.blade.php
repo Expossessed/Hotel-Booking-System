@@ -9,7 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
 
     <style>
-        /* 🎨 STYLING: Consistent Dark Brown & Orange Theme */
 
         :root {
             --color-dark-brown: #3C2A21;
@@ -67,9 +66,8 @@
 
 @include('layouts.hotelNav')
 
-<!-- 🖼️ ABOUT US HERO BANNER 🖼️ -->
 <header class="relative w-full h-[60vh] flex items-center justify-center overflow-hidden">
-    <div class="absolute inset-0 w-full h-full bg-cover bg-center" style="background-image: url('https://tse1.mm.bing.net/th/id/OIP.b_1recShkcZK_xhQ5qFPdgHaF6?rs=1&pid=ImgDetMain&o=7&rm=3'); opacity: 0.5;"></div>
+    <div class="absolute inset-0 w-full h-full bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?cs=srgb&dl=pexels-pixabay-258154.jpg&fm=jpg'); opacity: 0.5;"></div>
     
     <div class="relative z-10 text-center max-w-4xl p-8">
         <p class="text-xl font-serif section-title mb-4">Our Heritage</p>
@@ -80,11 +78,9 @@
 </header>
 
 
-<!-- MAIN CONTENT (History & Mission) -->
 <main class="px-4 md:px-6 py-20 bg-white/5">
     <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
         
-        <!-- Our Story Text Block -->
         <div class="p-8 content-section rounded-lg shadow-2xl">
             <p class="section-title text-2xl mb-4">Our Story</p>
             <h2 class="text-4xl font-serif font-bold text-white mb-6">A Vision of Hospitality</h2>
@@ -96,14 +92,12 @@
             </p>
         </div>
 
-        <!-- Image Placeholder -->
         <div class="hidden lg:block">
-            <img src="https://tse1.mm.bing.net/th/id/OIP.b_1recShkcZK_xhQ5qFPdgHaF6?rs=1&pid=ImgDetMain&o=7&rm=3" class="w-full rounded-lg shadow-xl" alt="Elegant interior design">
+            <img src="https://media.architecturaldigest.com/photos/57e42deafe422b3e29b7e790/master/pass/JW_LosCabos_2015_MainExterior.jpg" class="w-full rounded-lg shadow-xl" alt="Elegant interior design">
         </div>
 
     </div>
     
-    <!-- Mission and Values -->
     <div class="max-w-6xl mx-auto mt-20">
         <div class="text-center mb-12">
             <p class="section-title text-2xl mb-2">Our Commitments</p>
@@ -111,7 +105,7 @@
         </div>
 
         <div class="grid md:grid-cols-3 gap-8">
-            <!-- Pillar 1 -->
+        
             <div class="p-6 content-section rounded-lg shadow-xl text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mx-auto mb-4 text-accent-orange">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 19.5a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -120,7 +114,7 @@
                 <p class="text-white/70 text-sm">Anticipating every need, our staff ensures a seamless and highly personalized experience for all our guests.</p>
             </div>
             
-            <!-- Pillar 2 -->
+        
             <div class="p-6 content-section rounded-lg shadow-xl text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mx-auto mb-4 text-accent-orange">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5m-16.5 0A2.25 2.25 0 0 0 5.25 18H2.25a.75.75 0 0 1-.75-.75V8.461c0-.491.246-.941.666-1.214L11.25 2.203c.353-.235.798-.235 1.151 0l7.29 4.844c.42.273.666.723.666 1.214V17.25c0 .414-.336.75-.75.75H18m-15.75 0H5.25m9.75 0H18m0 0h3.75M7.5 18h9m-9 3h9" />
@@ -129,7 +123,6 @@
                 <p class="text-white/70 text-sm">We integrate eco-friendly practices into our operations, ensuring that your stay is as responsible as it is indulgent.</p>
             </div>
             
-            <!-- Pillar 3 -->
             <div class="p-6 content-section rounded-lg shadow-xl text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mx-auto mb-4 text-accent-orange">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.749a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.6l-4.72-2.822a.563.563 0 0 0-.586 0l-4.72 2.822a.562.562 0 0 1-.84-.6l1.285-5.385a.562.562 0 0 0-.182-.557L2.94 9.499a.563.563 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345l2.125-5.111Z" />
@@ -141,7 +134,6 @@
     </div>
 </main>
 
-<!-- Footer Placeholder -->
 <footer class="p-10 bg-black/40 text-center text-white/50">
     <p>© 2024 HOTEL BOOKIE. All rights reserved.</p>
 </footer>

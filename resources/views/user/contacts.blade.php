@@ -6,11 +6,9 @@
     <title>Hotel Bookie | Contact Us</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Assuming DaisyUI is installed via npm or CDN is preferred for this static example -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
 
     <style>
-        /* 🎨 STYLING: Consistent Dark Brown & Orange Theme */
 
         :root {
             --color-dark-brown: #3C2A21;
@@ -77,9 +75,8 @@
 
 @include('layouts.hotelNav')
 
-<!-- 🖼️ CONTACT HERO BANNER 🖼️ -->
 <header class="relative w-full h-[50vh] flex items-center justify-center overflow-hidden">
-    <div class="absolute inset-0 w-full h-full bg-cover bg-center" style="background-image: url('https://placehold.co/1920x800/211713/F7F7F7?text=HOTEL+RECEPTION+DESK'); opacity: 0.5;"></div>
+    <div class="absolute inset-0 w-full h-full bg-cover bg-center" style="background-image: url('https://media.architecturaldigest.com/photos/57e42deafe422b3e29b7e790/master/pass/JW_LosCabos_2015_MainExterior.jpg'); opacity: 0.5;"></div>
     
     <div class="relative z-10 text-center max-w-4xl p-8">
         <p class="text-xl font-serif section-title mb-4">Contact Us</p>
@@ -90,14 +87,11 @@
 </header>
 
 
-<!-- MAIN CONTENT (Form & Details) -->
 <main class="px-4 md:px-6 py-20 bg-white/5">
     <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16">
         
-        <!-- Contact Form -->
         <div class="p-8 form-container rounded-lg shadow-2xl">
             <h2 class="text-3xl font-serif font-bold text-white mb-6 border-b border-white/10 pb-4">Send Us a Message</h2>
-            <!-- Note: The form action uses the URL helper, and @csrf is mandatory for Laravel POST requests. -->
             <form action="{{ url('/contact') }}" method="POST" class="space-y-4">
                 @csrf 
                 <div>
@@ -122,43 +116,38 @@
             </form>
         </div>
 
-        <!-- Contact Details -->
         <div class="space-y-10 p-8">
             <div class="space-y-4">
 
-                <!-- Phone -->
                 <div class="flex items-start space-x-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-accent-orange mt-1 flex-shrink-0">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75l1.5 1.5M2.25 15.75l1.5 1.5m18-9l-1.5 1.5m-1.5 1.5l-1.5-1.5m0 0l-3.75 3.75m1.5 1.5l1.5 1.5m-1.5-1.5l1.5-1.5m-1.5 1.5L9.75 9.75m0 0l-1.5 1.5m-1.5 1.5l-1.5-1.5m0 0l-3.75 3.75m1.5 1.5l1.5 1.5m-1.5-1.5L8.25 8.25m-3.75 3.75h14.25" />
-                    </svg>
+                    <img src="https://cdn-icons-png.flaticon.com/128/2354/2354127.png" 
+                        alt="Contact Icon" 
+                        class="w-6 h-6 mt-1 flex-shrink-0" />
                     <div>
                         <p class="font-semibold text-white">Phone Number</p>
-                        <p class="text-white/70">+10 (759) 657 5378 (24/7)</p>
+                        <p class="text-white/70">+63 993 302 3621</p>
                     </div>
                 </div>
 
-                <!-- Email -->
                 <div class="flex items-start space-x-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-accent-orange mt-1 flex-shrink-0">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.625a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                     </svg>
                     <div>
                         <p class="font-semibold text-white">Email</p>
-                        <p class="text-white/70">reservations@hotelbookie.com</p>
+                        <p class="text-white/70">veejaycuizon@hotelbookie.com</p>
                     </div>
                 </div>
             </div>
             
-            <!-- Map Placeholder -->
             <div class="h-64 rounded-lg overflow-hidden shadow-xl border border-white/10">
-                <img src="https://placehold.co/600x400/3C2A21/F7F7F7?text=MAP+Placeholder" class="w-full h-full object-cover" alt="Map Location">
+                <img src="https://cebudailynews.inquirer.net/files/2018/05/Mandaue-map-342x250.jpg" class="w-full h-full object-cover" alt="Map Location">
             </div>
 
         </div>
     </div>
 </main>
 
-<!-- Footer Placeholder -->
 <footer class="p-10 bg-black/40 text-center text-white/50">
     <p>© 2024 HOTEL BOOKIE. All rights reserved.</p>
 </footer>

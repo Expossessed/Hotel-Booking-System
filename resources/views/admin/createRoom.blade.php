@@ -95,7 +95,6 @@
                         <details class="dropdown dropdown-end">
                             <summary class="hover:text-primary-blue px-3 cursor-pointer">Views</summary>
                             <ul class="bg-white rounded-box p-2 w-64 shadow-2xl border border-gray-100 mt-2 z-50">
-                                <li><a href="viewbookings" class="hover:bg-gray-100 py-2">View Pending Bookings</a></li>
                                 <li><a href="history" class="hover:bg-gray-100 py-2">View Booking History</a></li>
                                 <li><a href="viewtransactions" class="hover:bg-gray-100 py-2">View Pending Transactions</a></li>
                                 <li><a href="transactionHistory" class="hover:bg-gray-100 py-2">View Transaction History</a></li>

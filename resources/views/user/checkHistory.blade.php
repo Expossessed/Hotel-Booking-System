@@ -4,24 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Booking History - HOTEL BOOKIE</title>
-    <!-- Tailwind CSS CDN -->
+   
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- DaisyUI CDN -->
+    
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* 🎨 CORE UI STYLING REPLICATION (Dark Brown, White Text, Orange Accent) */
+        
 
-        /* Define Core Colors */
         :root {
-            --color-dark-brown: #3C2A21; /* Rich dark brown for background */
-            --color-accent-orange: #C45B3A; /* Reddish-orange accent */
-            --color-text-light: #F7F7F7; /* Near-white */
+            --color-dark-brown: #3C2A21; 
+            --color-accent-orange: #C45B3A; 
+            --color-text-light: #F7F7F7;
         }
 
-        /* 1. Global Dark Theme Background & Text */
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--color-dark-brown);
@@ -29,12 +28,11 @@
             min-height: 100vh;
         }
 
-        /* 2. Navbar Styling */
+       
         .navbar-top {
-            background-color: #312620; /* Slightly darker shade */
+            background-color: #312620;
         }
 
-        /* Card styling */
         .card-dark-bg {
             background-color: #312620;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -94,7 +92,6 @@
             color: #f87171;
         }
 
-        /* Additional styles for the header to use Playfair Display */
         .main-header {
             font-family: 'Playfair Display', serif;
         }
@@ -109,8 +106,6 @@
 <body>
 
 @include('layouts.hotelNav')
-
-<!-- MAIN CONTENT: BOOKING HISTORY -->
 <main class="px-4 md:px-6 py-12 max-w-6xl mx-auto">
     
     <div class="mb-8">
@@ -132,7 +127,7 @@
         </div>
     @endif
         
-    <!-- Card Grid for Bookings -->
+    
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
     
@@ -152,7 +147,7 @@
                 
                 <div class="card-dark-bg rounded-lg overflow-hidden flex flex-col justify-between shadow-lg">
                     
-                    <!-- Room Image -->
+                   
                     <div class="w-full h-40 bg-gray-700 overflow-hidden">
                         <img 
                             src="{{ $imageUrl }}"
@@ -162,10 +157,9 @@
                         >
                     </div>
 
-                    <!-- Card Content -->
+                   
                     <div class="p-6 flex flex-col justify-between flex-1">
                         
-                        <!-- Room Type and Status -->
                         <div class="flex justify-between items-start border-b border-white/10 pb-4 mb-4">
                             <div class="flex-1">
                                 <h2 class="text-2xl font-bold text-white leading-tight">
@@ -174,16 +168,16 @@
                                 @if($room && $room->room_desc)
                                     <p class="text-sm text-white/60 mt-1">{{ Str::limit($room->room_desc, 60) }}</p>
                                 @endif
-                            </div>
+                            </div>  
                             <span class="badge badge-base {{ $isPending ? 'badge-pending' : 'badge-confirmed' }} px-3 py-1 rounded-full text-xs font-semibold">
                                 {{ $isPending ? 'Pending' : 'Confirmed' }}
                             </span>
                         </div>
-
-                        <!-- Booking Details Grid -->
+                        
+                        
                         <div class="grid grid-cols-2 gap-y-3 text-sm mb-4">
                             
-                            <!-- Check-in and Check-out -->
+                            
                             <div>
                                 <p class="text-white/60">Check-in</p>
                                 <p class="font-medium text-white">{{ \Carbon\Carbon::parse($booking->book_date)->format('M d, Y') }}</p>
@@ -193,7 +187,7 @@
                                 <p class="font-medium text-white">{{ \Carbon\Carbon::parse($booking->end_date)->format('M d, Y') }}</p>
                             </div>
 
-                            <!-- Nights and Price/Night -->
+                           
                             <div>
                                 <p class="text-white/60">Nights</p>
                                 <p class="font-medium text-white">{{ $booking->num_days }}</p>
@@ -204,7 +198,7 @@
                             </div>
                         </div>
 
-                        <!-- Room Details -->
+                       
                         @if($room && ($room->room_name || $room->free_items))
                             <div class="border-t border-white/10 pt-3 mb-4">
                                 @if($room->room_name)
@@ -216,14 +210,14 @@
                             </div>
                         @endif
 
-                        <!-- Total Cost and Action Button -->
+                    
                         <div class="flex justify-between items-center border-t border-white/10 pt-4">
                             <div>
                                 <p class="text-sm text-white/60">Total Cost</p>
                                 <p class="text-2xl font-extrabold text-[var(--color-accent-orange)]">${{ number_format($booking->total, 2) }}</p>
                             </div>
                             
-                            <!-- Action Button -->
+                           
                             @if($isPending)
                                 <button 
                                     class="btn btn-accent-color btn-sm rounded-none font-semibold"
@@ -234,17 +228,18 @@
                                 <span class="text-white/50 text-sm">Completed</span>
                             @endif
                         </div>
+                       
                     </div>
                 </div>
             @endforeach
         @endif
         
     </div>
-    <!-- End Card Grid -->
+
 
 </main>
 
-<!-- Payment Method Selection Modal -->
+
 <dialog id="payment_modal" class="modal">
     <div class="modal-box payment-modal-content p-8 rounded-lg max-w-md">
         <form method="dialog">
@@ -257,7 +252,6 @@
             <span id="modal_total" class="font-semibold text-[var(--color-accent-orange)]"></span>
         </p>
 
-        <!-- Balance Check Alert -->
         <div id="insufficient_balance_alert" class="alert-insufficient alert rounded-none mb-6 p-4 hidden" style="background-color: rgba(220, 38, 38, 0.1); border: 1px solid #f87171;">
             <span class="text-sm">Insufficient balance. Please add funds to proceed.</span>
         </div>
@@ -287,9 +281,9 @@
             </div>
 
             <div class="payment-option p-4 flex items-center rounded-none">
-                <input type="radio" name="payment_method_choice" value="bank" id="pay_bank" class="radio radio-sm">
-                <label for="pay_bank" class="ml-4 flex-1 cursor-pointer payment-label text-white">
-                    <span class="font-medium">Bank Transfer</span>
+                <input type="radio" name="payment_method_choice" value="gcash" id="pay_gcash" class="radio radio-sm">
+                <label for="pay_gcash" class="ml-4 flex-1 cursor-pointer payment-label text-white">
+                    <span class="font-medium">Gcash</span>
                 </label>
             </div>
         </div>
@@ -303,13 +297,13 @@
             </button>
         </div>
     </div>
+    </form>
     
     <form method="dialog" class="modal-backdrop">
         <button>close</button>
     </form>
 </dialog>
 
-<!-- Confirmation Modal -->
 <dialog id="confirmation_modal" class="modal">
     <div class="modal-box payment-modal-content p-8 rounded-lg max-w-md">
         <form method="dialog">
@@ -357,11 +351,10 @@
 </dialog>
 
 <script>
-    // Store current payment data
     let currentPaymentData = {
         bookingId: null,
         roomType: null,
-        totalAmount: null,
+        totalAmoun: null,
         userBalance: null,
         selectedMethod: null
     };
@@ -370,11 +363,10 @@
         balance: 'Account Balance',
         card: 'Credit/Debit Card',
         paypal: 'PayPal',
-        bank: 'Bank Transfer'
+        gcash: 'Gcash'
     };
 
     function openPaymentModal(bookingId, roomType, totalAmount, userBalance) {
-        // Store payment data
         currentPaymentData = {
             bookingId: bookingId,
             roomType: roomType,
@@ -383,13 +375,11 @@
             selectedMethod: null
         };
 
-        // Populate modal with booking details
-        document.getElementById('modal_booking_id').value = bookingId;
+         document.getElementById('modal_booking_id').value = bookingId;
         document.getElementById('modal_room_type').textContent = roomType;
         document.getElementById('modal_total').textContent = '$' + totalAmount.toFixed(2);
         document.getElementById('user_balance_display').textContent = '$' + userBalance.toFixed(2);
 
-        // Check if balance is sufficient
         const balanceOption = document.getElementById('pay_balance');
         const insufficientAlert = document.getElementById('insufficient_balance_alert');
 
@@ -398,7 +388,6 @@
             balanceOption.parentElement.style.opacity = '0.5';
             balanceOption.parentElement.style.pointerEvents = 'none';
             insufficientAlert.classList.remove('hidden');
-            // Set to first available non-balance method
             document.getElementById('pay_card').checked = true;
         } else {
             balanceOption.disabled = false;
@@ -408,7 +397,6 @@
             document.getElementById('pay_balance').checked = true;
         }
 
-        // Open modal
         document.getElementById('payment_modal').showModal();
     }
 
@@ -418,7 +406,6 @@
         const userBalance = currentPaymentData.userBalance;
         const totalAmount = currentPaymentData.totalAmount;
 
-        // Validate balance for account balance payment
         if (selectedMethod === 'balance' && userBalance < totalAmount) {
             Swal.fire({
                 icon: 'error',
@@ -432,19 +419,17 @@
             return;
         }
 
-        // Store selected method
         currentPaymentData.selectedMethod = selectedMethod;
         document.getElementById('modal_payment_method').value = selectedMethod;
 
-        // Close payment modal and open confirmation modal
+
         document.getElementById('payment_modal').close();
         
-        // Populate confirmation modal
+
         document.getElementById('confirm_room_type').textContent = currentPaymentData.roomType;
         document.getElementById('confirm_amount').textContent = '$' + totalAmount.toFixed(2);
         document.getElementById('confirm_method').textContent = methodLabels[selectedMethod];
 
-        // Open confirmation modal
         setTimeout(() => {
             document.getElementById('confirmation_modal').showModal();
         }, 100);
@@ -457,7 +442,7 @@
         }, 100);
     }
 
-    // Handle payment form submission
+
     document.getElementById('payment_form').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -465,7 +450,6 @@
         const userBalance = currentPaymentData.userBalance;
         const totalAmount = currentPaymentData.totalAmount;
 
-        // Validate balance one more time
         if (selectedMethod === 'balance' && userBalance < totalAmount) {
             Swal.fire({
                 icon: 'error',
@@ -478,8 +462,6 @@
             });
             return;
         }
-
-        // Submit the form directly
         this.submit();
     });
 </script>

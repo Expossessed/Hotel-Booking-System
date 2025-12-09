@@ -24,9 +24,12 @@ class TransactionsController extends Controller
     public function storeTransaction(Request $request)
     {
         $request->validate([
+            'booking_id' => 'required|exists:bookings,id',
             'booker_id' => 'required|exists:users,id',
             'room_id' => 'required|exists:rooms,room_id',
+            'payment_method' => 'required|string',
             'price_paid' => 'required|integer',
+            'num_days' => 'required|integer|min:1',
             'book_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:book_date',
         ]);
@@ -64,11 +67,5 @@ class TransactionsController extends Controller
         ]);
     }
 
-    public function payPending(Request $request)
-    {
-        $transactions = Transactions::all()->where('booker_id', $request->user()->id);
-        $total = $transactions->booker->total;
-        $payment = $total - $transactions->booker->user->balance;
-    }
     
 }

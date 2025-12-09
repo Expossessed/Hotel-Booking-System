@@ -183,16 +183,28 @@ input:focus, textarea:focus{
 
       <!-- LOGIN -->
       <div id="pane-login" class="pane" role="tabpanel" aria-hidden="false" aria-labelledby="tab-login">
+        <!-- Login Error Alert -->
+        @if ($errors->any() && old('email'))
+          <div style="background-color: #7f1d1d; padding: 0.875rem; margin-bottom: 1rem; border-left: 4px solid #dc2626; border-radius: 0.375rem;">
+            <h4 style="color: #fca5a5; font-size: 0.875rem; font-weight: bold; margin: 0 0 0.5rem 0;">Login Error</h4>
+            <ul style="list-style-type: disc; list-style-position: inside; color: #fee2e2; font-size: 0.875rem; margin: 0; padding: 0;">
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+        
         <form id="loginForm" action="{{ route('login') }}" method="POST" novalidate>
           @csrf
           <div class="field">
             <label for="login_email">Email address</label>
-            <input id="login_email" name="email" type="email" required autocomplete="email" placeholder="Enter your email">
+            <input id="login_email" name="email" type="email" required autocomplete="email" placeholder="Enter your email" value="{{ old('email') }}" style="@error('email') border-color: #dc2626; @enderror">
           </div>
 
           <div class="field">
             <label for="login_password">Password</label>
-            <input id="login_password" name="password" type="password" required autocomplete="current-password" placeholder="Enter your password">
+            <input id="login_password" name="password" type="password" required autocomplete="current-password" placeholder="Enter your password" style="@error('password') border-color: #dc2626; @enderror">
           </div>
 
           <div class="muted-right"><a href="{{ route('password.request') }}" style="color:var(--muted);text-decoration:underline">Forgot password?</a></div>
@@ -203,26 +215,38 @@ input:focus, textarea:focus{
 
       <!-- REGISTER -->
       <div id="pane-register" class="pane" role="tabpanel" aria-hidden="true" aria-labelledby="tab-register">
+        <!-- Register Error Alert -->
+        @if ($errors->any() && old('name'))
+          <div style="background-color: #7f1d1d; padding: 0.875rem; margin-bottom: 1rem; border-left: 4px solid #dc2626; border-radius: 0.375rem;">
+            <h4 style="color: #fca5a5; font-size: 0.875rem; font-weight: bold; margin: 0 0 0.5rem 0;">Registration Error</h4>
+            <ul style="list-style-type: disc; list-style-position: inside; color: #fee2e2; font-size: 0.875rem; margin: 0; padding: 0;">
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+        
         <form id="registerForm" action="{{ route('register') }}" method="POST" novalidate>
           @csrf
           <div class="field">
             <label for="reg_name">Full name</label>
-            <input id="reg_name" name="name" type="text" required autocomplete="name" placeholder="Enter your full name">
+            <input id="reg_name" name="name" type="text" required autocomplete="name" placeholder="Enter your full name" value="{{ old('name') }}" style="@error('name') border-color: #dc2626; @enderror">
           </div>
 
           <div class="field">
             <label for="reg_email">Email address</label>
-            <input id="reg_email" name="email" type="email" required autocomplete="email" placeholder="Enter your email">
+            <input id="reg_email" name="email" type="email" required autocomplete="email" placeholder="Enter your email" value="{{ old('email') }}" style="@error('email') border-color: #dc2626; @enderror">
           </div>
 
           <div class="field">
             <label for="reg_password">Password</label>
-            <input id="reg_password" name="password" type="password" required autocomplete="new-password" placeholder="Enter your password">
+            <input id="reg_password" name="password" type="password" required autocomplete="new-password" placeholder="Enter your password" style="@error('password') border-color: #dc2626; @enderror">
           </div>
 
           <div class="field">
             <label for="reg_password_confirmation">Confirm password</label>
-            <input id="reg_password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password" placeholder="Confirm your password">
+            <input id="reg_password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password" placeholder="Confirm your password" style="@error('password_confirmation') border-color: #dc2626; @enderror">
           </div>
 
           <button type="submit" class="btn btn-accent">Create Account</button>

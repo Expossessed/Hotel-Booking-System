@@ -9,16 +9,14 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
 
     <style>
-        /* 🎨 STYLING: Based on the ECOHO Image (Dark Brown & White/Orange) */
 
-        /* Define Core Colors */
+
         :root {
-            --color-dark-brown: #3C2A21; /* Rich dark brown for background/side panel */
-            --color-accent-orange: #C45B3A; /* Reddish-orange accent (like the button/bed runner) */
-            --color-text-light: #F7F7F7; /* Near-white for text */
+            --color-dark-brown: #3C2A21; 
+            --color-accent-orange: #C45B3A;
+            --color-text-light: #F7F7F7; 
         }
 
-        /* 1. Reset Body Background */
         body {
             background-image: none;
             background-color: var(--color-dark-brown);
@@ -26,7 +24,6 @@
             color: var(--color-text-light);
         }
         
-        /* 4. Accent Button Style (Orange/Brown) */
         .btn-accent-color {
             background-color: var(--color-accent-orange);
             border-color: var(--color-accent-orange);
@@ -38,7 +35,7 @@
             background-color: #A94E31; 
             border-color: #A94E31;
         }
-        /* Custom card background for details */
+
         .details-card {
             background-color: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -91,7 +88,6 @@
                     @endif
                 </div>
 
-                <!-- Payment Method Display (shown after selection) -->
                 <div id="payment_method_display" class="mt-6">
                     <p class="text-white/70 text-sm mb-2">Selected Payment Method:</p>
                     <div class="px-4 py-3 bg-black/50 border border-white/20 rounded-md flex items-center justify-between cursor-pointer hover:bg-black/70 transition-colors" onclick="showPaymentModal()">
@@ -131,7 +127,6 @@
             <h3 class="font-bold text-3xl mb-4 text-white">Choose Payment Method</h3>
             <p class="text-white/80 mb-6">Select your preferred method to complete the payment of ${{ $booking->total ?? 'N/A' }}.</p>
             
-            <!-- Balance Check Alert -->
             <div id="insufficient_balance_alert" class="alert alert-error shadow-lg mb-6 rounded-none bg-red-800/30 border-red-400 hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M4.5 19.5L19.5 4.5"/></svg>
                 <span class="text-red-300">Insufficient balance. Please add funds to proceed.</span>
@@ -163,13 +158,12 @@
                     </div>
                     <div class="form-control">
                         <label class="label cursor-pointer p-4 bg-black/50 hover:bg-black/70 rounded-md transition-colors">
-                            <span class="label-text text-white text-lg font-medium">Bank Transfer</span> 
-                            <input type="radio" name="payment_method" value="bank" class="radio radio-lg radio-warning" onchange="updatePaymentSelected()"/>
+                            <span class="label-text text-white text-lg font-medium">Gcash</span> 
+                            <input type="radio" name="payment_method" value="gcash" class="radio radio-lg radio-warning" onchange="updatePaymentSelected()"/>
                         </label>
                     </div>
                 </div>
 
-                <!-- Selected method preview -->
                 <div class="mt-4 text-white/80">
                     <p class="text-sm">Selected payment method: <span id="selected_method_value" class="font-semibold">Account Balance</span></p>
                 </div>
@@ -193,7 +187,7 @@
             balance: 'Account Balance',
             card: 'Credit/Debit Card',
             paypal: 'PayPal',
-            bank: 'Bank Transfer'
+            gcash: 'Gcash'
         };
 
         const radios = document.querySelectorAll('input[name="payment_method"]');
@@ -224,7 +218,6 @@
             }
         }
 
-        // Expose a global helper so inline handlers can call it
         window.updatePaymentSelected = updateSelected;
 
         radios.forEach(r => {
@@ -232,12 +225,10 @@
             r.addEventListener('change', validateBalance);
         });
 
-        // Handle form submission
         if (paymentForm) {
             paymentForm.addEventListener('submit', function(e) {
                 if (!validateBalance()) {
                     e.preventDefault();
-                    // Switch to a different payment method
                     const cardOption = document.querySelector('input[name="payment_method"][value="card"]');
                     if (cardOption) {
                         cardOption.checked = true;
@@ -247,12 +238,10 @@
             });
         }
 
-        // Initialize
         updateSelected();
         validateBalance();
     });
 
-    // Called by the "Pay Now" button to open the dialog
     function showPaymentModal() {
         const dlg = document.getElementById('payment_modal');
         if (dlg && typeof dlg.showModal === 'function') {

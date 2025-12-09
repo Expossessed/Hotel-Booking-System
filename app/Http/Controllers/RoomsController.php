@@ -114,18 +114,16 @@ class RoomsController extends Controller
 
     public function showRooms(Request $request)
     {
-        // Admin users should not view the user-facing listing. Send them to admin dashboard.
+
         if (auth()->check() && auth()->user()->isAdmin()) {
             return redirect()->route('admin.front');
         }
         $query = Rooms::query();
 
-        // Filter: only available rooms
         if ($request->query('filter') === 'available') {
             $query->where('is_available', 1);
         }
 
-        // Sort by price
         $sort = $request->query('sort');
         if ($sort === 'price_low') {
             $query->orderBy('room_price', 'asc');
@@ -144,10 +142,10 @@ class RoomsController extends Controller
 
     public function view($id)
     {
-        // Eager load reviews (including the user who left each review)
+
         $room = Rooms::where('room_id', $id)->with(['reviews.user'])->firstOrFail();
 
-        // compute average rating (0..5) with one decimal place
+
         $averageRating = $room->reviews->avg('rating') ? round($room->reviews->avg('rating'), 1) : 0;
 
         return view('user.viewRoom', compact('room', 'averageRating'));

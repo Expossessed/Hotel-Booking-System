@@ -2,26 +2,44 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <!-- Error Alert -->
+    @if ($errors->any())
+        <div style="background-color: #7f1d1d; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid #dc2626; border-radius: 0.25rem;">
+            <h3 style="color: #fca5a5; font-size: 0.875rem; font-weight: bold; margin-bottom: 0.5rem;">
+                ⚠️ Login Error
+            </h3>
+            <ul style="list-style-type: disc; list-style-position: inside; color: #fee2e2; font-size: 0.875rem;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-text-input id="email" class="block mt-1 w-full @error('email') border-red-500 @enderror" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            @error('email')
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            @enderror
         </div>
 
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
+            <x-text-input id="password" class="block mt-1 w-full @error('password') border-red-500 @enderror"
                             type="password"
                             name="password"
                             required autocomplete="current-password" />
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            @error('password')
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            @enderror
         </div>
 
         <!-- Remember Me -->

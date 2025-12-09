@@ -48,23 +48,7 @@
         <h1 class="text-4xl md:text-5xl font-serif font-bold mb-8 text-white">
             <a href="/" class="text-white/70 hover:text-white transition-colors">Account</a> / Cash In
         </h1>
-
-        @if ($errors->any())
-            <div class="alert alert-error mb-6 rounded-lg">
-                <div class="flex flex-col gap-2">
-                    @foreach ($errors->all() as $error)
-                        <span>{{ $error }}</span>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-
-        @if (session('success'))
-            <div class="alert alert-success mb-6 rounded-lg">
-                <span>{{ session('success') }}</span>
-            </div>
-        @endif
-
+        
         <div class="card details-card shadow-2xl rounded-lg overflow-hidden">
             <div class="card-body p-6 lg:p-8">
 
@@ -139,13 +123,6 @@
                         @enderror
                     </div>
 
-                    <!-- Selected Method Display -->
-                    <div class="mb-8 p-4 bg-black/50 rounded-lg border border-white/20">
-                        <p class="text-white/70 text-sm mb-2">Selected Payment Method:</p>
-                        <p class="text-white font-semibold" x-text="selectedMethod === 'card' ? 'Credit/Debit Card' : selectedMethod === 'paypal' ? 'PayPal' : 'GCash'">Credit/Debit Card</p>
-                    </div>
-
-                    <!-- Submit Button -->
                     <div class="card-actions justify-center gap-4">
                         <a href="{{ route('rooms.list') }}" class="btn btn-outline btn-lg rounded-none text-white hover:bg-white/10 border-white/40">
                             Cancel
@@ -165,14 +142,6 @@
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('cashInForm', () => ({
-                selectedMethod: 'card',
-            }));
-        });
-    </script>
 
 </body>
 </html>

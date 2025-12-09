@@ -76,14 +76,12 @@
 
             <div class="flex-none">
                 <ul class="menu menu-horizontal gap-4 text-base font-semibold text-gray-700">
-                    <li><a class="hover:text-primary-blue px-3" href="home">Home</a></li>
+                    <li><a class="hover:text-primary-blue px-3" href="..\home">Home</a></li>
                     <li>
                         <details class="dropdown dropdown-end">
                             <summary class="hover:text-primary-blue px-3 cursor-pointer">Views</summary>
                             <ul class="bg-white rounded-box p-2 w-64 shadow-2xl border border-gray-100 mt-2 z-50">
-                                <li><a href="viewbookings" class="hover:bg-gray-100 py-2">View Pending Bookings</a></li>
                                 <li><a href="history" class="hover:bg-gray-100 py-2">View Booking History</a></li>
-                                <li><a href="viewtransactions" class="hover:bg-gray-100 py-2">View Pending Transactions</a></li>
                                 <li><a href="transactionHistory" class="hover:bg-gray-100 py-2">View Transaction History</a></li>
                                 <li><a href="viewUser" class="hover:bg-gray-100 py-2">View Users</a></li>
                             </ul>
@@ -152,7 +150,7 @@
                                     <td class="py-4 px-6">{{ $review->user->name }}</td>
                                     <td class="py-4 px-6">{{ $review->rating }}</td>
                                     <td class="py-4 px-6">
-                                        <textarea class="w-80" readonly style="resize:vertical;">{{ $review->comment }}</textarea>
+                                        <textarea class="w-80" rows="6"  style="resize:vertical;">{{ $review->comment }}</textarea>
                                     </td>
                                     <td class="py-4 px-6 flex justify-center gap-3">
                                         <form action="/admin/reviews/{{ $review->room->room_id }}" method="POST" 

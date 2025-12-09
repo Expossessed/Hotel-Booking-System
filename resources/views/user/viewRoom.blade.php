@@ -9,16 +9,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
     <style>
-        /* 🎨 CUSTOM STYLING: Dark Brown & Orange Theme */
 
-        /* Define Core Colors */
         :root {
-            --color-dark-brown: #3C2A21; /* Rich dark brown for background/side panel */
-            --color-accent-orange: #C45B3A; /* Reddish-orange accent (like the button/bed runner) */
-            --color-text-light: #F7F7F7; /* Near-white for text */
+            --color-dark-brown: #3C2A21; 
+            --color-accent-orange: #C45B3A; 
+            --color-text-light: #F7F7F7;  
         }
 
-        /* 1. Reset Body Background */
         body {
             background-color: var(--color-dark-brown);
             min-height: 100vh;
@@ -26,9 +23,7 @@
             font-family: sans-serif;
         }
         
-        /* 2. NAVBAR Styling */
         .navbar-top {
-            /* Using a slightly darker shade for the fixed bar */
             background-color: #312620; 
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -42,7 +37,6 @@
             color: var(--color-accent-orange);
         }
 
-        /* 3. Accent Button Style (Orange/Brown) */
         .btn-accent-color {
             background-color: var(--color-accent-orange);
             border-color: var(--color-accent-orange);
@@ -63,17 +57,15 @@
             color: white;
         }
 
-        /* 4. Main Card/Container Styling (Used for Room Info and Reviews) */
         .dark-card {
             background-color: #312620; 
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--color-text-light);
         }
         .dark-card-inner {
-            background-color: #3C2A21; /* Slightly darker than the card for contrast */
+            background-color: #3C2A21;
         }
 
-        /* Utility classes from previous styles */
         input[readonly],
         textarea[readonly],
         input:disabled,
@@ -109,13 +101,13 @@
                     text: "{{ session('success') }}",
                     timer: 2500,
                     showConfirmButton: false,
-                    // Apply custom dark styling to SweetAlert
+
                     customClass: {
                         popup: 'bg-[#312620] text-white rounded-none border border-green-400',
                         title: 'text-white',
                         content: 'text-green-300'
                     },
-                    background: '#312620', // Dark background
+                    background: '#312620',
                 });
             });
         </script>
@@ -158,7 +150,7 @@
                     <p class="text-lg md:text-xl text-white font-bold">
                         {{ strtoupper($room->room_type) }}
                     </p>
-                    <p class="text-lg md:text-xl text-white/70 mt-1">
+                    <p class="text-lg md:text-xl text-white/70 mt-1 line-clamp-3 width-30">
                         {{ $room->room_desc }}
                     </p>
 
@@ -307,7 +299,6 @@
                         } else {
                             extra.style.display = 'none';
                             btn.textContent = 'Show more (' + btn.dataset.hiddenCount + ' more)';
-                            // scroll back up to the first hidden review
                             window.scrollTo({ top: extra.getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
                         }
                     });
