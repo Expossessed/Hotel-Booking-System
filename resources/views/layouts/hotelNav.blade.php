@@ -3,13 +3,13 @@
     <!-- LOGO -->
     <div class="flex-1">
         @auth
-        <a href="{{ route('rooms.list') }}" class="text-2xl md:text-3xl font-extrabold tracking-widest text-white drop-shadow-sm">
-            HOTEL BOOKIE
-        </a>
+            <a href="{{ route('rooms.list') }}" class="text-2xl md:text-3xl font-extrabold tracking-widest text-white drop-shadow-sm">
+                HOTEL BOOKIE
+            </a>
         @else
-        <a href="{{ route('home') }}" class="text-2xl md:text-3xl font-extrabold tracking-widest text-white drop-shadow-sm">
-            HOTEL BOOKIE
-        </a>
+            <a href="{{ route('home') }}" class="text-2xl md:text-3xl font-extrabold tracking-widest text-white drop-shadow-sm">
+                HOTEL BOOKIE
+            </a>
         @endauth
     </div>
 
@@ -18,22 +18,22 @@
 
         <!-- HOME -->
         @auth
-        <a href="{{ route('rooms.list') }}"
-           class="{{ request()->routeIs('user.rooms') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}
-                  hover:text-white hover:underline underline-offset-4 transition">
-            Home
-        </a>
+            <a href="{{ route('rooms.list') }}"
+               class="{{ request()->routeIs('rooms.list') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}
+                      hover:text-white hover:underline underline-offset-4 transition">
+                Home
+            </a>
         @else
-        <a href="{{ route('home') }}"
-           class="{{ request()->routeIs('home') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}
-                  hover:text-white hover:underline underline-offset-4 transition">
-            Home
-        </a>
+            <a href="{{ route('home') }}"
+               class="{{ request()->routeIs('home') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}
+                      hover:text-white hover:underline underline-offset-4 transition">
+                Home
+            </a>
         @endauth
 
         <!-- ROOMS -->
         <a href="{{ route('user.rooms') }}"
-           class="{{ request()->routeIs('user.rooms') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}
+           class="{{ request()->routeIs('user.rooms*') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}
                   hover:text-white hover:underline underline-offset-4 transition">
             Rooms
         </a>
@@ -53,50 +53,50 @@
         </a>
 
         @auth
-        <!-- BALANCE -->
-        <div class="text-right">
-            <div class="text-xs text-white/50">Balance</div>
-            <div class="font-semibold text-white">₱{{ number_format(auth()->user()->balance ?? 0, 2) }}</div>
-        </div>
+            <!-- BALANCE -->
+            <div class="text-right">
+                <div class="text-xs text-white/50">Balance</div>
+                <div class="font-semibold text-white">₱{{ number_format(auth()->user()->balance ?? 0, 2) }}</div>
+            </div>
 
-        <!-- CASH IN -->
-        <a href="{{ route('cashIn.show') }}" 
-           class="btn btn-sm bg-[#C45B3A] hover:bg-[#db6d4a] text-white font-bold border-none ml-3">
-           +
-        </a>
+            <!-- CASH IN -->
+            <a href="{{ route('cashIn.show') }}" 
+               class="btn btn-sm bg-[#C45B3A] hover:bg-[#db6d4a] text-white font-bold border-none ml-3">
+               +
+            </a>
 
-        <!-- PROFILE DROPDOWN -->
-        <div class="dropdown dropdown-end ml-4">
-            <label tabindex="0" class="btn btn-ghost btn-circle avatar hover:bg-white/10 border border-white/20 transition">
-                <div class="w-10 rounded-full bg-white/10 flex items-center justify-center">
-                    <img src="https://th.bing.com/th/id/OIP.hGSCbXlcOjL_9mmzerqAbQHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" alt="">
-                </div>
-            </label>
+            <!-- PROFILE DROPDOWN -->
+            <div class="dropdown dropdown-end ml-4">
+                <label tabindex="0" class="btn btn-ghost btn-circle avatar hover:bg-white/10 border border-white/20 transition">
+                    <div class="w-10 rounded-full bg-white/10 flex items-center justify-center">
+                        <img src="https://tse2.mm.bing.net/th/id/OIP.7PHShIp7X8srjX8RUQfh_AHaHa?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="">
+                    </div>
+                </label>
 
-            <ul tabindex="0" class="menu dropdown-content mt-3 w-56 p-3 rounded-xl bg-[#2B2320]/95 backdrop-blur-xl border border-white/10 shadow-2xl">
-                <li><a href="{{ route('bookings.userHistory') }}" class="text-[#F7F7F7]">My Bookings</a></li>
-                <li><a href="{{ route('profile.settings') }}" class="text-[#F7F7F7]">Profile & Settings</a></li>
+                <ul tabindex="0" class="menu dropdown-content mt-3 w-56 p-3 rounded-xl bg-[#2B2320]/95 backdrop-blur-xl border border-white/10 shadow-2xl">
+                    <li><a href="{{ route('bookings.userHistory') }}" class="text-[#F7F7F7]">My Bookings</a></li>
+                    <li><a href="{{ route('profile.settings') }}" class="text-[#F7F7F7]">Profile & Settings</a></li>
 
-                @if(auth()->user()->isAdmin())
-                <li><a href="{{ route('admin.front') }}" class="text-yellow-400 font-semibold">Admin Panel</a></li>
-                @endif
+                    @if(auth()->user()->isAdmin())
+                        <li><a href="{{ route('admin.front') }}" class="text-yellow-400 font-semibold">Admin Panel</a></li>
+                    @endif
 
-                <li>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button class="text-red-400 hover:bg-red-600 hover:text-white rounded-lg transition">
-                            Logout
-                        </button>
-                    </form>
-                </li>
-            </ul>
-        </div>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button class="text-red-400 hover:bg-red-600 hover:text-white rounded-lg transition">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
 
         @else
-        <a href="{{ route('login') }}" 
-           class="btn bg-[#C45B3A] hover:bg-[#db6d4a] text-white px-6 font-semibold border-none rounded-none">
-           Login
-        </a>
+            <a href="{{ route('login') }}" 
+               class="btn bg-[#C45B3A] hover:bg-[#db6d4a] text-white px-6 font-semibold border-none rounded-none">
+               Login
+            </a>
         @endauth
     </div>
 
@@ -112,60 +112,39 @@
             </label>
 
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 w-56 p-3 rounded-xl bg-[#2B2320]/95 backdrop-blur-xl border border-white/10 shadow-2xl">
-
-                <li>
-                    <a href="{{ route('home') }}"
-                       class="{{ request()->routeIs('home') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}"> -->
-                       Home
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('user.rooms') }}"
-                       class="{{ request()->routeIs('user.rooms') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}">
-                       Rooms
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('about') }}"
-                       class="{{ request()->routeIs('about') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}">
-                       About
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('contact') }}"
-                       class="{{ request()->routeIs('contact') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}">
-                       Contact
-                    </a>
-                </li>
+                @auth
+                    <li><a href="{{ route('rooms.list') }}" class="{{ request()->routeIs('rooms.list') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}">Home</a></li>
+                @else
+                    <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}">Home</a></li>
+                @endauth
+                <li><a href="{{ route('user.rooms') }}" class="{{ request()->routeIs('user.rooms*') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}">Rooms</a></li>
+                <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}">About</a></li>
+                <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}">Contact</a></li>
 
                 @auth
-                <li><a href="{{ route('bookings.userHistory') }}" class="text-[#F7F7F7]">My Bookings</a></li>
-                <li><a href="{{ route('profile.settings') }}" class="text-[#F7F7F7]">Profile</a></li>
-
-                <li>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button class="text-red-400 hover:bg-red-600 hover:text-white rounded-lg transition">
-                            Logout
-                        </button>
-                    </form>
-                </li>
-
+                    <li><a href="{{ route('bookings.userHistory') }}" class="text-[#F7F7F7]">My Bookings</a></li>
+                    <li><a href="{{ route('profile.settings') }}" class="text-[#F7F7F7]">Profile</a></li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button class="text-red-400 hover:bg-red-600 hover:text-white rounded-lg transition">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
                 @else
-                <li>
-                    <a href="{{ route('login') }}" 
-                       class="btn btn-sm bg-[#C45B3A] hover:bg-[#db6d4a] text-white border-none">
-                        Login
-                    </a>
-                </li>
+                    <li>
+                        <a href="{{ route('login') }}" 
+                           class="btn btn-sm bg-[#C45B3A] hover:bg-[#db6d4a] text-white border-none">
+                            Login
+                        </a>
+                    </li>
                 @endauth
             </ul>
         </div>
     </div>
 
+    <!-- SUCCESS/ERROR ALERT -->
     @if(session('success') || session('error'))
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
@@ -173,11 +152,8 @@
                 const success = {!! json_encode(session('success')) !!};
                 const error = {!! json_encode(session('error')) !!};
                 const successTitle = {!! json_encode(session('success_title') ?? null) !!};
-                const routeName = "{{ Route::currentRouteName() ?? '' }}";
 
                 function defaultSuccessTitle() {
-                    // If the route looks like booking-related, keep the reservation message
-                    if (routeName && routeName.indexOf('bookings') !== -1) return 'Reservation Confirmed';
                     return 'Success';
                 }
 

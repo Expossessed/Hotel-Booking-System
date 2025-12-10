@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+        <link rel="icon" type="image/x-icon" href="https://scontent.fceb6-1.fna.fbcdn.net/v/t1.15752-9/429922800_726758146106956_6258299385019235663_n.png?_nc_cat=105&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeGLLP_iy6tVlltPnmHV6JmIXc3yic1PhchdzfKJzU-FyJvdZQoDDzahDVeGmyTPU0kAEYcq6lAN0P4hcqV_-3o6&_nc_ohc=_cnpXDv9QbkQ7kNvwGK4Yem&_nc_oc=AdkBE7ZXUgfi__RfcbEkmw81RMgQzyRtJGr0wLEt_PlghJw_MQ_7NES5kWrRv2CLSnI&_nc_zt=23&_nc_ht=scontent.fceb6-1.fna&oh=03_Q7cD4AEA6Qkyj9JAWVUOiRYz5QGOqm5dYus_Wav8lIBj0nXc6w&oe=69612B37">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Booking History - HOTEL BOOKIE</title>
@@ -145,7 +146,7 @@
                     $imageUrl = $room && $room->room_image1 ? $room->room_image1 : 'https://via.placeholder.com/400x250?text=Room';
                 @endphp
                 
-                <div class="card-dark-bg rounded-lg overflow-hidden flex flex-col justify-between shadow-lg">
+                <div id="booking-{{ $booking->booking_id }}" data-booking-id="{{ $booking->booking_id }}" class="card-dark-bg rounded-lg overflow-hidden flex flex-col justify-between shadow-lg">
                     
                    
                     <div class="w-full h-40 bg-gray-700 overflow-hidden">
@@ -184,7 +185,7 @@
                                     $statusLabel = 'Cancelled';
                                 }
                             @endphp
-                            <span class="badge badge-base {{ $badgeClass }} px-3 py-1 rounded-full text-xs font-semibold">
+                            <span class="badge booking-status badge-base {{ $badgeClass }} px-3 py-1 rounded-full text-xs font-semibold" data-booking-id="{{ $booking->booking_id }}">
                                 {{ $statusLabel }}
                             </span>
                         </div>
@@ -233,7 +234,7 @@
                             </div>
                             
                            
-                            @if($isPending)
+                            @if(($booking->status ?? null) === 'pending')
                                 <button 
                                     class="btn btn-accent-color btn-sm rounded-none font-semibold"
                                     data-booking-id="{{ $booking->booking_id ?? $booking->id }}"
@@ -244,12 +245,12 @@
                                     Pay Now
                                 </button>
                             @elseif(($booking->status ?? null) === 'confirmed')
-                                <form action="{{ route('bookings.checkout', ['id' => $booking->booking_id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to check out?');">
+                                <form class="checkout-form" data-booking-id="{{ $booking->booking_id }}" action="{{ route('bookings.checkout', ['id' => $booking->booking_id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to check out?');">
                                     @csrf
                                     <button type="submit" class="btn btn-warning btn-sm rounded-none font-semibold">Check Out</button>
                                 </form>
                             @else
-                                <span class="text-white/50 text-sm">{{ ($booking->status === 'completed') ? 'Checked Out' : ucfirst($booking->status ?? 'Completed') }}</span>
+                                <span class="status-label text-white/50 text-sm" data-booking-id="{{ $booking->booking_id }}">{{ ($booking->status === 'completed') ? 'Checked Out' : ucfirst($booking->status ?? 'Completed') }}</span>
                             @endif
                         </div>
                        
@@ -488,6 +489,71 @@
         }
         this.submit();
     });
+</script>
+
+<script>
+    // Poll booking statuses and update the UI so users don't need to leave the page.
+    const bookingStatusUrl = "{{ route('api.bookings.status') }}";
+
+    async function refreshBookingStatuses() {
+        try {
+            const res = await fetch(bookingStatusUrl, { headers: { 'Accept': 'application/json' } });
+            if (!res.ok) return;
+            const data = await res.json(); // { booking_id: status }
+
+            Object.keys(data).forEach(id => {
+                const status = data[id];
+
+                // Update badge
+                const badge = document.querySelector('.booking-status[data-booking-id="' + id + '"]');
+                if (badge) {
+                    // normalize label
+                    let label = status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Pending';
+                    if (status === 'completed') label = 'Checked Out';
+                    if (status === 'confirmed') label = 'Confirmed';
+                    badge.textContent = label;
+
+                    // update classes
+                    badge.classList.remove('badge-pending','badge-confirmed','badge-paid','badge-error');
+                    if (status === 'confirmed') badge.classList.add('badge-confirmed');
+                    else if (status === 'completed') badge.classList.add('badge-paid');
+                    else if (status === 'cancelled') badge.classList.add('badge-error');
+                    else badge.classList.add('badge-pending');
+                }
+
+                // Show/hide action area
+                const checkoutForm = document.querySelector('.checkout-form[data-booking-id="' + id + '"]');
+                const statusLabel = document.querySelector('.status-label[data-booking-id="' + id + '"]');
+                const payButton = document.querySelector('button[data-booking-id="' + id + '"]');
+
+                if (status === 'completed') {
+                    if (checkoutForm) checkoutForm.style.display = 'none';
+                    if (payButton) payButton.style.display = 'none';
+                    if (statusLabel) statusLabel.textContent = 'Checked Out';
+                } else if (status === 'confirmed') {
+                    if (checkoutForm) checkoutForm.style.display = 'inline-block';
+                    if (payButton) payButton.style.display = 'none';
+                    if (statusLabel) statusLabel.textContent = 'Confirmed';
+                } else if (status === 'pending' || !status) {
+                    if (checkoutForm) checkoutForm.style.display = 'none';
+                    if (payButton) payButton.style.display = 'inline-block';
+                    if (statusLabel) statusLabel.textContent = 'Pending';
+                } else {
+                    if (checkoutForm) checkoutForm.style.display = 'none';
+                    if (payButton) payButton.style.display = 'none';
+                    if (statusLabel) statusLabel.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+                }
+            });
+        } catch (e) {
+            // ignore
+            console.error('Failed to refresh booking statuses', e);
+        }
+    }
+
+    // Start polling every 5 seconds
+    setInterval(refreshBookingStatuses, 5000);
+    // Also run once on load
+    window.addEventListener('DOMContentLoaded', refreshBookingStatuses);
 </script>
 
 </body>

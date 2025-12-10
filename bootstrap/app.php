@@ -14,6 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
+        
+        // Run auto-checkout for all authenticated users
+        $middleware->append(\App\Http\Middleware\AutoCheckout::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

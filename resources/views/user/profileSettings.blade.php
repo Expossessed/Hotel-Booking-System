@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
+        <link rel="icon" type="image/x-icon" href="https://scontent.fceb6-1.fna.fbcdn.net/v/t1.15752-9/429922800_726758146106956_6258299385019235663_n.png?_nc_cat=105&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeGLLP_iy6tVlltPnmHV6JmIXc3yic1PhchdzfKJzU-FyJvdZQoDDzahDVeGmyTPU0kAEYcq6lAN0P4hcqV_-3o6&_nc_ohc=_cnpXDv9QbkQ7kNvwGK4Yem&_nc_oc=AdkBE7ZXUgfi__RfcbEkmw81RMgQzyRtJGr0wLEt_PlghJw_MQ_7NES5kWrRv2CLSnI&_nc_zt=23&_nc_ht=scontent.fceb6-1.fna&oh=03_Q7cD4AEA6Qkyj9JAWVUOiRYz5QGOqm5dYus_Wav8lIBj0nXc6w&oe=69612B37">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Bookie | Profile Settings</title>
@@ -79,116 +80,111 @@
         </header>
 
         <div class="bg-black/40 p-8 md:p-12 rounded-lg shadow-2xl">
-            <form action="{{ route('profile.update') }}" method="POST">
-                @csrf
-                @method('PATCH')
+                <form id="profileForm" action="{{ route('profile.update') }}" method="POST">
+                    @csrf
+                    @method('PATCH')
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-                    
-                    <section class="lg:pr-8">
-                        <h2 class="text-3xl font-serif font-bold mb-6 text-white/95 border-b border-white/20 pb-2">
-                            Personal Details
-                        </h2>
+                    {{-- success notification handled globally in the navbar (SweetAlert) --}}
 
-                        <div class="space-y-6">
-                            
-                            <div>
-                                <label for="name" class="label">
-                                    <span class="label-text text-white/80 font-medium">Full Name</span>
-                                </label>
-                                <input type="text" id="name" name="name" 
-                                       value="{{ $user->name ?? 'John Doe' }}" 
-                                       placeholder="Enter your full name" 
-                                       class="input input-dark-style w-full rounded-none" required />
-                            </div>
+                    @if($errors->any())
+                        <div class="alert alert-error bg-red-600 text-white mb-4 px-4 py-3 rounded">
+                            <ul class="list-disc pl-5">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
-                            <div>
-                                <label for="email" class="label">
-                                    <span class="label-text text-white/80 font-medium">Email Address</span>
-                                </label>
-                                <input type="email" id="email" name="email" 
-                                       value="{{ $user->email ?? 'john.doe@example.com' }}" 
-                                       placeholder="Enter your email" 
-                                       class="input input-dark-style w-full rounded-none" required />
-                            </div>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="label"><span class="label-text text-white/80 font-medium">Full Name</span></label>
+                            <input type="text" name="name" value="{{ old('name', $user->name) }}" class="input input-dark-style w-full rounded-none" required>
                         </div>
 
-                        <div class="mt-8 pt-4 border-t border-white/10 space-y-4">
-                             <div>
-                                <label class="label">
-                                    <span class="label-text text-white/80 font-medium">Account Role</span>
-                                </label>
-                                <input type="text" 
-                                       value="{{ ucfirst($user->role ?? 'user') }}" 
-                                       class="input input-dark-style w-full rounded-none" disabled />
-                                <p class="label-text-alt text-white/50 mt-1">Role determines access privileges.</p>
-                            </div>
-
-                            <div>
-                                <label class="label">
-                                    <span class="label-text text-white/80 font-medium">Account Balance</span>
-                                </label>
-                                <input type="text" 
-                                       value="${{ number_format($user->balance ?? 0, 2) }}" 
-                                       class="input input-dark-style w-full rounded-none" disabled />
-                                <p class="label-text-alt text-white/50 mt-1">Current credit balance for bookings.</p>
-                            </div>
-                        </div>
-                    </section>
-                    
-                    <section class="lg:pl-8 lg:border-l border-white/10">
-                        <h2 class="text-3xl font-serif font-bold mb-6 text-white/95 border-b border-white/20 pb-2">
-                            Security & Password
-                        </h2>
-                        
-                        <div class="space-y-6">
-                            <p class="text-sm text-white/70">
-                                To change your password, fill in the fields below. Leave them blank if you only wish to update your personal details.
-                            </p>
-                            
-                            <div>
-                                <label for="current_password" class="label">
-                                    <span class="label-text text-white/80 font-medium">Current Password</span>
-                                </label>
-                                <input type="password" id="current_password" name="current_password" 
-                                       placeholder="Your current password" 
-                                       class="input input-dark-style w-full rounded-none" />
-                            </div>
-                            
-                            <div>
-                                <label for="new_password" class="label">
-                                    <span class="label-text text-white/80 font-medium">New Password</span>
-                                </label>
-                                <input type="password" id="new_password" name="new_password" 
-                                       placeholder="Enter new password" 
-                                       class="input input-dark-style w-full rounded-none" />
-                            </div>
-
-                            <div>
-                                <label for="new_password_confirmation" class="label">
-                                    <span class="label-text text-white/80 font-medium">Confirm New Password</span>
-                                </label>
-                                <input type="password" id="new_password_confirmation" name="new_password_confirmation" 
-                                       placeholder="Repeat new password" 
-                                       class="input input-dark-style w-full rounded-none" />
-                            </div>
+                        <div>
+                            <label class="label"><span class="label-text text-white/80 font-medium">Email Address</span></label>
+                            <input type="email" name="email" value="{{ old('email', $user->email) }}" class="input input-dark-style w-full rounded-none" readonly>
                         </div>
 
-                    </section>
-                </div>
-                
+                        <hr class="border-white/20 my-6">
 
-                <div class="mt-12 pt-8 border-t border-white/10 text-center">
-                    <button type="submit" class="btn btn-accent-color btn-lg px-10 rounded-none font-semibold">
-                        Save All Changes
-                    </button>
-                </div>
+                        <p class="text-sm text-white/70">
+                            Change password (leave blank if not changing)
+                        </p>
+
+                        <div>
+                            <label class="label"><span class="label-text text-white/80">Current Password</span></label>
+                            <input type="password" name="current_password" class="input input-dark-style w-full rounded-none">
+                        </div>
+
+                        <div>
+                            <label class="label"><span class="label-text text-white/80">New Password</span></label>
+                            <input type="password" name="new_password" class="input input-dark-style w-full rounded-none">
+                        </div>
+
+                        <div>
+                            <label class="label"><span class="label-text text-white/80">Confirm New Password</span></label>
+                            <input type="password" name="new_password_confirmation" class="input input-dark-style w-full rounded-none">
+                        </div>
+
+                        <button id="saveBtn" type="submit" disabled class="btn btn-accent-color btn-lg px-10 rounded-none font-semibold mt-6 opacity-50 cursor-not-allowed">
+                            Save Changes
+                        </button>
+                    </div>
             </form>
         </div>
 
     </div>
 
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('profileForm');
+    if (!form) return;
+        const saveBtn = document.getElementById('saveBtn');
+
+        // Collect initial values to compare against
+        const initial = {};
+        Array.from(form.elements).forEach(el => {
+            if (!el.name) return;
+            // ignore CSRF and method fields
+            if (el.type === 'hidden' && (el.name === '_token' || el.name === '_method')) return;
+            // track text, email, password, checkbox, radio, textarea, select
+            if (['text','email','password','textarea','select-one','select-multiple'].includes(el.type) || el.tagName.toLowerCase() === 'textarea') {
+                initial[el.name] = el.value || '';
+            }
+        });
+
+        function setEnabledState() {
+            let dirty = false;
+
+            Array.from(form.elements).forEach(el => {
+                if (!el.name) return;
+                if (el.type === 'hidden' && (el.name === '_token' || el.name === '_method')) return;
+                const before = initial[el.name] ?? '';
+                const now = el.value || '';
+                if (before !== now) dirty = true;
+            });
+
+            if (dirty) {
+                saveBtn.disabled = false;
+                saveBtn.classList.remove('opacity-50','cursor-not-allowed');
+            } else {
+                saveBtn.disabled = true;
+                saveBtn.classList.add('opacity-50','cursor-not-allowed');
+            }
+        }
+
+        // Monitor changes
+        form.addEventListener('input', setEnabledState);
+        form.addEventListener('change', setEnabledState);
+
+        // Initial check (in case some fields are pre-filled differently)
+        setEnabledState();
+    });
+</script>
 
 </body>
 </html>

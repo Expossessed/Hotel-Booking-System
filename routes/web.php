@@ -54,6 +54,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/cash-in', [CashInController::class, 'store'])->name('cashIn.store');
     Route::get('/api/user/balance', [CashInController::class, 'getBalance'])->name('api.balance');
 
+    // API: booking statuses for polling
+    Route::get('/api/user/bookings/status', [BookingController::class, 'apiBookingStatuses'])->name('api.bookings.status');
+
 });
 
 // Admin-only routes - protected by both auth and admin middleware.

@@ -33,6 +33,15 @@ class Booking extends Model
         'room_price',
         'num_days',
         'total',
+        'status',
+    ];
+
+    /**
+     * Cast date fields to Carbon date instances (date only).
+     */
+    protected $casts = [
+        'book_date' => 'date',
+        'end_date' => 'date',
     ];
 
     

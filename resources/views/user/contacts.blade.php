@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
+        <link rel="icon" type="image/x-icon" href="https://scontent.fceb6-1.fna.fbcdn.net/v/t1.15752-9/429922800_726758146106956_6258299385019235663_n.png?_nc_cat=105&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeGLLP_iy6tVlltPnmHV6JmIXc3yic1PhchdzfKJzU-FyJvdZQoDDzahDVeGmyTPU0kAEYcq6lAN0P4hcqV_-3o6&_nc_ohc=_cnpXDv9QbkQ7kNvwGK4Yem&_nc_oc=AdkBE7ZXUgfi__RfcbEkmw81RMgQzyRtJGr0wLEt_PlghJw_MQ_7NES5kWrRv2CLSnI&_nc_zt=23&_nc_ht=scontent.fceb6-1.fna&oh=03_Q7cD4AEA6Qkyj9JAWVUOiRYz5QGOqm5dYus_Wav8lIBj0nXc6w&oe=69612B37">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Bookie | Contact Us</title>
@@ -94,13 +95,16 @@
             <h2 class="text-3xl font-serif font-bold text-white mb-6 border-b border-white/10 pb-4">Send Us a Message</h2>
             <form action="{{ route('contact.send') }}" method="POST" class="space-y-4">
             @csrf
+                
                 <div>
                     <label for="name" class="block text-sm font-medium text-white/80 mb-1">Full Name</label>
                     <input type="text" id="name" name="name" class="input input-bordered w-full input-dark rounded-none" required>
                 </div>
                 <div>
                     <label for="email" class="block text-sm font-medium text-white/80 mb-1">Email Address</label>
-                    <input type="email" id="email" name="email" class="input input-bordered w-full input-dark rounded-none" disabled placeholder="vhengie02@gmail.com">
+                    <input type="email" id="email" name="email" value="vhengie02@gmail.com" readonly
+                    class="input input-bordered w-full input-dark rounded-none">
+
                 </div>
                 <div>
                     <label for="subject" class="block text-sm font-medium text-white/80 mb-1">Subject</label>
@@ -141,7 +145,7 @@
                     </svg>
                     <div>
                         <p class="font-semibold text-white">Email</p>
-                        <p class="text-white/70">veejaycuizon@hotelbookie.com</p>
+                        <p class="text-white/70">vhengie02@gmail.com</p>
                     </div>
                 </div>
             </div>

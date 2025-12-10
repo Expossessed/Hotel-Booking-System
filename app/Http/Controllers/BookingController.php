@@ -144,17 +144,35 @@ class BookingController extends Controller
     public function checkBookingHistory(Request $request)
     {
         $userId = $request->user()->id;
-        // Automatically mark bookings as completed (checked out) when end_date is past or today.
-        if (Schema::hasColumn('bookings', 'status')) {
-            Booking::where('booker_id', $userId)
-                ->where('status', 'confirmed')
-                ->whereDate('end_date', '<=', Carbon::today())
-                ->update(['status' => 'completed']);
-        }
+        
+        // Get today's date in Asia/Manila timezone
+        $today = Carbon::today('Asia/Manila');
+        
+        // Automatically mark bookings as completed (checked out) when end_date is on or before today.
+        Booking::where('booker_id', $userId)
+            ->whereDate('end_date', '<=', $today->toDateString())
+            ->whereNotIn('status', ['completed', 'cancelled'])
+            ->update(['status' => 'completed']);
 
         $bookings = Booking::where('booker_id', $userId)->orderByDesc('book_date')->get();
 
         return view('user.checkHistory', compact('bookings'));
+    }
+
+    /**
+     * API endpoint: return booking statuses for the authenticated user.
+     */
+    public function apiBookingStatuses(Request $request)
+    {
+        $userId = $request->user()->id;
+
+        $bookings = Booking::where('booker_id', $userId)
+            ->get(['booking_id', 'status'])
+            ->mapWithKeys(function ($b) {
+                return [$b->booking_id => $b->status];
+            });
+
+        return response()->json($bookings);
     }
 
     public function checkout(Request $request, $id)

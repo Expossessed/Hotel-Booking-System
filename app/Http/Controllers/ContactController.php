@@ -26,7 +26,7 @@ class ContactController extends Controller
     ];
 
     Mail::send('email.contacts', $data, function($mail) use ($data) {
-        $mail->to('vhenghie02@gmail.com') 
+        $mail->to('vhengie02@gmail.com') 
             ->subject('New Contact Message: ' . $data['subject']);
     });
 
