@@ -32,7 +32,9 @@ class CashInController extends Controller
         $user->balance += $amount;
         $user->save();
 
-        return redirect()->back()->with('success', "Successfully added \${$amount} to your account via {$method}!");
+        return redirect()->back()
+            ->with('success', "Successfully added ₱{$amount} to your account via {$method}!")
+            ->with('success_title', 'Cash In Successful');
     }
 
     public function getBalance()
@@ -40,7 +42,7 @@ class CashInController extends Controller
         $user = Auth::user();
         return response()->json([
             'balance' => $user->balance ?? 0,
-            'formatted_balance' => '$' . number_format($user->balance ?? 0, 2),
+            'formatted_balance' => '₱' . number_format($user->balance ?? 0, 2),
         ]);
     }
 }

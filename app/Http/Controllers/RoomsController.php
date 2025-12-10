@@ -151,9 +151,27 @@ class RoomsController extends Controller
         return view('user.viewRoom', compact('room', 'averageRating'));
     }
 
-    public function displayRooms()
+    public function displayRooms(Request $request)
     {
-        $rooms = Rooms::all();
-        return view('user.rooms', compact('rooms'));
+        $query = Rooms::query();
+
+        if ($request->query('filter') === 'available') {
+            $query->where('is_available', 1);
+        }
+
+        $sort = $request->query('sort');
+        if ($sort === 'price_low') {
+            $query->orderBy('room_price', 'asc');
+        } elseif ($sort === 'price_high') {
+            $query->orderBy('room_price', 'desc');
+        }
+
+        $rooms = $query->get();
+
+        return view('user.rooms', [
+            'rooms' => $rooms,
+            'currentFilter' => $request->query('filter'),
+            'currentSort' => $sort,
+        ]);
     }
 }

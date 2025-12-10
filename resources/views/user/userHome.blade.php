@@ -101,7 +101,7 @@
         </div>
     </section>
 
-    <!-- SEARCH BAR (NEW MODERN STYLE) -->
+    <!-- SEARCH BAR (NEW MODERN STYLE)
     <section class="max-w-5xl mx-auto p-6 mt-[-40px] relative z-20">
         <div class="filter-bar rounded-xl p-6 shadow-lg grid md:grid-cols-4 gap-4">
             <div>
@@ -123,7 +123,7 @@
             </div>
             <button class="btn btn-accent w-full rounded-none mt-6 md:mt-0">Search</button>
         </div>
-    </section>
+    </section> -->
 
     <!-- FILTER BUTTONS -->
     <section class="max-w-6xl mx-auto px-6 mt-12 mb-10">
@@ -189,7 +189,7 @@
 
                             <div
                                 class="mt-auto pt-4 border-t border-white/10 flex justify-between items-center">
-                                <span class="text-2xl font-extrabold">${{ $room->room_price }}</span>
+                                <span class="text-2xl font-extrabold">₱{{ $room->room_price }}</span>
 
                                 <div class="flex gap-3">
                                     <a href="{{ route('rooms.view', ['id' => $room->room_id]) }}"

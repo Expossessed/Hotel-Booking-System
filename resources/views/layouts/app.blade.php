@@ -125,8 +125,6 @@ input:-webkit-autofill:focus {
 }
 
 
-
-/* Ensure password text stays visible */
 input[type="password"] {
   color: #fff;
   -webkit-text-security: disc;

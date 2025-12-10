@@ -91,7 +91,7 @@
         </p>
     </section>
 
-    <!-- SEARCH BAR (PREMIUM STYLE) -->
+    <!-- SEARCH BAR (PREMIUM STYLE)
     <section class="max-w-6xl mx-auto mb-14">
         <form method="GET" class="search-box grid gap-6 md:grid-cols-4 items-end shadow-xl">
 
@@ -118,7 +118,7 @@
             <button class="btn btn-accent w-full rounded-none font-semibold">Search</button>
 
         </form>
-    </section>
+    </section> -->
 
     <!-- FILTER BUTTONS -->
     <section class="max-w-6xl mx-auto mb-12">
@@ -127,25 +127,25 @@
 
             <div class="btn-group rounded-none shadow-lg">
 
-                <a href="{{ route('rooms.list') }}"
+                <a href="{{ route('user.rooms') }}"
                     class="btn btn-outline text-white border-white/20 rounded-none
                     {{ empty($currentFilter) && empty($currentSort) ? 'bg-accent-orange/40' : '' }}">
                     All
                 </a>
 
-                <a href="{{ route('rooms.list', ['filter' => 'available']) }}"
+                <a href="{{ route('user.rooms', ['filter' => 'available']) }}"
                     class="btn btn-outline text-white border-white/20 rounded-none
                     {{ ($currentFilter ?? null) === 'available' ? 'bg-accent-orange/40' : '' }}">
                     Available
                 </a>
 
-                <a href="{{ route('rooms.list', ['sort' => 'price_low']) }}"
+                <a href="{{ route('user.rooms', ['sort' => 'price_low']) }}"
                     class="btn btn-outline text-white border-white/20 rounded-none
                     {{ ($currentSort ?? null) === 'price_low' ? 'bg-accent-orange/40' : '' }}">
                     Price Low
                 </a>
 
-                <a href="{{ route('rooms.list', ['sort' => 'price_high']) }}"
+                <a href="{{ route('user.rooms', ['sort' => 'price_high']) }}"
                     class="btn btn-outline text-white border-white/20 rounded-none
                     {{ ($currentSort ?? null) === 'price_high' ? 'bg-accent-orange/40' : '' }}">
                     Price High
@@ -186,7 +186,7 @@
                             </p>
 
                             <div class="mt-auto pt-4 border-t border-white/10 flex justify-between items-center">
-                                <span class="text-2xl font-extrabold">${{ $room->room_price }}</span>
+                                <span class="text-2xl font-extrabold">₱{{ $room->room_price }}</span>
 
                                 <div class="flex gap-3">
                                     <a href="{{ route('rooms.view', ['id' => $room->room_id]) }}"

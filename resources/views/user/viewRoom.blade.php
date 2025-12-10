@@ -131,7 +131,7 @@
                         {{ $room->room_name }}
                     </h2>
                     <h3 class="text-2xl md:text-3xl font-semibold text-white/90 mb-4">
-                        <span class="text-accent-orange">${{ $room->room_price }}</span>/Night
+                        <span class="text-accent-orange">₱{{ $room->room_price }}</span>/Day
                     </h3>
 
                     <div class="flex items-center mb-4">

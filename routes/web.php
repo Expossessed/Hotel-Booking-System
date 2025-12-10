@@ -8,6 +8,8 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CashInController;
+use App\Http\Controllers\ContactController;
+
 use App\Models\Rooms;
 use Illuminate\Support\Facades\Route;
 
@@ -120,12 +122,15 @@ Route::get('user/rooms', [RoomsController::class, 'displayRooms'])->name('user.r
 
 //route for check booking history
 Route::get('user/checkHistory', [BookingController::class, 'checkBookingHistory'])->name('bookings.userHistory');
+    Route::post('user/bookings/{id}/checkout', [BookingController::class, 'checkout'])->name('bookings.checkout');
 
 //route for profile settings
 Route::get('user/profileSettings', [UsersController::class, 'profileSettings'])->name('profile.settings');
 Route::post('user/profileSettings', [UsersController::class, 'profileSettingsUpdate'])->name('profile.settings.update');
 
 Route::post('user/storeTransaction', [TransactionsController::class, 'storeTransaction']);
+
+Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
 
 require __DIR__.'/auth.php';
 

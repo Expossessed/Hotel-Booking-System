@@ -43,6 +43,8 @@
 </head>
 <body class="p-4 md:p-12">
 
+    @include('layouts.hotelNav')
+
     <div class="max-w-2xl mx-auto py-8">
 
         <h1 class="text-4xl md:text-5xl font-serif font-bold mb-8 text-white">
@@ -55,7 +57,7 @@
                 <!-- Current Balance Display -->
                 <div class="mb-8 p-4 bg-black/50 rounded-lg border border-white/20">
                     <p class="text-white/70 text-sm mb-2">Current Balance:</p>
-                    <p class="text-4xl font-bold text-white">${{ number_format($user->balance ?? 0, 2) }}</p>
+                    <p class="text-4xl font-bold text-white">₱{{ number_format($user->balance ?? 0, 2) }}</p>
                 </div>
 
                 <h2 class="card-title text-2xl font-bold text-white mb-6">Add Funds to Your Account</h2>
@@ -69,7 +71,7 @@
                             <span class="label-text text-white font-semibold">Amount to Add</span>
                         </label>
                         <div class="relative">
-                            <span class="absolute left-4 top-3 text-white text-xl">$</span>
+                            <span class="absolute left-4 top-3 text-white text-xl">₱</span>
                             <input type="number" name="amount" step="0.01" min="1" max="999999.99" 
                                 placeholder="0.00" class="input input-bordered w-full pl-8 bg-black/50 border-white/20 text-white placeholder-white/50"
                                 value="{{ old('amount') }}" required>
@@ -141,7 +143,5 @@
         </a>
 
     </div>
-
-
 </body>
 </html>

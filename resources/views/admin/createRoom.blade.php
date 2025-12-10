@@ -191,7 +191,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="form-control w-full">
                         <label class="label">
-                            <span class="label-text text-lg font-semibold text-gray-700">Price per Night ($)</span>
+                            <span class="label-text text-lg font-semibold text-gray-700">Price per Day ($)</span>
                         </label>
                         <input type="number" id="room_price" name="room_price" placeholder="Enter price"
                             class="input input-bordered w-full bg-gray-100 text-black placeholder-gray-500 border-gray-300 focus:border-primary-blue focus:ring-primary-blue"

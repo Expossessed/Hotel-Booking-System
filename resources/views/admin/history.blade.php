@@ -152,8 +152,8 @@
                                 <th class="py-4 px-4 font-semibold text-left">Room Type</th>
                                 <th class="py-4 px-4 font-semibold text-center">Start Date</th>
                                 <th class="py-4 px-4 font-semibold text-center">End Date</th>
-                                <th class="py-4 px-4 font-semibold text-right">Nights</th>
-                                <th class="py-4 px-4 font-semibold text-right">Price/Night</th>
+                                <th class="py-4 px-4 font-semibold text-right">Days</th>
+                                <th class="py-4 px-4 font-semibold text-right">Price/Day</th>
                                 <th class="py-4 px-4 font-semibold text-right">Total Cost</th>
                             </tr>
                         </thead>
@@ -174,7 +174,7 @@
                                     <td class="px-4 py-3 text-center">{{ $booking->end_date }}</td>
                                     <td class="px-4 py-3 text-right">{{ $booking->num_days }}</td>
                                     <td class="px-4 py-3 text-right">${{ number_format($booking->room_price, 2) }}</td>
-                                    <td class="px-4 py-3 font-bold text-lg text-right text-primary-blue">${{ number_format($total_cost, 2) }}</td>
+                                    <td class="px-4 py-3 font-bold text-lg text-right text-primary-blue">₱{{ number_format($total_cost, 2) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -93,7 +93,7 @@
         </div>
 
         <div class="hidden lg:block">
-            <img src="https://media.architecturaldigest.com/photos/57e42deafe422b3e29b7e790/master/pass/JW_LosCabos_2015_MainExterior.jpg" class="w-full rounded-lg shadow-xl" alt="Elegant interior design">
+            <img src="https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?cs=srgb&dl=pexels-pixabay-258154.jpg&fm=jpg" class="w-full rounded-lg shadow-xl" alt="Elegant interior design">
         </div>
 
     </div>

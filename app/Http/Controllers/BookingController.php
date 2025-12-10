@@ -144,9 +144,35 @@ class BookingController extends Controller
     public function checkBookingHistory(Request $request)
     {
         $userId = $request->user()->id;
-        $bookings = Booking::where('booker_id', $userId)->get();
+        // Automatically mark bookings as completed (checked out) when end_date is past or today.
+        if (Schema::hasColumn('bookings', 'status')) {
+            Booking::where('booker_id', $userId)
+                ->where('status', 'confirmed')
+                ->whereDate('end_date', '<=', Carbon::today())
+                ->update(['status' => 'completed']);
+        }
+
+        $bookings = Booking::where('booker_id', $userId)->orderByDesc('book_date')->get();
 
         return view('user.checkHistory', compact('bookings'));
+    }
+
+    public function checkout(Request $request, $id)
+    {
+        $booking = Booking::findOrFail($id);
+
+        if ($booking->booker_id !== $request->user()->id) {
+            return redirect()->back()->with('error', 'Unauthorized access.');
+        }
+
+        if (Schema::hasColumn('bookings', 'status')) {
+            $booking->status = 'completed';
+            $booking->save();
+        }
+
+        return redirect()->route('bookings.userHistory')
+            ->with('success', 'Checked out successfully.')
+            ->with('success_title', 'Checked Out');
     }
 
     public function viewPendingReservations(Request $request)

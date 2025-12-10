@@ -168,9 +168,24 @@
                                 @if($room && $room->room_desc)
                                     <p class="text-sm text-white/60 mt-1">{{ Str::limit($room->room_desc, 60) }}</p>
                                 @endif
-                            </div>  
-                            <span class="badge badge-base {{ $isPending ? 'badge-pending' : 'badge-confirmed' }} px-3 py-1 rounded-full text-xs font-semibold">
-                                {{ $isPending ? 'Pending' : 'Confirmed' }}
+                            </div>
+                            @php
+                                $status = $booking->status ?? 'pending';
+                                $badgeClass = 'badge-pending';
+                                $statusLabel = ucfirst($status);
+                                if ($status === 'confirmed' || $status === 'paid') {
+                                    $badgeClass = 'badge-confirmed';
+                                    $statusLabel = 'Confirmed';
+                                } elseif ($status === 'completed') {
+                                    $badgeClass = 'badge-paid';
+                                    $statusLabel = 'Checked Out';
+                                } elseif ($status === 'cancelled') {
+                                    $badgeClass = 'badge-error';
+                                    $statusLabel = 'Cancelled';
+                                }
+                            @endphp
+                            <span class="badge badge-base {{ $badgeClass }} px-3 py-1 rounded-full text-xs font-semibold">
+                                {{ $statusLabel }}
                             </span>
                         </div>
                         
@@ -194,7 +209,7 @@
                             </div>
                             <div>
                                 <p class="text-white/60">Price/Night</p>
-                                <p class="font-medium text-white">${{ number_format($booking->room_price, 2) }}</p>
+                                <p class="font-medium text-white">₱{{ number_format($booking->room_price, 2) }}</p>
                             </div>
                         </div>
 
@@ -214,7 +229,7 @@
                         <div class="flex justify-between items-center border-t border-white/10 pt-4">
                             <div>
                                 <p class="text-sm text-white/60">Total Cost</p>
-                                <p class="text-2xl font-extrabold text-[var(--color-accent-orange)]">${{ number_format($booking->total, 2) }}</p>
+                                <p class="text-2xl font-extrabold text-[var(--color-accent-orange)]">₱{{ number_format($booking->total, 2) }}</p>
                             </div>
                             
                            
@@ -228,8 +243,13 @@
                                     onclick="openPaymentModal(this.dataset.bookingId, this.dataset.roomType, parseFloat(this.dataset.total), parseFloat(this.dataset.balance))">
                                     Pay Now
                                 </button>
+                            @elseif(($booking->status ?? null) === 'confirmed')
+                                <form action="{{ route('bookings.checkout', ['id' => $booking->booking_id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to check out?');">
+                                    @csrf
+                                    <button type="submit" class="btn btn-warning btn-sm rounded-none font-semibold">Check Out</button>
+                                </form>
                             @else
-                                <span class="text-white/50 text-sm">Completed</span>
+                                <span class="text-white/50 text-sm">{{ ($booking->status === 'completed') ? 'Checked Out' : ucfirst($booking->status ?? 'Completed') }}</span>
                             @endif
                         </div>
                        

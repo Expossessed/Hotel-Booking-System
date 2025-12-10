@@ -56,7 +56,7 @@
         <!-- BALANCE -->
         <div class="text-right">
             <div class="text-xs text-white/50">Balance</div>
-            <div class="font-semibold text-white">${{ number_format(auth()->user()->balance ?? 0, 2) }}</div>
+            <div class="font-semibold text-white">₱{{ number_format(auth()->user()->balance ?? 0, 2) }}</div>
         </div>
 
         <!-- CASH IN -->
@@ -115,7 +115,7 @@
 
                 <li>
                     <a href="{{ route('home') }}"
-                       class="{{ request()->routeIs('home') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}">
+                       class="{{ request()->routeIs('home') ? 'text-white font-bold underline underline-offset-8' : 'text-[#F7F7F7]' }}"> -->
                        Home
                     </a>
                 </li>
@@ -165,5 +165,43 @@
             </ul>
         </div>
     </div>
+
+    @if(session('success') || session('error'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const success = {!! json_encode(session('success')) !!};
+                const error = {!! json_encode(session('error')) !!};
+                const successTitle = {!! json_encode(session('success_title') ?? null) !!};
+                const routeName = "{{ Route::currentRouteName() ?? '' }}";
+
+                function defaultSuccessTitle() {
+                    // If the route looks like booking-related, keep the reservation message
+                    if (routeName && routeName.indexOf('bookings') !== -1) return 'Reservation Confirmed';
+                    return 'Success';
+                }
+
+                if (success) {
+                    Swal.fire({
+                        title: successTitle || defaultSuccessTitle(),
+                        text: success,
+                        icon: 'success',
+                        background: '#312620',
+                        color: '#fff',
+                        confirmButtonColor: '#C45B3A'
+                    });
+                } else if (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: error,
+                        icon: 'error',
+                        background: '#312620',
+                        color: '#fff',
+                        confirmButtonColor: '#C45B3A'
+                    });
+                }
+            });
+        </script>
+    @endif
 
 </div>

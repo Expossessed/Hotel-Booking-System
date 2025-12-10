@@ -76,7 +76,7 @@
 @include('layouts.hotelNav')
 
 <header class="relative w-full h-[50vh] flex items-center justify-center overflow-hidden">
-    <div class="absolute inset-0 w-full h-full bg-cover bg-center" style="background-image: url('https://media.architecturaldigest.com/photos/57e42deafe422b3e29b7e790/master/pass/JW_LosCabos_2015_MainExterior.jpg'); opacity: 0.5;"></div>
+    <div class="absolute inset-0 w-full h-full bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?cs=srgb&dl=pexels-pixabay-258154.jpg&fm=jpg'); opacity: 0.5;"></div>
     
     <div class="relative z-10 text-center max-w-4xl p-8">
         <p class="text-xl font-serif section-title mb-4">Contact Us</p>
@@ -92,15 +92,15 @@
         
         <div class="p-8 form-container rounded-lg shadow-2xl">
             <h2 class="text-3xl font-serif font-bold text-white mb-6 border-b border-white/10 pb-4">Send Us a Message</h2>
-            <form action="{{ url('/contact') }}" method="POST" class="space-y-4">
-                @csrf 
+            <form action="{{ route('contact.send') }}" method="POST" class="space-y-4">
+            @csrf
                 <div>
                     <label for="name" class="block text-sm font-medium text-white/80 mb-1">Full Name</label>
                     <input type="text" id="name" name="name" class="input input-bordered w-full input-dark rounded-none" required>
                 </div>
                 <div>
                     <label for="email" class="block text-sm font-medium text-white/80 mb-1">Email Address</label>
-                    <input type="email" id="email" name="email" class="input input-bordered w-full input-dark rounded-none" required>
+                    <input type="email" id="email" name="email" class="input input-bordered w-full input-dark rounded-none" disabled placeholder="vhengie02@gmail.com">
                 </div>
                 <div>
                     <label for="subject" class="block text-sm font-medium text-white/80 mb-1">Subject</label>
@@ -110,9 +110,15 @@
                     <label for="message" class="block text-sm font-medium text-white/80 mb-1">Your Message</label>
                     <textarea id="message" name="message" rows="4" class="textarea textarea-bordered w-full input-dark rounded-none" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-accent-color btn-lg px-8 rounded-none font-semibold w-full md:w-auto">
+                <button type="submit" class="btn btn-accent-color btn-lg px-8 rounded-none font-semibold w-full md:w-auto ">
                     Submit Enquiry
                 </button>
+                @if (session('success'))
+                <div class="alert alert-success bg-green-600 text-white mb-4 px-4 py-3 rounded">
+                {{ session('success') }}
+</div>
+@endif
+
             </form>
         </div>
 

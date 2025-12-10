@@ -150,7 +150,7 @@
                                     <td class="py-4 px-6">{{ $review->user->name }}</td>
                                     <td class="py-4 px-6">{{ $review->rating }}</td>
                                     <td class="py-4 px-6">
-                                        <textarea class="w-80" rows="6"  style="resize:vertical;">{{ $review->comment }}</textarea>
+                                        <textarea class="w-80" rows="4"  style="resize:vertical;">{{ $review->comment }}</textarea>
                                     </td>
                                     <td class="py-4 px-6 flex justify-center gap-3">
                                         <form action="/admin/reviews/{{ $review->room->room_id }}" method="POST" 

@@ -135,7 +135,7 @@
                     <label class="label">
                         <span class="label-text text-lg font-semibold text-gray-700">Room Name</span>
                     </label>
-                    <input type="text" name="room_name" id="room_name" placeholder="Enter room name"
+            <input type="text" name="room_name" id="room_name" placeholder="{{ $rooms->room_name }}"
                         value="{{ old('room_name', $rooms->room_name) }}"
                         class="input input-bordered w-full bg-gray-100 text-black placeholder-gray-500 border-gray-300 focus:border-primary-blue focus:ring-primary-blue" />
                     @error('room_name')
@@ -163,7 +163,7 @@
                     <label class="label">
                         <span class="label-text text-lg font-semibold text-gray-700">Description</span>
                     </label>
-                    <textarea name="room_desc" id="room_desc" placeholder="Enter room description"
+                    <textarea name="room_desc" id="room_desc" placeholder="{{ $rooms->room_desc }}"
                         class="textarea textarea-bordered w-full h-32 bg-gray-100 text-black placeholder-gray-500 border-gray-300 focus:border-primary-blue focus:ring-primary-blue">{{ old('room_desc', $rooms->room_desc) }}</textarea>
                     @error('room_desc')
                         <span class="text-error mt-1 text-sm">{{ $message }}</span>
@@ -175,9 +175,9 @@
                         <label class="label">
                             <span class="label-text text-lg font-semibold text-gray-700">Price per Night ($)</span>
                         </label>
-                        <input type="number" id="room_price" name="room_price" placeholder="Enter price"
+                        <input type="number" id="room_price" name="room_price" placeholder="{{ number_format($rooms->room_price) }}"
                             class="input input-bordered w-full bg-gray-100 text-black placeholder-gray-500 border-gray-300 focus:border-primary-blue focus:ring-primary-blue"
-                            min="0" step="0.01" value="{{ old('room_price', $rooms->room_price) }}">
+                            min="0" step="0.01" value="{{ old('room_price', number_format($rooms->room_price)) }}">
                         @error('room_price')
                             <span class="text-error mt-1 text-sm">{{ $message }}</span>
                         @enderror
@@ -187,7 +187,7 @@
                         <label class="label">
                             <span class="label-text text-lg font-semibold text-gray-700">Available Rooms</span>
                         </label>
-                        <input type="number" id="available_rooms" name="available_rooms" placeholder="Number of available rooms"
+                        <input type="number" id="available_rooms" name="available_rooms" placeholder="{{ $rooms->available_rooms }}"
                             class="input input-bordered w-full bg-gray-100 text-black placeholder-gray-500 border-gray-300 focus:border-primary-blue focus:ring-primary-blue"
                             min="0" value="{{ old('available_rooms', $rooms->available_rooms) }}">
                         @error('available_rooms')

@@ -137,7 +137,7 @@
                         <tr>
                             <th class="py-4 px-4 font-semibold text-left">Booker Name</th>
                             <th class="py-4 px-4 font-semibold text-left">Room Type</th>
-                            <th class="py-4 px-4 font-semibold text-right">Price/Night</th>
+                            <th class="py-4 px-4 font-semibold text-right">Price/Day</th>
                             <th class="py-4 px-4 font-semibold text-right">Days Booked</th>
                             <th class="py-4 px-4 font-semibold text-center">Start Date</th>
                             <th class="py-4 px-4 font-semibold text-center">End Date</th>
