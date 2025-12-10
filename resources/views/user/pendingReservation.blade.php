@@ -102,7 +102,7 @@
 
         <div class="mb-8">
             <h1 class="text-4xl font-bold text-white mb-2">Your Pending Bookings</h1>
-            <p class="text-white/60">Current Balance: <span class="text-white font-semibold">${{ number_format(auth()->user()->balance, 2) }}</span></p>
+            <p class="text-white/60">Current Balance: <span class="text-white font-semibold">₱{{ number_format(auth()->user()->balance, 2) }}</span></p>
         </div>
 
         @if(session('success'))
@@ -146,8 +146,8 @@
                                 <td class="px-6 py-4 text-white/70">{{ \Carbon\Carbon::parse($booking->book_date)->format('M d, Y') }}</td>
                                 <td class="px-6 py-4 text-white/70">{{ \Carbon\Carbon::parse($booking->end_date)->format('M d, Y') }}</td>
                                 <td class="px-6 py-4 text-center text-white/70">{{ $booking->num_days }}</td>
-                                <td class="px-6 py-4 text-right text-white/70">${{ number_format($booking->room_price, 2) }}</td>
-                                <td class="px-6 py-4 text-right font-semibold text-white">${{ number_format($booking->total, 2) }}</td>
+                                <td class="px-6 py-4 text-right text-white/70">₱{{ number_format($booking->room_price, 2) }}</td>
+                                <td class="px-6 py-4 text-right font-semibold text-white">₱{{ number_format($booking->total, 2) }}</td>
                                 <td class="px-6 py-4 text-center">
                                     @if($booking->status === 'confirmed' || $booking->status === 'paid')
                                         <span class="badge-confirmed px-3 py-1 rounded-full text-xs font-semibold">Confirmed</span>
@@ -206,7 +206,7 @@
                         <label for="pay_balance" class="ml-4 flex-1 cursor-pointer payment-label text-white">
                             <span class="font-medium">Account Balance</span>
                             <br/>
-                            <span class="text-white/60 text-xs">Available: <span id="user_balance_display">$0.00</span></span>
+                            <span class="text-white/60 text-xs">Available: <span id="user_balance_display">₱0.00</span></span>
                         </label>
                     </div>
 
@@ -252,8 +252,8 @@
         function openPaymentModal(bookingId, roomType, totalAmount, userBalance) {
             document.getElementById('modal_booking_id').value = bookingId;
             document.getElementById('modal_room_type').textContent = roomType;
-            document.getElementById('modal_total').textContent = '$' + parseFloat(totalAmount).toFixed(2);
-            document.getElementById('user_balance_display').textContent = '$' + parseFloat(userBalance).toFixed(2);
+            document.getElementById('modal_total').textContent = '₱' + parseFloat(totalAmount).toFixed(2);
+            document.getElementById('user_balance_display').textContent = '₱' + parseFloat(userBalance).toFixed(2);
 
 
             const balanceOption = document.getElementById('pay_balance');
@@ -299,7 +299,7 @@
 
             Swal.fire({
                 title: 'Confirm Payment',
-                text: `Pay $${totalAmount.toFixed(2)} using ${selectedMethod === 'balance' ? 'Account Balance' : selectedMethod.toUpperCase()}?`,
+                text: `Pay ₱${totalAmount.toFixed(2)} using ${selectedMethod === 'balance' ? 'Account Balance' : selectedMethod.toUpperCase()}?`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#C45B3A',

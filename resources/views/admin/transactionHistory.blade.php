@@ -90,7 +90,7 @@
                     </li>
                     <li>
                         <label for="my-modal" class="modal-button cursor-pointer">
-                            <span class="font-bold hover:text-primary-blue transition duration-200 px-3">Balance: ${{ auth()->user()->balance }}</span>
+                            <span class="font-bold hover:text-primary-blue transition duration-200 px-3">Balance: ₱{{ auth()->user()->balance }}</span>
                         </label>
                     </li>
                     @if(auth()->user()->isAdmin())
@@ -158,12 +158,12 @@
                                 @if ($calculated_total <= $transaction->price_paid)
                                     <td class="py-4 px-4 font-medium text-left">{{ $transaction->booker->name }}</td>
                                     <td class="py-4 px-4 text-left">{{ $transaction->room->room_type }}</td>
-                                    <td class="py-4 px-4 text-right">${{ number_format($transaction->room->room_price, 2) }}</td>
+                                    <td class="py-4 px-4 text-right">₱{{ number_format($transaction->room->room_price, 2) }}</td>
                                     <td class="py-4 px-4 text-right">{{ $transaction->num_days }}</td>
                                     <td class="py-4 px-4 text-center">{{ $transaction->book_date }}</td>
                                     <td class="py-4 px-4 text-center">{{ $transaction->end_date }}</td>
-                                    <td class="py-4 px-4 font-bold text-right text-primary-blue">${{ number_format($calculated_total, 2) }}</td>
-                                    <td class="py-4 px-4 font-bold text-right text-green-600">${{ number_format($transaction->price_paid, 2) }}</td>
+                                    <td class="py-4 px-4 font-bold text-right text-primary-blue">₱{{ number_format($calculated_total, 2) }}</td>
+                                    <td class="py-4 px-4 font-bold text-right text-green-600">₱{{ number_format($transaction->price_paid, 2) }}</td>
                                     
                                     
                                 @endif

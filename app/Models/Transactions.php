@@ -25,6 +25,11 @@ class Transactions extends Model
         'num_days',
     ];
     
+    protected $casts = [
+        'price_paid' => 'decimal:2',
+        'book_date' => 'date',
+        'end_date' => 'date',
+    ];
 
 
 

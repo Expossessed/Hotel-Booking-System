@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('room_name');
             $table->enum('room_type', ['single', 'family', 'VIP']);
             $table->string('room_desc');
-            $table->integer('room_price');
+            $table->decimal('room_price', 10, 2);
             $table->string('room_image1')->nullable()->default('default.jpg');
             $table->string('room_image2')->nullable()->default('default.jpg');
             $table->string('room_image3')->nullable()->default('default.jpg');

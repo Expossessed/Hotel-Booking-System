@@ -68,7 +68,7 @@
                 <div class="flex items-center gap-3">
                     <div class="text-right mr-3">
                         <div class="text-xs text-gray-500">Balance</div>
-                        <div class="font-semibold">${{ number_format(auth()->user()->balance ?? 0, 2) }}</div>
+                        <div class="font-semibold">₱{{ number_format(auth()->user()->balance ?? 0, 2) }}</div>
                     </div>
                     <a href="{{ route('cashIn.show') }}" class="btn btn-sm btn-primary mr-3">+</a>
                     <form method="POST" action="{{ route('logout') }}">

@@ -49,7 +49,7 @@ class BookingController extends Controller
         $numDays  = (int) $validated['num_days'];
         $end      = (clone $start)->addDays($numDays);
 
-        $total = $roomPrice * $numDays;
+        $total = round($roomPrice * $numDays, 2);
 
         if (!$request->input('confirm')) {
             return view('Booking.createBooking', [

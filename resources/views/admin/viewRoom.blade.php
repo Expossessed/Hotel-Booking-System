@@ -99,7 +99,7 @@
                     </li>
                     <li>
                         <label for="my-modal" class="modal-button cursor-pointer">
-                            <span class="font-bold hover:text-primary-blue transition duration-200 px-3">Balance: ${{ auth()->user()->balance }}</span>
+                            <span class="font-bold hover:text-primary-blue transition duration-200 px-3">Balance: ₱{{ auth()->user()->balance }}</span>
                         </label>
                     </li>
                     @if(auth()->user()->isAdmin())
@@ -171,7 +171,7 @@
                     </h2>
                     <p class="text-xl text-gray-600 mb-4">{{ strtoupper($rooms->room_type) }}</p>
                     <h3 class="text-4xl font-bold text-gray-800">
-                        ${{ $rooms->room_price }} <span class="text-xl font-normal text-gray-500">/ Day</span>
+                        ₱{{ $rooms->room_price }} <span class="text-xl font-normal text-gray-500">/ Day</span>
                     </h3>
                 </div>
 

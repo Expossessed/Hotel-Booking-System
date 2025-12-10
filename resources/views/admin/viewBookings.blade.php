@@ -90,7 +90,7 @@
                     </li>
                     <li>
                         <label for="my-modal" class="modal-button cursor-pointer">
-                            <span class="font-bold hover:text-primary-blue transition duration-200 px-3">Balance: ${{ auth()->user()->balance }}</span>
+                            <span class="font-bold hover:text-primary-blue transition duration-200 px-3">Balance: ₱{{ auth()->user()->balance }}</span>
                         </label>
                     </li>
                     @if(auth()->user()->isAdmin())
@@ -156,9 +156,9 @@
                                 <td class="py-4 px-4 font-medium text-left">{{ $booking->room->room_type }}</td>
                                 <td class="py-4 px-4 text-center">{{ $booking->book_date }}</td>
                                 <td class="py-4 px-4 text-center">{{ $booking->end_date }}</td>
-                                <td class="py-4 px-4 text-right">${{ number_format($booking->room_price, 2) }}</td>
+                                <td class="py-4 px-4 text-right">₱{{ number_format($booking->room_price, 2) }}</td>
                                 <td class="py-4 px-4 text-right">{{ $booking->num_days }}</td>
-                                <td class="py-4 px-4 font-bold text-right text-primary-blue">${{ number_format($total_cost, 2) }}</td>
+                                <td class="py-4 px-4 font-bold text-right text-primary-blue">₱{{ number_format($total_cost, 2) }}</td>
                                 
                                 <td class="py-4 px-4 flex justify-center gap-2">
                                     <button class="btn bg-primary-blue hover:bg-primary-dark border-none text-white btn-sm">Edit</button>

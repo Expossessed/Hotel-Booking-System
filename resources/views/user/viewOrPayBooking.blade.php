@@ -76,7 +76,7 @@
 
                 <div class="flex justify-between items-center pt-2">
                         <span class="text-4xl font-extrabold text-white">
-                        ${{ $booking->total ?? $booking->room_price ?? 'N/A' }} 
+                        ₱{{ $booking->total ?? $booking->room_price ?? 'N/A' }} 
                         <span class="text-base font-normal text-white/50">Total Amount</span>
                     </span>
 
@@ -126,7 +126,7 @@
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-white">✕</button>
             </form>
             <h3 class="font-bold text-3xl mb-4 text-white">Choose Payment Method</h3>
-            <p class="text-white/80 mb-6">Select your preferred method to complete the payment of ${{ $booking->total ?? 'N/A' }}.</p>
+            <p class="text-white/80 mb-6">Select your preferred method to complete the payment of ₱{{ $booking->total ?? 'N/A' }}.</p>
             
             <div id="insufficient_balance_alert" class="alert alert-error shadow-lg mb-6 rounded-none bg-red-800/30 border-red-400 hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M4.5 19.5L19.5 4.5"/></svg>
@@ -140,7 +140,7 @@
                         <label class="label cursor-pointer p-4 bg-black/50 hover:bg-black/70 rounded-md transition-colors">
                             <div class="flex-1">
                                 <span class="label-text text-white text-lg font-medium">Account Balance</span>
-                                <p class="text-white/60 text-sm">Available: ${{ number_format(auth()->user()->balance, 2) }}</p>
+                                <p class="text-white/60 text-sm">Available: ₱{{ number_format(auth()->user()->balance, 2) }}</p>
                             </div>
                             <input type="radio" name="payment_method" value="balance" class="radio radio-lg radio-warning" onchange="updatePaymentSelected()" checked/>
                         </label>

@@ -16,10 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('booker_id');
             $table->unsignedInteger('room_id');
             $table->date('book_date');
-            $table->integer('room_price');
+            $table->decimal('room_price', 10, 2);
             $table->date('end_date');
             $table->integer('num_days');
-            $table->integer('total');
+            $table->decimal('total', 10, 2);
             $table->string('status')->default('pending');
             $table->timestamps();
 

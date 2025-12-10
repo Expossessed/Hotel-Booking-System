@@ -24,7 +24,7 @@
                     <div class="flex items-center gap-3">
                         <div class="text-right">
                             <p class="text-xs text-gray-400 dark:text-gray-500">Balance</p>
-                            <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">${{ number_format(Auth::user()->balance ?? 0, 2) }}</p>
+                            <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">₱{{ number_format(Auth::user()->balance ?? 0, 2) }}</p>
                         </div>
                         <a href="{{ route('cashIn.show') }}" title="Cash In" class="inline-flex items-center justify-center h-8 w-8 bg-orange-600 hover:bg-orange-700 text-white rounded-none text-lg border-none">
                             +
@@ -92,7 +92,7 @@
                 <div class="px-4">
                     <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
                     <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-                    <div class="font-medium text-sm text-gray-500 mt-2">Balance: ${{ number_format(Auth::user()->balance ?? 0, 2) }}</div>
+                    <div class="font-medium text-sm text-gray-500 mt-2">Balance: ₱{{ number_format(Auth::user()->balance ?? 0, 2) }}</div>
                 </div>
 
                 <div class="mt-3 space-y-1">

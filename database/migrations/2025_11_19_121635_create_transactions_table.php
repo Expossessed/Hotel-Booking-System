@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('booker_id');
             $table->unsignedInteger('room_id');
             $table->string('payment_method');
-            $table->integer('price_paid');
+            $table->decimal('price_paid', 10, 2);
             $table->integer('num_days');
             $table->date('book_date');
             $table->date('end_date');

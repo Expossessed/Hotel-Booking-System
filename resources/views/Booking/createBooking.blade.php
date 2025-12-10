@@ -126,7 +126,7 @@
 
                         <div class="mb-4 md:mb-0">
                             <label for="room_price" class="block text-sm font-light text-white/85 mb-2">Price per Night</label>
-                            <input type="text" name="room_price" id="room_price" class="input input-bordered w-full input-dark input-readonly rounded-none" value="{{ old('room_price', $room_price ? '$' . number_format($room_price, 2) : 'N/A') }}" readonly tabindex="-1">
+                            <input type="text" name="room_price" id="room_price" class="input input-bordered w-full input-dark input-readonly rounded-none" value="{{ old('room_price', $room_price ? '₱' . number_format($room_price, 2) : 'N/A') }}" readonly tabindex="-1">
                             <input type="hidden" id="room_price_hidden" value="{{ $room_price ?? 0 }}">
                         </div>
 
@@ -179,7 +179,7 @@
                 <li class="flex justify-between"><strong>Check-out Date:</strong> <span class="text-white/80">{{ $preview_end_date }}</span></li>
                 <li class="flex justify-between"><strong>Number of Nights:</strong> <span class="text-white/80">{{ $preview_num_days }}</span></li>
                 <li class="flex justify-between"><strong>Price per Night:</strong> <span class="text-white/80">{{ $preview_room_price }}</span></li>
-                <li class="flex justify-between pt-3 border-t border-white/10 text-xl font-bold"><strong>Total Price:</strong> <span class="text-white">${{ $preview_total }}</span></li>
+                <li class="flex justify-between pt-3 border-t border-white/10 text-xl font-bold"><strong>Total Price:</strong> <span class="text-white">₱{{ $preview_total }}</span></li>
             </ul>
             <p class="mb-4 text-lg">Are you sure you want to confirm this booking?</p>
             <div class="flex gap-3 justify-end">
@@ -257,10 +257,10 @@
             if (pricePerNight > 0) {
                 const totalPrice = pricePerNight * days;
                 totalPriceInput.value = totalPrice.toFixed(2); // For backend submission
-                totalPriceDisplay.value = `$${totalPrice.toFixed(2)}`; // For display
+                totalPriceDisplay.value = `₱${totalPrice.toFixed(2)}`; // For display
             } else {
                 totalPriceInput.value = '0.00';
-                totalPriceDisplay.value = '$0.00';
+                totalPriceDisplay.value = '₱0.00';
             }
         }
 

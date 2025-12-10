@@ -29,19 +29,19 @@
             </div>
             <div>
                 <h3 class="font-medium text-white">Price / Night</h3>
-                <p class="text-white/70">${{ $booking->room_price }}</p>
+                <p class="text-white/70">₱{{ $booking->room_price }}</p>
             </div>
         </div>
 
         <div class="mb-6 border-t border-white/10 pt-4">
             <h3 class="font-semibold text-white">Total</h3>
-            <p class="text-xl font-bold" style="color: #C45B3A;">${{ $booking->total }}</p>
+            <p class="text-xl font-bold" style="color: #C45B3A;">₱{{ $booking->total }}</p>
         </div>
 
         <div class="flex gap-3">
             <a href="{{ route('bookings.pending') }}" class="btn btn-outline text-white border-white/40 hover:bg-white/10 rounded-none">Back</a>
 
-            <form action="{{ route('bookings.payPending') }}" method="POST" onsubmit="return confirm('Pay ${{ $booking->total }} for this booking?');">
+            <form action="{{ route('bookings.payPending') }}" method="POST" onsubmit="return confirm('Pay ₱{{ $booking->total }} for this booking?');">
                 @csrf
                 <input type="hidden" name="booking_id" value="{{ $booking->booking_id ?? $booking->id ?? '' }}">
                 <button type="submit" class="btn rounded-none text-white font-semibold" style="background-color: #C45B3A; border-color: #C45B3A;">Pay Now</button>

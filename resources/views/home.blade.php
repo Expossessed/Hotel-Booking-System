@@ -57,7 +57,7 @@
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title">{{ $room->room_type }}</h5>
                                     <p class="card-text mb-2">{{ $room->room_desc }}</p>
-                                    <p class="fw-semibold mb-3">${{ $room->room_price }} / night</p>
+                                    <p class="fw-semibold mb-3">₱{{ $room->room_price }} / night</p>
                                     <div class="mt-auto d-flex justify-content-between gap-2">
                                         <a href="{{ route('rooms.view', ['id' => $room->room_id]) }}" class="btn btn-outline-secondary btn-sm">View Details</a>
                                         <a href="{{ route('bookings.form', ['room_id' => $room->room_id]) }}" class="btn btn-primary btn-sm">Book Now</a>

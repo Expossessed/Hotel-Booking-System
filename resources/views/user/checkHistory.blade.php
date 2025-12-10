@@ -113,7 +113,7 @@
         <h1 class="text-4xl main-header font-bold mb-2 text-white">
             My Booking History
         </h1>
-        <p class="text-white/60">Current Balance: <span class="text-white font-semibold">${{ number_format(auth()->user()->balance, 2) }}</span></p>
+        <p class="text-white/60">Current Balance: <span class="text-white font-semibold">₱{{ number_format(auth()->user()->balance, 2) }}</span></p>
     </div>
 
     @if(session('success'))
@@ -287,7 +287,7 @@
                 <label for="pay_balance" class="ml-4 flex-1 cursor-pointer payment-label text-white">
                     <span class="font-medium">Account Balance</span>
                     <br/>
-                    <span class="text-white/60 text-xs">Available: <span id="user_balance_display">$0.00</span></span>
+                    <span class="text-white/60 text-xs">Available: <span id="user_balance_display">₱0.00</span></span>
                 </label>
             </div>
 
@@ -402,8 +402,8 @@
 
          document.getElementById('modal_booking_id').value = bookingId;
         document.getElementById('modal_room_type').textContent = roomType;
-        document.getElementById('modal_total').textContent = '$' + totalAmount.toFixed(2);
-        document.getElementById('user_balance_display').textContent = '$' + userBalance.toFixed(2);
+        document.getElementById('modal_total').textContent = '₱' + totalAmount.toFixed(2);
+        document.getElementById('user_balance_display').textContent = '₱' + userBalance.toFixed(2);
 
         const balanceOption = document.getElementById('pay_balance');
         const insufficientAlert = document.getElementById('insufficient_balance_alert');
@@ -452,7 +452,7 @@
         
 
         document.getElementById('confirm_room_type').textContent = currentPaymentData.roomType;
-        document.getElementById('confirm_amount').textContent = '$' + totalAmount.toFixed(2);
+        document.getElementById('confirm_amount').textContent = '₱' + totalAmount.toFixed(2);
         document.getElementById('confirm_method').textContent = methodLabels[selectedMethod];
 
         setTimeout(() => {
