@@ -97,15 +97,15 @@ input, textarea{
   width:100%;
   padding:14px 16px;
   border-radius:12px;
-  border:1px solid rgba(255,255,255,0.25);
-  background: rgba(255,255,255,0.12);
-  color:#fff;
+  border:1px solid rgba(196,91,58,0.18);
+  background: rgba(196,91,58,0.18);
+  color:rgba(196,91,58,1);
   font-size:1rem;
   outline:none;
   transition: all .18s var(--ease);
 }
-input:focus, textarea:focus{border-color:var(--accent); background: rgba(196,91,58,0.18);}
-input::placeholder, textarea::placeholder{color: #fff0ff99;}
+/* input:focus, textarea:focus{border-color:var(--accent); background: rgba(196,91,58,0.18);} */
+input::placeholder, textarea::placeholder{color: rgba(196,91,58,0.8);}
 
 .btn{padding:14px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:700;width:100%;transition:.2s}
 .btn-accent{background:var(--accent);color:#fff}

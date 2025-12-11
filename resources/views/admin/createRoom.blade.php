@@ -189,7 +189,7 @@
                     @enderror
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 w-full :grid-cols-2 gap-6">
                     <div class="form-control w-full">
                         <label class="label">
                             <span class="label-text text-lg font-semibold text-gray-700">Price per Day (₱)</span>
@@ -202,17 +202,6 @@
                         @enderror
                     </div>
 
-                    <div class="form-control w-full">
-                        <label class="label">
-                            <span class="label-text text-lg font-semibold text-gray-700">Available Rooms</span>
-                        </label>
-                        <input type="number" id="available_rooms" name="available_rooms" placeholder="Number of available rooms"
-                            class="input input-bordered w-full bg-gray-100 text-black placeholder-gray-500 border-gray-300 focus:border-primary-blue focus:ring-primary-blue"
-                            min="0" value="{{ old('available_rooms') }}">
-                        @error('available_rooms')
-                            <span class="text-error mt-1 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
                 </div>
 
                 <div class="form-control w-full pt-4">

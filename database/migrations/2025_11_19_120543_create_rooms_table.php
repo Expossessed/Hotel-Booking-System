@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('room_image1')->nullable()->default('default.jpg');
             $table->string('room_image2')->nullable()->default('default.jpg');
             $table->string('room_image3')->nullable()->default('default.jpg');
-            $table->integer('available_rooms');
             $table->boolean('is_available')->default(true); 
             $table->json('free_items')->nullable()->default(json_encode([]));
             $table->timestamps();

@@ -57,6 +57,10 @@ Route::middleware('auth')->group(function () {
     // API: booking statuses for polling
     Route::get('/api/user/bookings/status', [BookingController::class, 'apiBookingStatuses'])->name('api.bookings.status');
 
+    Route::get('user/profileSettings', [UsersController::class, 'profileSettings'])->name('profile.settings');
+    Route::post('user/profileSettings', [UsersController::class, 'profileSettingsUpdate'])->name('profile.settings.update');
+    Route::post('user/storeTransaction', [TransactionsController::class, 'storeTransaction']);
+    Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
 });
 
 // Admin-only routes - protected by both auth and admin middleware.
@@ -128,12 +132,7 @@ Route::get('user/checkHistory', [BookingController::class, 'checkBookingHistory'
     Route::post('user/bookings/{id}/checkout', [BookingController::class, 'checkout'])->name('bookings.checkout');
 
 //route for profile settings
-Route::get('user/profileSettings', [UsersController::class, 'profileSettings'])->name('profile.settings');
-Route::post('user/profileSettings', [UsersController::class, 'profileSettingsUpdate'])->name('profile.settings.update');
 
-Route::post('user/storeTransaction', [TransactionsController::class, 'storeTransaction']);
-
-Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
 
 require __DIR__.'/auth.php';
 
