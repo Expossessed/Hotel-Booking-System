@@ -135,15 +135,33 @@ input::placeholder, textarea::placeholder{color: rgba(196,91,58,0.8);}
 }
 </style>
 </head>
-<body>
+<body class="flex flex-col min-h-screen">
 
 @auth
 <script>window.location.href = "{{ route('rooms.list') }}";</script>
 @endauth
 
 @guest
+@if ($errors->any() && old('form_type')==='login')
+          <div style="background:#7f1d1d;padding:.875rem;margin-bottom:1rem;border-left:4px solid #dc2626;border-radius:.375rem;">
+            <ul style="color:#fee2e2;margin:0;padding-left:1rem;">
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+@if ($errors->any() && old('form_type')==='register')
+          <div style="background:#7f1d1d;padding:.875rem;margin-bottom:1rem;border-left:4px solid #dc2626;border-radius:.375rem;">
+            <ul style="color:#fee2e2;margin:0;padding-left:1rem;">
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
 <main class="auth-card">
-
+  
   <section class="left-panel" aria-hidden="true">
     <h2>Welcome Back.</h2>
     <p>Your next luxury stay awaits. Fast check-in and room management at your fingertips.</p>
@@ -165,15 +183,7 @@ input::placeholder, textarea::placeholder{color: rgba(196,91,58,0.8);}
     <div class="panes">
 
       <div id="pane-login" class="pane" role="tabpanel" aria-hidden="false">
-        @if ($errors->any() && old('form_type')==='login')
-          <div style="background:#7f1d1d;padding:.875rem;margin-bottom:1rem;border-left:4px solid #dc2626;border-radius:.375rem;">
-            <ul style="color:#fee2e2;margin:0;padding-left:1rem;">
-              @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
-          </div>
-        @endif
+       
         <form action="{{ route('login') }}" method="POST">
           @csrf
           <input type="hidden" name="form_type" value="login">
@@ -192,17 +202,10 @@ input::placeholder, textarea::placeholder{color: rgba(196,91,58,0.8);}
         </form>
       </div>
 
-      <div id="pane-register" class="pane" role="tabpanel" aria-hidden="true">
-        @if ($errors->any() && old('form_type')==='register')
-          <div style="background:#7f1d1d;padding:.875rem;margin-bottom:1rem;border-left:4px solid #dc2626;border-radius:.375rem;">
-            <ul style="color:#fee2e2;margin:0;padding-left:1rem;">
-              @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
-          </div>
-        @endif
-        <form action="{{ route('register') }}" method="POST">
+      <div id="pane-register" class="pane"   role="tabpanel" aria-hidden="true">
+        
+        
+        <form action="{{ route('register') }}"  method="POST">
           @csrf
           <input type="hidden" name="form_type" value="register">
           <div class="field">

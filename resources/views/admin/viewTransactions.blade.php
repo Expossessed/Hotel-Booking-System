@@ -88,11 +88,6 @@
                             </ul>
                         </details>
                     </li>
-                    <li>
-                        <label for="my-modal" class="modal-button cursor-pointer">
-                            <span class="font-bold hover:text-primary-blue transition duration-200 px-3">Balance: ₱{{ auth()->user()->balance }}</span>
-                        </label>
-                    </li>
                     @if(auth()->user()->isAdmin())
                         <li><a href="/admin/create" class="hover:text-primary-blue px-3">Add Room</a></li>
                     @endif
@@ -112,21 +107,7 @@
         </div>
     </header>
 
-    <input type="checkbox" id="my-modal" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative bg-white shadow-2xl">
-            <label for="my-modal" class="btn btn-sm btn-circle absolute right-4 top-4 border-none bg-gray-200 hover:bg-gray-300">✕</label>
-            <h3 class="text-xl font-bold mb-6 text-gray-800">Add Balance</h3>
-
-            <form action="{{ route('admin.addBalance') }}" method="POST">
-                @csrf
-                <input type="number" name="balance" class="input input-bordered w-full mb-4 focus:border-primary-blue" placeholder="Enter amount" required min="1">
-                <div class="modal-action mt-0">
-                    <button type="submit" class="btn bg-primary-blue hover:bg-primary-dark border-none text-white w-full">Add Balance</button>
-                </div>
-            </form>
-        </div>
-    </div>
+   
 
     <div class="max-w-7xl mx-auto py-12 px-6 sm:px-8">
         <h1 class="text-4xl font-extrabold text-gray-800 mb-8 border-b pb-4">Pending Transactions</h1>

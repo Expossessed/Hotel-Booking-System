@@ -15,8 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Backwards-compatible route: help users who accidentally visit /book (root)
-// — redirect them to the authenticated booking form route.
+
 Route::get('/book', function () {
     return redirect()->route('bookings.form');
 });
@@ -25,14 +24,12 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Admin routes were previously partially opened inside this group —
-    // admin-owned routes are all re-grouped and protected below with both
-    // the `auth` and `admin` middleware so regular users cannot reach them.
+   
 
     Route::get('user/home', [RoomsController::class, 'showRooms'])->name('rooms.list');
     Route::get('/user/rooms/{id}', [RoomsController::class, 'view'])->name('rooms.view');
@@ -61,6 +58,27 @@ Route::middleware('auth')->group(function () {
     Route::post('user/profileSettings', [UsersController::class, 'profileSettingsUpdate'])->name('profile.settings.update');
     Route::post('user/storeTransaction', [TransactionsController::class, 'storeTransaction']);
     Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
+    Route::get('/user/reviews/create', [ReviewsController::class, 'showReviewForm'])
+    ->name('reviews.createReview')
+    ->middleware('auth');
+Route::post('/user/reviews/store', [ReviewsController::class, 'storeReview'])
+    ->name('reviews.store')
+    ->middleware('auth');
+// Show reviews for a room. The identifier may be an id or a room name (optional).
+Route::get('user/reviews/view/{room_identifier?}', [ReviewsController::class, 'view'])
+    ->name('reviews.viewReviews');
+    Route::get('user/rooms', [RoomsController::class, 'displayRooms'])->name('user.rooms');
+    Route::get('user/about', function () {
+    return view('user.about'); 
+    })->name('about');
+
+    Route::get('user/contact', function () {
+        return view('user.contacts');  
+    })->name('contact');
+    //route for check booking history
+    Route::get('user/checkHistory', [BookingController::class, 'checkBookingHistory'])->name('bookings.userHistory');
+        Route::post('user/bookings/{id}/checkout', [BookingController::class, 'checkout'])->name('bookings.checkout');
+
 });
 
 // Admin-only routes - protected by both auth and admin middleware.
@@ -88,8 +106,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('/viewtransactions', [TransactionsController::class, 'viewTransactions'])->name('admin.viewTransactions');
     Route::get('/transactionHistory', [TransactionsController::class, 'transactionHistory'])->name('admin.transactionHistory');
-    // Route::get('/updateTransaction/{id}', [TransactionsController::class, 'updateUserForm'])->name('admin.updateUser');
-    // Route::post('/updateTransaction/{id}', [TransactionsController::class, 'updateUser']);
     Route::post('/deleteTransaction/{id}', [TransactionsController::class, 'deleteTransaction'])->name('admin.deleteTransaction');
 
     Route::post('/add-balance', [UsersController::class, 'addBalance'])->name('admin.addBalance');
@@ -97,41 +113,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/reviews/{id}', [ReviewsController::class, 'viewReviews'])->name('admin.viewReviews');
 });
 
-Route::get('/user/reviews/create', [ReviewsController::class, 'showReviewForm'])
-    ->name('reviews.createReview')
-    ->middleware('auth');
-Route::post('/user/reviews/store', [ReviewsController::class, 'storeReview'])
-    ->name('reviews.store')
-    ->middleware('auth');
-// Show reviews for a room. The identifier may be an id or a room name (optional).
-Route::get('user/reviews/view/{room_identifier?}', [ReviewsController::class, 'view'])
-    ->name('reviews.viewReviews');
-
-// Pending payments are handled via BookingController inside the authenticated group.
-// Old TransactionsController routes were removed to avoid conflicts.
 
 
-
-Route::get('user/about', function () {
-    return view('user.about'); 
-})->name('about');
-
-Route::get('user/contact', function () {
-    return view('user.contacts');  
-})->name('contact');
-
-// Static pages used across the public layout
-Route::view('/terms', 'pages.terms')->name('terms');
-Route::view('/privacy', 'pages.privacy')->name('privacy');
-
-
-Route::get('user/rooms', [RoomsController::class, 'displayRooms'])->name('user.rooms');
-
-//route for check booking history
-Route::get('user/checkHistory', [BookingController::class, 'checkBookingHistory'])->name('bookings.userHistory');
-    Route::post('user/bookings/{id}/checkout', [BookingController::class, 'checkout'])->name('bookings.checkout');
-
-//route for profile settings
 
 
 require __DIR__.'/auth.php';

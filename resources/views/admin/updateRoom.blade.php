@@ -87,11 +87,6 @@
                             </ul>
                         </details>
                     </li>
-                    <li>
-                        <label for="my-modal" class="modal-button cursor-pointer">
-                            <span class="font-bold hover:text-primary-blue transition duration-200 px-3">Balance: ₱{{ auth()->user()->balance }}</span>
-                        </label>
-                    </li>
                     @if(auth()->user()->isAdmin())
                         <li><a href="/admin/create" class="hover:text-primary-blue px-3">Add Room</a></li>
                     @endif
@@ -110,21 +105,7 @@
             </div>
         </div>
     </header>
-    <input type="checkbox" id="my-modal" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative bg-white shadow-2xl">
-            <label for="my-modal" class="btn btn-sm btn-circle absolute right-4 top-4 border-none bg-gray-200 hover:bg-gray-300">✕</label>
-            <h3 class="text-xl font-bold mb-6 text-gray-800">Add Balance</h3>
-
-            <form action="{{ route('admin.addBalance') }}" method="POST">
-                @csrf
-                <input type="number" name="balance" class="input input-bordered w-full mb-4 focus:border-primary-blue" placeholder="Enter amount" required min="1">
-                <div class="modal-action mt-0">
-                    <button type="submit" class="btn bg-primary-blue hover:bg-primary-dark border-none text-white w-full">Add Balance</button>
-                </div>
-            </form>
-        </div>
-    </div>
+  
 
     <div class="flex items-center justify-center py-12 px-6 sm:px-8">
         <div class="card w-full max-w-3xl bg-white shadow-2xl rounded-xl p-10 border border-gray-100">
@@ -171,10 +152,10 @@
                     @enderror
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 w-full md:grid-cols-2 gap-6">
                     <div class="form-control w-full">
                         <label class="label">
-                            <span class="label-text text-lg font-semibold text-gray-700">Price per Night (₱)</span>
+                            <span class="label-text text-lg font-semibold text-gray-700">Price per Day (₱)</span>
                         </label>
                         <input type="number" id="room_price" name="room_price" placeholder="{{ number_format($rooms->room_price) }}"
                             class="input input-bordered w-full bg-gray-100 text-black placeholder-gray-500 border-gray-300 focus:border-primary-blue focus:ring-primary-blue"
@@ -184,17 +165,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-control w-full">
-                        <label class="label">
-                            <span class="label-text text-lg font-semibold text-gray-700">Available Rooms</span>
-                        </label>
-                        <input type="number" id="available_rooms" name="available_rooms" placeholder="{{ $rooms->available_rooms }}"
-                            class="input input-bordered w-full bg-gray-100 text-black placeholder-gray-500 border-gray-300 focus:border-primary-blue focus:ring-primary-blue"
-                            min="0" value="{{ old('available_rooms', $rooms->available_rooms) }}">
-                        @error('available_rooms')
-                            <span class="text-error mt-1 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
+                    
                 </div>
 
                 <div class="form-control w-full pt-4">

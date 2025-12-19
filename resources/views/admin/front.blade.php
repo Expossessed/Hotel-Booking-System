@@ -103,11 +103,6 @@
                             </ul>
                         </details>
                     </li>
-                    <li>
-                        <label class="modal-button cursor-pointer">
-                            <span class="font-bold hover:text-primary-blue transition duration-200 px-3">Balance: ₱{{ auth()->user()->balance }}</span>
-                        </label>
-                    </li>
                     @if(auth()->user()->isAdmin())
                         <li><a href="/admin/create" class="hover:text-primary-blue px-3">Add Room</a></li>
                     @endif

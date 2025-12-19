@@ -97,11 +97,6 @@
                             </ul>
                         </details>
                     </li>
-                    <li>
-                        <label for="my-modal" class="modal-button cursor-pointer">
-                            <span class="font-bold hover:text-primary-blue transition duration-200 px-3">Balance: ₱{{ auth()->user()->balance }}</span>
-                        </label>
-                    </li>
                     @if(auth()->user()->isAdmin())
                         <li><a href="/admin/create" class="hover:text-primary-blue px-3">Add Room</a></li>
                     @endif
@@ -121,21 +116,7 @@
         </div>
     </header>
 
-    <input type="checkbox" id="my-modal" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative bg-white shadow-2xl">
-            <label for="my-modal" class="btn btn-sm btn-circle absolute right-4 top-4 border-none bg-gray-200 hover:bg-gray-300">✕</label>
-            <h3 class="text-xl font-bold mb-6 text-gray-800">Add Balance</h3>
-
-            <form action="{{ route('admin.addBalance') }}" method="POST">
-                @csrf
-                <input type="number" name="balance" class="input input-bordered w-full mb-4 focus:border-primary-blue" placeholder="Enter amount" required min="1">
-                <div class="modal-action mt-0">
-                    <button type="submit" class="btn bg-primary-blue hover:bg-primary-dark border-none text-white w-full">Add Balance</button>
-                </div>
-            </form>
-        </div>
-    </div>
+   
 
     <div class="max-w-7xl mx-auto py-12 px-6 sm:px-8">
         <h1 class="text-4xl font-extrabold text-gray-800 mb-8 border-b pb-4">Room Details</h1>
@@ -181,16 +162,7 @@
                         {{ $rooms->room_desc }}
                     </p>
                     
-                    <div class="flex items-center">
-                        <div class="rating rating-lg rating-half">
-                            @for ($i = 1; $i <= 5; $i++)
-                                <input type="radio" name="rating-{{ $rooms->room_id }}" 
-                                    class="bg-yellow-400 mask mask-star-2" disabled 
-                                    @if ($i == round($rooms->rating)) checked @endif />
-                            @endfor
-                        </div>
-                        <span class="ml-3 text-lg font-semibold text-gray-700">({{ number_format($rooms->rating, 1) }}/5)</span>
-                    </div>
+                    
                 </div>
                 
                 <div class="mb-8">
